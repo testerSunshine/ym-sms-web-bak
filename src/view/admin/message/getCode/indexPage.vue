@@ -154,6 +154,10 @@ export default {
         return
       }
       getPhone.request(this.getPhoneForm).then(resp => {
+        if (resp.data.data.mobile === "") {
+          elError("没找到符合条件的号码，请检查搜索条件再试")
+          return
+        }
         this.getCodeForm.phone = resp.data.data.mobile
         this.getCodeForm.lastMsgTime = resp.data.data.lastMsgTime
         clearInterval(this.timer)
@@ -179,7 +183,7 @@ export default {
                   resp.data.map(function (p) {
                     _this.collectOptions.push({
                       value: p.projectId,
-                      label: '项目: ' + p.projectName + '---金额：' + p.userMoney,
+                      label: '项目: ' + p.projectName + '---金额：' + p.userMoney + '---' + p.content,
                     })
                     _this.getPhoneForm.projectId = _this.collectOptions[0].value
                   })
