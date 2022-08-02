@@ -18,7 +18,7 @@ module.exports = {
     useMock: false,
 
     //socket连接地址
-    socketUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:12580' : 'http://207.246.114.21:12581',
+    socketUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:12580' : 'http://120.77.154.140:12581',
 
     //路由配置
     route: {
