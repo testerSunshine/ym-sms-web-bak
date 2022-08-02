@@ -9,7 +9,9 @@
             </div>
 
             <component :is="component"/>
+
         </div>
+      <waning-dialog v-model="editDialog" type="recharge" @success="success"></waning-dialog>
     </div>
 </template>
 
@@ -19,16 +21,22 @@ import {title} from '@/config'
 import SetAnimation from "./SetAnimation"
 import LoginForm from "./LoginForm"
 import RegisterForm from "./RegisterForm"
+import WaningDialog from "./WaningDialog";
 import {isEmpty} from "@/util"
 import {isMobile} from "@/util/browser"
+import {elSuccess} from "@/util/message";
 
 export default {
     name: 'login',
 
-    components: {LoginForm, RegisterForm, SetAnimation},
+    components: {LoginForm, RegisterForm, SetAnimation, WaningDialog},
 
-    data: () => ({title}),
-
+    data() {
+      return {
+        editDialog: true,
+        title: title
+      }
+    },
     computed: {
         ...mapState('app', ['loginBackgroundAnimation']),
 
@@ -52,7 +60,11 @@ export default {
             if (isEmpty(value)) return
             import(`@/plugin/canvasAnimation/${value}`)
                 .then(_ => this.animationInstance = new _.default(document.getElementById('login-background')))
-        }
+        },
+        success() {
+          this.editDialog = false
+          this.handleGetWallet()
+        },
     },
 
     mounted() {
@@ -64,7 +76,8 @@ export default {
     beforeDestroy() {
         this.clearAnimation()
         this.$message.closeAll()
-    }
+    },
+
 }
 </script>
 
