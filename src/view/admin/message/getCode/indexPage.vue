@@ -9,6 +9,7 @@
         1. 在公开解码列表找到自己想要获取的验证码模板添加对接。<br>
         2. 在对接项目选中该项目，点击获取号码。<br>
         3. 获取验证码之后会自动将验证码反馈给您。<br>
+        <el-link style="font-size: 16px"  type="danger" href="https://note.youdao.com/s/CDcaqhIl" target="_blank">还有问题？查看在线文档</el-link>
       </p>
     </div>
     <el-card class="get-phone-page" shadow="never">
