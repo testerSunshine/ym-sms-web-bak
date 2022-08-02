@@ -11,10 +11,6 @@
       <br>
       如您无视平台公告所造成的后果由您自负,本站不承担责任<br>
       <br>
-      本网站坚决抵动机不纯人员,疑似风险的项目已全部屏蔽,仅限正常玩家使用!<br>
-      本平台对注册来的小号不保证是否为新号,收到验证码则订单服务完成!<br>
-      <br>
-      所有业务均来对接第三方平台！本站无自营业务<br>
     </p>
     <template v-slot:footer>
       <el-button size="small" type="primary" @click="confirm">我已知晓并同意</el-button>
