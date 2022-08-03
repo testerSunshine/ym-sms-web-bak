@@ -46,7 +46,7 @@ export default {
 
   computed: {
     title() {
-      return "易码平台公告"
+      return "九九接码平台公告"
     },
 
   },
