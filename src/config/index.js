@@ -5,7 +5,7 @@ module.exports = {
     contextPath,
 
     //页面标题、登录注册页的标题
-    title: '九九-接码平台',
+    title: '好用-可靠平台',
 
     //logo地址
     logo: `${contextPath}static/img/logo.svg`,

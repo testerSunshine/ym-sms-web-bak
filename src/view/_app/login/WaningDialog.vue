@@ -1,7 +1,8 @@
 <template>
   <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
-    <h3>欢迎光临</h3>
+    <h3 align="center">欢迎光临</h3>
     <h4>业务来自第三方，本站无任何自营业务</h4>
+    <h4>致力于避免三方非安全app需要手机验证码带来的手机号泄露风险</h4>
     <p>
       本网站坚决抵动机不纯人员,疑似风险的项目已全部屏蔽,仅限正常玩家使用!<br>
       本平台对注册来的小号不保证是否为新号,收到验证码则订单服务完成!<br>
@@ -46,7 +47,7 @@ export default {
 
   computed: {
     title() {
-      return "九九接码平台公告"
+      return "平台公告"
     },
 
   },

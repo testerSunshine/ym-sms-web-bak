@@ -43,10 +43,10 @@
         </el-button>
 
         <div class="flex" style="margin-top: 20px">
-            <p class="other-ways">
-                其他方式登录
-                <v-icon v-for="i in otherWays" :key="i" :icon="`svg-${i}`" @click="() => thirdPartyLogin(i)"/>
-            </p>
+<!--            <p class="other-ways">-->
+<!--                其他方式登录-->
+<!--                <v-icon v-for="i in otherWays" :key="i" :icon="`svg-${i}`" @click="() => thirdPartyLogin(i)"/>-->
+<!--            </p>-->
 
             <el-button type="text" @click="register">注册账户</el-button>
         </div>
