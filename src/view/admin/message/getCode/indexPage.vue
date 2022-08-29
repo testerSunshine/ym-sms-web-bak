@@ -17,11 +17,29 @@
         <el-card class="get-phone-page" shadow="never">
           <el-form ref="getPhoneForm" :model="getPhoneForm" label-width="120px">
             <el-form-item label="关键字：">
-              <el-select v-model="getPhoneForm.projectId" placeholder="请选择项目">
-                <el-option v-for="item in collectOptions"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value"></el-option>
+<!--              <el-select v-model="getPhoneForm.projectId" placeholder="请选择项目">-->
+<!--                <el-option v-for="item in collectOptions"-->
+<!--                           :key="item.value"-->
+<!--                           :label="item.label"-->
+<!--                           :value="item.value"></el-option>-->
+<!--              </el-select>-->
+
+              <el-select
+                  ref="projectNameSelect"
+                  @change="projectNameChange"
+                  v-model="getPhoneForm.projectName"
+                  filterable
+                  remote
+                  reserve-keyword
+                  placeholder="请输入项目关键字"
+                  :remote-method="handleProjectSearch"
+                  :loading="projectInputLoading">
+                <el-option
+                    v-for="item in projectSearchOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="运营商：">
@@ -71,7 +89,7 @@
               <el-input type="textarea" :rows="1" v-model="getCodeForm.codeContent"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="stopGetCode()">获取验证码</el-button>
+              <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
               <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
             </el-form-item>
           </el-form>
@@ -87,10 +105,8 @@
 </template>
 
 <script>
-import {appGetters} from "el-admin-layout"
-import {search} from "@/api/message/getCode"
+import {search, add} from "@/api/message/publicJoin"
 import {getWallet} from "@/api/system/SysUserWallet"
-import {wic} from "@/util/auth";
 import {selectProjectByProjectIdList} from "@/api/message/smsProject";
 import {list} from "@/api/message/smsCollect";
 import {getPhone} from "@/api/message/getPhone";
@@ -105,8 +121,9 @@ export default {
   components: {RechargeDialog},
   data() {
     return {
+      projectInputLoading: false,
       getPhoneForm: {
-        projectId: '',
+        projectName: '',
         operator: '5',
         phone_num: '',
         scope: '',
@@ -118,7 +135,7 @@ export default {
         code: '',
         codeContent: '',
       },
-      collectOptions: [],
+      projectSearchOptions: [],
       wallet: "0.00",
       timer: null,
       count: 0,
@@ -128,23 +145,47 @@ export default {
   computed: {},
   created() {
     this.handleGetWallet()
-    this.handleGetCollectProject()
   },
   beforeDestroy() {
     clearInterval(this.timer);
   },
   watch: {},
   methods: {
+    projectNameChange() {
+      this.$refs.projectNameSelect.query = ""
+    },
+    handleProjectSearch(query) {
+      this.projectInputLoading = true
+      this.getPhoneForm.projectName = ""
+      this.projectSearchOptions = []
+      let _this = this
+      search
+          .request({"keyword": query})
+          .then(resp => {
+            resp.data.list.map(function (p) {
+              _this.projectSearchOptions.push({
+                value: p.projectName,
+                label: p.projectName,
+              })
+            })
+          })
+          .finally(() => this.projectInputLoading = false)
+    },
     stopGetCode() {
       clearInterval(this.timer)
       this.timer = null
       elSuccess("已停止获取验证码")
     },
+    startGetCode() {
+      clearInterval(this.timer)
+      this.count = 0
+      // 定时获取验证码
+      elSuccess("开始获取验证码")
+      this.timer = setInterval(this.handleGetCode, 5000);
+
+    },
     copy() {
       elSuccess("复制成功")
-    },
-    refreshRegion() {
-      this.handleGetCollectProject()
     },
     // submitGetPhoneForm() {
     //   if (this.getPhoneForm.projectId === '') {
@@ -172,42 +213,40 @@ export default {
         this.getCodeForm.phone = resp.data.data.mobile
         this.getCodeForm.lastMsgTime = resp.data.data.lastMsgTime
         clearInterval(this.timer)
-        this.count = 0
-        // 定时获取验证码
-        this.timer = setInterval(this.handleGetCode, 5000);
+        elSuccess("获取手机号成功，点击获取验证码即可获取验证码")
       })
     },
-
-    handleGetCollectProject() {
-      this.collectOptions = []
-      list
-          .request({size: 50})
-          .then(resp => {
-            let projectList = [];
-            resp.data.map(function (l) {
-              projectList.push(l.projectId)
-            })
-            let _this = this
-            selectProjectByProjectIdList
-                .request({projectIdList: projectList})
-                .then(resp => {
-                  resp.data.map(function (p) {
-                    _this.collectOptions.push({
-                      value: p.projectId,
-                      label: '项目: ' + p.projectName + '---金额：' + p.userMoney + '---' + p.content,
-                    })
-                    _this.getPhoneForm.projectId = _this.collectOptions[0].value
-                  })
-                })
-          })
-    },
+    //
+    // handleGetCollectProject() {
+    //   this.collectOptions = []
+    //   list
+    //       .request({size: 50})
+    //       .then(resp => {
+    //         let projectList = [];
+    //         resp.data.map(function (l) {
+    //           projectList.push(l.projectId)
+    //         })
+    //         let _this = this
+    //         selectProjectByProjectIdList
+    //             .request({projectIdList: projectList})
+    //             .then(resp => {
+    //               resp.data.map(function (p) {
+    //                 _this.collectOptions.push({
+    //                   value: p.projectName,
+    //                   label: '项目: ' + p.projectName,
+    //                 })
+    //                 _this.getPhoneForm.projectId = _this.collectOptions[0].value
+    //               })
+    //             })
+    //       })
+    // },
 
     handleGetCode() {
       if (this.count > 100) {
         clearInterval(this.timer)
       }
       console.log("get code num: " + this.count)
-      getCode.request({projectId: this.getPhoneForm.projectId, phoneNum: this.getCodeForm.phone}).then(resp => {
+      getCode.request({projectName: this.getPhoneForm.projectName, phoneNum: this.getCodeForm.phone}).then(resp => {
         if (resp.data.message === "ok") {
           this.getCodeForm.code = resp.data.code
           this.getCodeForm.codeContent = resp.data.modle
