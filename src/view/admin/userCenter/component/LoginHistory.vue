@@ -6,8 +6,8 @@
                     <el-button icon="el-icon-refresh-right" style="padding: 0" type="text" @click="search"/>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="ip" prop="ip" show-overflow-tooltip/>
-            <el-table-column align="center" label="地址" prop="address" show-overflow-tooltip/>
+<!--            <el-table-column align="center" label="ip" prop="ip" show-overflow-tooltip/>-->
+<!--            <el-table-column align="center" label="地址" prop="address" show-overflow-tooltip/>-->
             <el-table-column align="center" label="时间" show-overflow-tooltip>
                 <template v-slot="{row}">{{ row.time | timestamp2Date }}</template>
             </el-table-column>

@@ -18,7 +18,7 @@ export default {
 
     methods: {
         jump() {
-            const target = '/message/user'
+            const target = '/msg/user'
 
             this.$route.path === target ? refreshPage() : this.$router.push(target)
         }

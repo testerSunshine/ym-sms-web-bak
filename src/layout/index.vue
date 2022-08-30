@@ -110,13 +110,13 @@ export default {
                 content: '用户中心',
                 handler: this.toUserCenter
             },
-            {
-                icon: 'el-icon-guide',
-                command: 'guide',
-                content: '新手指引',
-                hideOnMobile: true,
-                handler: this.startGuide
-            },
+            // {
+            //     icon: 'el-icon-guide',
+            //     command: 'guide',
+            //     content: '新手指引',
+            //     hideOnMobile: true,
+            //     handler: this.startGuide
+            // },
             {
                 icon: 'el-icon-switch-button',
                 command: 'logout',

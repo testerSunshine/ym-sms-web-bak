@@ -3,20 +3,18 @@
     <div class="user-info-tip">
       <p>
         当前用户金币：{{ this.wallet }} <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>
-      </p>
-      <p>
+        <br>
         使用说明：<br>
-        1. 在关键字输入短信关键字，比如短信括号里面的内容，程序会自动给筛选符合关键字条件的内容，举例：【一时平台】您的验证码为123456。<br>
-        2. 点击获取号码，复制下方的手机号码在你的项目中填入然后发送验证码。<br>
-        3. 点击获取验证码，平台这边会不间断的获取验证码，之后会自动将验证码反馈给您。<br>
-        <el-link style="font-size: 16px"  type="danger" href="https://note.youdao.com/s/CDcaqhIl" target="_blank">还有问题？查看在线文档</el-link>
+        <span style='color: red;'>1. 每次扣除2金币，成功接收验证码则算一次</span>
+        <br>
+        2. 在关键字输入短信关键字，比如短信括号里面的内容，程序会自动给筛选符合关键字条件的内容，举例：【一时平台】您的验证码为123456。<br>
+        3. 点击获取号码，复制下方的手机号码在你的项目中填入然后发送验证码。<br>
+        4. 点击获取验证码，平台这边会不间断的获取验证码，之后会自动将验证码反馈给您。<br>
       </p>
     </div>
-    <el-row>
-      <el-col :span="12">
-        <el-card class="get-phone-page" shadow="never">
-          <el-form ref="getPhoneForm" :model="getPhoneForm" label-width="120px">
-            <el-form-item label="关键字：">
+    <el-card class="get-phone-page" shadow="never">
+      <el-form ref="getPhoneForm" :model="getPhoneForm" label-width="120px" size="mini">
+        <el-form-item label="关键字：">
 <!--              <el-select v-model="getPhoneForm.projectId" placeholder="请选择项目">-->
 <!--                <el-option v-for="item in collectOptions"-->
 <!--                           :key="item.value"-->
@@ -24,79 +22,75 @@
 <!--                           :value="item.value"></el-option>-->
 <!--              </el-select>-->
 
-              <el-select
-                  ref="projectNameSelect"
-                  @change="projectNameChange"
-                  v-model="getPhoneForm.projectName"
-                  filterable
-                  remote
-                  reserve-keyword
-                  placeholder="请输入项目关键字"
-                  :remote-method="handleProjectSearch"
-                  :loading="projectInputLoading">
-                <el-option
-                    v-for="item in projectSearchOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="运营商：">
-              <el-select v-model="getPhoneForm.operator" placeholder="请选择运营商">
-                <!--            <el-option label="不限" value="0"></el-option>-->
-                <el-option label="虚拟运营商" value="5"></el-option>
-                <el-option label="非虚拟运营商" value="4"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="指定号码：">
-              <el-input v-model="getPhoneForm.phone_num" placeholder="填要取的手机号, 可以获得指定号码"></el-input>
-            </el-form-item>
-            <el-form-item label="指定号段：" >
-              <el-input v-model="getPhoneForm.scope" placeholder="指定号段查询 (譬如:137开头的号段或者1371开头的号段)"></el-input>
-            </el-form-item>
-            <el-form-item label="排除号段：" >
-              <el-input v-model="getPhoneForm.scope_black" placeholder="排除号段最长支持4位且可以支持多个,最多支持20个号段。用逗号分隔 比如184,1841"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取号码</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card class="get-code-page" style="margin-left: 20px" shadow="never">
-          <el-form ref="getCodeForm" :model="getCodeForm" label-width="120px">
-            <el-form-item label="手机号：">
-              <el-input v-model="getCodeForm.phone" style="width: 90%" :disabled="true"></el-input>
-              <el-button style="margin-left: 5px"
-                         v-clipboard:copy="getCodeForm.phone"
-                         v-clipboard:success="copy">复制</el-button>
-            </el-form-item>
-            <el-form-item label="最近来码时间：">
-              <el-input v-model="getCodeForm.lastMsgTime" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="获取次数：">
-              <el-input v-model="count" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="验证码：">
-              <el-input v-model="getCodeForm.code" style="width: 90%"></el-input>
-              <el-button style="margin-left: 5px"
-                         v-clipboard:copy="getCodeForm.code"
-                         v-clipboard:success="copy">复制</el-button>
-            </el-form-item>
-            <el-form-item label="短信内容：">
-              <el-input type="textarea" :rows="1" v-model="getCodeForm.codeContent"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
-              <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
-      </el-col>
+          <el-select
+              ref="projectNameSelect"
+              @change="projectNameChange"
+              v-model="getPhoneForm.projectName"
+              filterable
+              remote
+              reserve-keyword
+              placeholder="请输入项目关键字"
+              :remote-method="handleProjectSearch"
+              :loading="projectInputLoading">
+            <el-option
+                v-for="item in projectSearchOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="运营商：">
+          <el-select v-model="getPhoneForm.operator" placeholder="请选择运营商">
+            <!--            <el-option label="不限" value="0"></el-option>-->
+            <el-option label="虚拟运营商" value="5"></el-option>
+            <el-option label="非虚拟运营商" value="4"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="指定号码：">
+          <el-input v-model="getPhoneForm.phone_num" placeholder="填要取的手机号, 可以获得指定号码"></el-input>
+        </el-form-item>
+        <el-form-item label="指定号段：" >
+          <el-input v-model="getPhoneForm.scope" placeholder="指定号段查询 (譬如:137开头的号段或者1371开头的号段)"></el-input>
+        </el-form-item>
+        <el-form-item label="排除号段：" >
+          <el-input v-model="getPhoneForm.scope_black" placeholder="排除号段最长支持4位且可以支持多个,最多支持20个号段。用逗号分隔 比如184,1841"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取号码</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+    <el-card class="get-code-page" style="margin-top: 20px" shadow="never">
+      <el-form ref="getCodeForm" :model="getCodeForm" label-width="120px" size="mini">
+        <el-form-item label="手机号：">
+          <el-input v-model="getCodeForm.phone" style="width: 90%" :disabled="true"></el-input>
+          <el-button style="margin-left: 5px"
+                     v-clipboard:copy="getCodeForm.phone"
+                     v-clipboard:success="copy">复制</el-button>
+        </el-form-item>
+        <el-form-item label="最近来码时间：">
+          <el-input v-model="getCodeForm.lastMsgTime" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="获取次数：">
+          <el-input v-model="count" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="验证码：">
+          <el-input v-model="getCodeForm.code" style="width: 90%"></el-input>
+          <el-button style="margin-left: 5px"
+                     v-clipboard:copy="getCodeForm.code"
+                     v-clipboard:success="copy">复制</el-button>
+        </el-form-item>
+        <el-form-item label="短信内容：">
+          <el-input type="textarea" :rows="1" v-model="getCodeForm.codeContent"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
+          <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
 
-    </el-row>
 
 
 
@@ -206,12 +200,12 @@ export default {
         return
       }
       getPhone.request(this.getPhoneForm).then(resp => {
-        if (resp.data.data.mobile === "") {
+        if (resp.data.mobile === "") {
           elError("没找到符合条件的号码，请检查搜索条件再试")
           return
         }
-        this.getCodeForm.phone = resp.data.data.mobile
-        this.getCodeForm.lastMsgTime = resp.data.data.lastMsgTime
+        this.getCodeForm.phone = resp.data.mobile
+        this.getCodeForm.lastMsgTime = ""
         clearInterval(this.timer)
         elSuccess("获取手机号成功，点击获取验证码即可获取验证码")
       })
