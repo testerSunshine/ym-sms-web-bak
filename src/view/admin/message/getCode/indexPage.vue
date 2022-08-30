@@ -175,6 +175,9 @@ export default {
       this.count = 0
       // 定时获取验证码
       elSuccess("开始获取验证码")
+      this.getCodeForm.code = ""
+      this.getCodeForm.codeContent = ""
+      this.getCodeForm.lastMsgTime = ""
       this.timer = setInterval(this.handleGetCode, 5000);
 
     },
