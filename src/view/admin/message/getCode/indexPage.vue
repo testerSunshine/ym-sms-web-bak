@@ -29,8 +29,8 @@
               filterable
               remote
               reserve-keyword
-              placeholder="请输入项目关键字"
-              :remote-method="handleProjectSearch"
+              placeholder="输入按enter搜索"
+              @keydown.enter.native="handleProjectSearch"
               :loading="projectInputLoading">
             <el-option
                 v-for="item in projectSearchOptions"
