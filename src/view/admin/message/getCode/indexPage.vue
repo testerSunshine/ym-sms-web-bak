@@ -143,6 +143,7 @@ export default {
   computed: {},
   created() {
     this.handleGetWallet()
+    this.handleGetProjectEnterSearch()
   },
   beforeDestroy() {
     clearInterval(this.timer);
