@@ -31,12 +31,12 @@ export default {
                     text: '在线用户'
                 },
                 {
-                    id: 'purchase',
-                    path: '/purchase/order',
+                    id: 'registerCount',
+                    path: '/system/source',
                     icon: 'svg-shopping',
                     color: cssVar.primary,
                     value: 0,
-                    text: '今日采购额'
+                    text: '今日转化率'
                 },
                 {
                     id: 'sell',
@@ -44,14 +44,15 @@ export default {
                     icon: 'svg-sell',
                     color: cssVar.warning,
                     value: 0,
-                    text: '今日销售额'
+                    text: '今日售卡'
                 },
                 {
-                    id: 'profit',
+                    id: 'sourceCount',
+                    path: '/system/user',
                     icon: 'svg-money',
                     color: cssVar.success,
                     value: 0,
-                    text: '今日毛利润'
+                    text: '今日注册'
                 },
             ]
         }
