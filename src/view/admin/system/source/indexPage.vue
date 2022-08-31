@@ -17,6 +17,7 @@
             <el-table-column align="center" label="source" prop="source" show-overflow-tooltip/>
             <el-table-column align="center" label="ip" prop="ip" show-overflow-tooltip/>
             <el-table-column align="center" label="content" prop="content" show-overflow-tooltip/>
+            <el-table-column align="center" label="createTime" prop="createTime" show-overflow-tooltip/>
         </template>
 
     </list-page>
