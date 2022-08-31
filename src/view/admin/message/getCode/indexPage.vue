@@ -23,14 +23,15 @@
 <!--              </el-select>-->
 
           <el-select
+              style="width: 70%"
               ref="projectNameSelect"
               @change="projectNameChange"
               v-model="getPhoneForm.projectName"
               filterable
               remote
               reserve-keyword
-              placeholder="输入按enter搜索"
-              @keydown.enter.native="handleProjectSearch"
+              placeholder="输入关键字搜索"
+              :remote-method="getProjectRemoteData"
               :loading="projectInputLoading">
             <el-option
                 v-for="item in projectSearchOptions"
@@ -39,6 +40,7 @@
                 :value="item.value">
             </el-option>
           </el-select>
+          <el-button :loading="projectSearchLoading" type="primary" @click="handleGetProjectEnterSearch">搜索</el-button>
         </el-form-item>
         <el-form-item label="运营商：">
           <el-select v-model="getPhoneForm.operator" placeholder="请选择运营商">
@@ -115,6 +117,7 @@ export default {
   components: {RechargeDialog},
   data() {
     return {
+      projectSearchLoading: false,
       projectInputLoading: false,
       getPhoneForm: {
         projectName: '',
@@ -133,7 +136,8 @@ export default {
       wallet: "0.00",
       timer: null,
       count: 0,
-      editDialog: false
+      editDialog: false,
+      remoteSearchQuery: ''
     }
   },
   computed: {},
@@ -143,18 +147,15 @@ export default {
   beforeDestroy() {
     clearInterval(this.timer);
   },
-  watch: {},
   methods: {
-    projectNameChange() {
-      this.$refs.projectNameSelect.query = ""
-    },
-    handleProjectSearch(query) {
+    handleGetProjectEnterSearch() {
       this.projectInputLoading = true
       this.getPhoneForm.projectName = ""
       this.projectSearchOptions = []
+      this.projectSearchLoading = true
       let _this = this
       search
-          .request({"keyword": query})
+          .request({"keyword": this.remoteSearchQuery})
           .then(resp => {
             resp.data.list.map(function (p) {
               _this.projectSearchOptions.push({
@@ -162,8 +163,15 @@ export default {
                 label: p.projectName,
               })
             })
+            _this.getPhoneForm.projectName = _this.projectSearchOptions[0].value
           })
-          .finally(() => this.projectInputLoading = false)
+          .finally(() => this.projectInputLoading = false, this.projectSearchLoading = false)
+    },
+    projectNameChange() {
+      this.$refs.projectNameSelect.query = ""
+    },
+    getProjectRemoteData(query) {
+      this.remoteSearchQuery = query
     },
     stopGetCode() {
       clearInterval(this.timer)
@@ -270,7 +278,8 @@ export default {
     handleSupplier() {
       this.editDialog = true
     }
-  }
+  },
+  watch: {}
 }
 </script>
 
