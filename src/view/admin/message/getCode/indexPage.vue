@@ -5,10 +5,11 @@
         当前用户金币：{{ this.wallet }} <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>
         <br>
         使用说明：<br>
-        <span style='color: red;'>1. 每次扣除2金币，成功接收验证码则算一次</span>
+        <span style='color: red;'>1. 具体短信价格需要搜索出项目后显示</span>
         <br>
-        2. 在关键字输入短信关键字，比如短信括号里面的内容，程序会自动给筛选符合关键字条件的内容，举例：【一时平台】您的验证码为123456。<br>
-        3. 点击获取号码，复制下方的手机号码在你的项目中填入然后发送验证码。<br>
+        2. 先在关键字输入短信关键字，比如短信括号里面的内容，程序会自动给筛选符合关键字条件的内容<br>
+          举例短信是：【一时平台】您的验证码为123456。请输入"一时平台"<br>
+        3. 然后点击获取手机号，复制下方的手机号码在你的项目中填入然后发送验证码。<br>
         4. 点击获取验证码，平台这边会不间断的获取验证码，之后会自动将验证码反馈给您。<br>
       </p>
     </div>
@@ -95,6 +96,21 @@
 
 
 
+    <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible">
+      <el-table :data="projectListData">
+        <el-table-column property="projectName" label="项目" width="150"></el-table-column>
+        <el-table-column property="userMoney" label="价格" width="200"></el-table-column>
+        <el-table-column property="canUseMum" label="可用数"></el-table-column>
+        <el-table-column
+            fixed="right"
+            label="操作"
+            width="100">
+          <template slot-scope="scope">
+            <el-button @click="handleProjectSelect(scope.row)" type="text" size="small">选择</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
 
     <recharge-dialog v-model="editDialog" type="recharge" @success="success"/>
   </div>
@@ -137,13 +153,17 @@ export default {
       timer: null,
       count: 0,
       editDialog: false,
-      remoteSearchQuery: ''
+      remoteSearchQuery: '',
+
+      dialogTableVisible:false,
+      projectListData:[],
+
     }
   },
   computed: {},
   created() {
     this.handleGetWallet()
-    this.handleGetProjectEnterSearch()
+    // this.handleGetProjectEnterSearch()
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -158,6 +178,7 @@ export default {
       search
           .request({"keyword": this.remoteSearchQuery})
           .then(resp => {
+            this.projectListData = resp.data.list
             resp.data.list.map(function (p) {
               _this.projectSearchOptions.push({
                 value: p.projectName,
@@ -167,6 +188,7 @@ export default {
             _this.getPhoneForm.projectName = _this.projectSearchOptions[0].value
           })
           .finally(() => this.projectInputLoading = false, this.projectSearchLoading = false)
+      this.dialogTableVisible=true
     },
     projectNameChange() {
       this.$refs.projectNameSelect.query = ""
@@ -278,6 +300,10 @@ export default {
     },
     handleSupplier() {
       this.editDialog = true
+    },
+    handleProjectSelect(row){
+      this.dialogTableVisible=false
+      this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.canUseMum + "）"
     }
   },
   watch: {}
