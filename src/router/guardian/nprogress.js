@@ -6,7 +6,7 @@ NProgress.configure({showSpinner: false})
 const beforeEach = (to, from, next) => {
     //使用redirect进行跳转时不显示进度条
     !to.path.startsWith(Const.redirectPath) && NProgress.start()
-    document.title = "亿码"
+    document.title = "亿码接码平台｜虚拟手机号验证码"
     next()
 }
 
