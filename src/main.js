@@ -10,6 +10,8 @@ import router from './router'
 import filters from './filter'
 import globalMethod from './globalMethod'
 import VueClipboard from 'vue-clipboard2'
+import vueMeta from 'vue-meta'
+Vue.use(vueMeta)
 
 VueClipboard.config.autoSetContainer = true // add this line
 Vue.config.productionTip = false

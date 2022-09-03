@@ -4,7 +4,7 @@
             <span class="svg-container">
                 <v-icon icon="svg-user"/>
             </span>
-      <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入您的邮箱" @blur="sendEmail"/>
+      <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入您的邮箱"/>
     </el-form-item>
 
 <!--    <el-form-item prop="nick">-->
@@ -22,7 +22,7 @@
       </el-tooltip>
       <el-input v-model="form.pwd" placeholder="请输入密码" type="password" :maxlength="20"/>
     </el-form-item>
-
+    <div style="color: red; margin-top: -10px">注意：密码不要和其他接码平台一样，已有人遭受过损失</div>
     <el-form-item prop="repwd">
             <span class="svg-container">
                 <v-icon icon="svg-password"/>
@@ -86,7 +86,7 @@ export default {
       },
       rules: {
         username: [
-          {required: true, message: '请输入您的邮箱', trigger: 'change'},
+          {required: true, message: '请输入您的账号', trigger: 'change'},
           {validator: validateLoginName, trigger: 'change'}
         ],
         pwd: [
@@ -104,16 +104,6 @@ export default {
   },
 
   methods: {
-    sendEmail: function () {
-      var regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-      if (this.form.username != '' && !regEmail.test(this.form.username)) {
-        this.$message({
-          message: '邮箱格式不正确',
-          type: 'error'
-        })
-        this.form.username = ''
-      }
-    },
     register() {
       if (this.loading) return
       this.$refs.form.validate(valid => {

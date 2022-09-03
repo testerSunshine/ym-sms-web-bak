@@ -73,7 +73,11 @@ module.exports = defineConfig({
   chainWebpack(config) {
     config.plugins.delete('preload')
     config.plugins.delete('prefetch')
-
+    config.plugin("html").tap(args => {
+      const date = new Date()
+      args[0].createDate = date
+      return args
+    })
     // set svg-sprite-loader
     config
       .module
