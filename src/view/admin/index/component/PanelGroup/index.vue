@@ -1,7 +1,7 @@
 <template>
     <el-row :gutter="40" class="panel-group">
         <el-col v-for="i in list" :key="i.id" :xs="12" :sm="12" :lg="6">
-            <panel-group-item v-bind="i" @click.native="jump(i)"/>
+          <div>{{ i.text }}: {{ i.value }}</div>
         </el-col>
     </el-row>
 </template>
@@ -31,7 +31,7 @@ export default {
                     text: '在线用户'
                 },
                 {
-                    id: 'registerCount',
+                    id: 'sourceCount',
                     path: '/system/source',
                     icon: 'svg-shopping',
                     color: cssVar.primary,
@@ -47,7 +47,7 @@ export default {
                     text: '今日售卡'
                 },
                 {
-                    id: 'sourceCount',
+                    id: 'registerCount',
                     path: '/system/user',
                     icon: 'svg-money',
                     color: cssVar.success,
