@@ -8,7 +8,7 @@ module.exports = {
     title: '亿码',
 
     //logo地址
-    logo: `${contextPath}static/img/logo.svg`,
+    // logo: `${contextPath}static/img/logo.svg`,
 
     //全局axios的baseUrl、devServer的路由前缀
     apiPrefix: '/api',

@@ -47,6 +47,11 @@
 
           <el-button :loading="projectSearchLoading" type="primary" @click="handleGetProjectEnterSearch">搜索</el-button>
         </el-form-item>
+
+        <el-form-item label="当前渠道：">
+          <el-input v-model="getPhoneForm.projectName" placeholder="点击搜索选择渠道" :disabled="true"></el-input>
+        </el-form-item>
+
         <el-form-item label="运营商：">
           <el-select v-model="getPhoneForm.operator" placeholder="请选择运营商">
             <!--            <el-option label="不限" value="0"></el-option>-->
@@ -182,7 +187,6 @@ export default {
   methods: {
     handleGetProjectEnterSearch() {
       this.projectInputLoading = true
-      // this.getPhoneForm.projectName = ""
       // this.projectSearchOptions = []
       this.projectSearchLoading = true
       let _this = this
@@ -321,7 +325,7 @@ export default {
     },
     handleProjectSelect(row){
       this.dialogTableVisible=false
-      this.keyWord = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）"
+      this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）"
       this.getPhoneForm.code = row.code
 
       const loading = this.$loading({
