@@ -23,24 +23,28 @@
 <!--                           :value="item.value"></el-option>-->
 <!--              </el-select>-->
 
-          <el-select
-              style="width: 70%"
-              ref="projectNameSelect"
-              @change="projectNameChange"
-              v-model="getPhoneForm.projectName"
-              filterable
-              remote
-              reserve-keyword
-              placeholder="输入关键字搜索"
-              :remote-method="getProjectRemoteData"
-              :loading="projectInputLoading">
-            <el-option
-                v-for="item in projectSearchOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-            </el-option>
-          </el-select>
+<!--          <el-select-->
+<!--              style="width: 70%"-->
+<!--              ref="projectNameSelect"-->
+<!--              @change="projectNameChange"-->
+<!--              v-model="getPhoneForm.projectName"-->
+<!--              filterable-->
+<!--              remote-->
+<!--              reserve-keyword-->
+<!--              placeholder="输入关键字搜索"-->
+<!--              :remote-method="getProjectRemoteData"-->
+<!--              :loading="projectInputLoading">-->
+<!--            <el-option-->
+<!--                v-for="item in projectSearchOptions"-->
+<!--                :key="item.value"-->
+<!--                :label="item.label"-->
+<!--                :value="item.value">-->
+<!--            </el-option>-->
+          <el-input v-model="keyWord"
+                    style="width: 70%"
+                    placeholder="输入关键字搜索"
+          ></el-input>
+
           <el-button :loading="projectSearchLoading" type="primary" @click="handleGetProjectEnterSearch">搜索</el-button>
         </el-form-item>
         <el-form-item label="运营商：">
@@ -97,14 +101,14 @@
 
 
     <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible">
-      <el-table v-loading="loading" :data="projectListData">
-        <el-table-column property="projectName" label="项目" width="150"></el-table-column>
-        <el-table-column property="userMoney" label="价格" width="200"></el-table-column>
-        <el-table-column property="canUseMum" label="可用数"></el-table-column>
+      <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
+        <el-table-column property="projectName" label="项目" width="100"></el-table-column>
+        <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
+        <el-table-column property="canUseMum" label="可用数" width="50"></el-table-column>
         <el-table-column
             fixed="right"
             label="操作"
-            width="100">
+            >
           <template slot-scope="scope">
             <el-button @click="handleProjectSelect(scope.row)" type="text" size="small">选择</el-button>
           </template>
@@ -133,6 +137,7 @@ export default {
   components: {RechargeDialog},
   data() {
     return {
+      keyWord:"",
       projectSearchLoading: false,
       projectInputLoading: false,
       getPhoneForm: {
@@ -174,22 +179,22 @@ export default {
   methods: {
     handleGetProjectEnterSearch() {
       this.projectInputLoading = true
-      this.getPhoneForm.projectName = ""
-      this.projectSearchOptions = []
+      // this.getPhoneForm.projectName = ""
+      // this.projectSearchOptions = []
       this.projectSearchLoading = true
       let _this = this
       search
-          .request({"keyword": this.remoteSearchQuery})
+          .request({"keyword": this.keyWord})
           .then(resp => {
             this.loading=false
             this.projectListData = resp.data.list
-            resp.data.list.map(function (p) {
-              _this.projectSearchOptions.push({
-                value: p.projectName,
-                label: p.projectName,
-              })
-            })
-            _this.getPhoneForm.projectName = _this.projectSearchOptions[0].value
+            // resp.data.list.map(function (p) {
+            //   _this.projectSearchOptions.push({
+            //     value: p.projectName,
+            //     label: p.projectName,
+            //   })
+            // })
+            // _this.getPhoneForm.projectName = _this.projectSearchOptions[0].value
           })
           .finally(() => this.projectInputLoading = false,
               this.projectSearchLoading = false,
@@ -312,7 +317,7 @@ export default {
     },
     handleProjectSelect(row){
       this.dialogTableVisible=false
-      this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.canUseMum + "）"
+      this.keyWord = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.canUseMum + "）"
       this.getPhoneForm.code = row.code
 
       const loading = this.$loading({
