@@ -4,7 +4,7 @@
             <span class="svg-container">
                 <v-icon icon="svg-user"/>
             </span>
-      <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入您的邮箱"/>
+      <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入您的账号"/>
     </el-form-item>
 
 <!--    <el-form-item prop="nick">-->
