@@ -65,6 +65,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>
+          <span style='color: red;'>获取成功后，请到对应app去输入手机号并点击获取验证码</span>
         </el-form-item>
       </el-form>
     </el-card>
@@ -100,11 +101,12 @@
 
 
 
-    <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible">
+    <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible" width="40%" center>
       <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
         <el-table-column property="projectName" label="项目" width="100"></el-table-column>
         <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
-        <el-table-column property="canUseMum" label="可用数" width="50"></el-table-column>
+<!--        <el-table-column property="canUseMum" label="可用" width="50"></el-table-column>-->
+        <el-table-column property="content" label="详情" width="100"></el-table-column>
         <el-table-column
             fixed="right"
             label="操作"
@@ -198,6 +200,7 @@ export default {
           })
           .finally(() => this.projectInputLoading = false,
               this.projectSearchLoading = false,
+              this.loading=true
           )
       this.dialogTableVisible=true
     },
