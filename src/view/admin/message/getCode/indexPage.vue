@@ -324,7 +324,6 @@ export default {
       this.editDialog = true
     },
     handleProjectSelect(row){
-      this.dialogTableVisible=false
       this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）"
       this.getPhoneForm.code = row.code
 
@@ -342,6 +341,7 @@ export default {
           return
         }
         this.getPhoneForm.projectId = resp.data.id
+        this.dialogTableVisible=false
 
       })
 
