@@ -320,7 +320,7 @@ export default {
     },
     handleProjectSelect(row){
       this.dialogTableVisible=false
-      this.keyWord = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.canUseMum + "）"
+      this.keyWord = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）"
       this.getPhoneForm.code = row.code
 
       const loading = this.$loading({
