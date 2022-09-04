@@ -65,6 +65,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>
+          <br>
           <span style='color: red;'>获取成功后，请到对应app去输入手机号并点击获取验证码</span>
         </el-form-item>
       </el-form>
