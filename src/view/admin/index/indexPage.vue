@@ -6,21 +6,18 @@ import TotalProfitGoods from "./component/TotalProfitGoods"
 
 export default {
     name: 'index',
+// <el-card>
+//   <DailyProfitStat/>
+// </el-card>
+// <TotalProfitGoods/>
+// <el-card style="margin: 32px 0">
+//   <DailyFinishOrderStat/>
+// </el-card>
 
     render() {
         return (
             <div>
                 <PanelGroup/>
-
-                <el-card>
-                    <DailyProfitStat/>
-                </el-card>
-
-                <el-card style="margin: 32px 0">
-                    <DailyFinishOrderStat/>
-                </el-card>
-
-                <TotalProfitGoods/>
             </div>
         )
     }

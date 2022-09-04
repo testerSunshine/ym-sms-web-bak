@@ -60,7 +60,7 @@
           <el-input v-model="getPhoneForm.scope_black" placeholder="排除号段最长支持4位且可以支持多个,最多支持20个号段。用逗号分隔 比如184,1841"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取号码</el-button>
+          <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -97,7 +97,7 @@
 
 
     <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible">
-      <el-table :data="projectListData">
+      <el-table v-loading="loading" :data="projectListData">
         <el-table-column property="projectName" label="项目" width="150"></el-table-column>
         <el-table-column property="userMoney" label="价格" width="200"></el-table-column>
         <el-table-column property="canUseMum" label="可用数"></el-table-column>
@@ -141,6 +141,8 @@ export default {
         phone_num: '',
         scope: '',
         scope_black: '',
+        code: '',
+        projectId: 0,
       },
       getCodeForm: {
         phone: '',
@@ -157,6 +159,7 @@ export default {
 
       dialogTableVisible:false,
       projectListData:[],
+      loading:true
 
     }
   },
@@ -178,6 +181,7 @@ export default {
       search
           .request({"keyword": this.remoteSearchQuery})
           .then(resp => {
+            this.loading=false
             this.projectListData = resp.data.list
             resp.data.list.map(function (p) {
               _this.projectSearchOptions.push({
@@ -187,7 +191,9 @@ export default {
             })
             _this.getPhoneForm.projectName = _this.projectSearchOptions[0].value
           })
-          .finally(() => this.projectInputLoading = false, this.projectSearchLoading = false)
+          .finally(() => this.projectInputLoading = false,
+              this.projectSearchLoading = false,
+          )
       this.dialogTableVisible=true
     },
     projectNameChange() {
@@ -274,7 +280,10 @@ export default {
         clearInterval(this.timer)
       }
       console.log("get code num: " + this.count)
-      getCode.request({projectName: this.getPhoneForm.projectName, phoneNum: this.getCodeForm.phone}).then(resp => {
+      getCode.request({
+        projectId: this.getPhoneForm.projectId,
+        phoneNum: this.getCodeForm.phone,
+      }).then(resp => {
         if (resp.data.message === "ok") {
           this.getCodeForm.code = resp.data.code
           this.getCodeForm.codeContent = resp.data.modle
@@ -304,6 +313,25 @@ export default {
     handleProjectSelect(row){
       this.dialogTableVisible=false
       this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.canUseMum + "）"
+      this.getPhoneForm.code = row.code
+
+      const loading = this.$loading({
+        lock: true,
+        text: '渠道切换中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+
+      add.request(row).then(resp => {
+        loading.close()
+        if (resp.data.desc !== "添加成功") {
+          elError("该渠道无法使用，请换一个渠道试试")
+          return
+        }
+        this.getPhoneForm.projectId = resp.data.id
+
+      })
+
     }
   },
   watch: {}
