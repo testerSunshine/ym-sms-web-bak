@@ -253,7 +253,7 @@ export default {
           return
         }
         this.getCodeForm.phone = resp.data.mobile
-        this.getCodeForm.lastMsgTime = ""
+        this.getCodeForm.lastMsgTime = resp.data.lastMsgTime
         clearInterval(this.timer)
         elSuccess("获取手机号成功，点击获取验证码即可获取验证码")
       })
