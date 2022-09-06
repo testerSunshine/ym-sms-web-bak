@@ -36,7 +36,7 @@ export default {
                     icon: 'svg-shopping',
                     color: cssVar.primary,
                     value: 0,
-                    text: '今日转化率'
+                    text: '今日外链点击量'
                 },
                 {
                     id: 'sell',
