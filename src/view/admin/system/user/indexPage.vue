@@ -16,6 +16,13 @@
                     <el-option :value="false" label="禁用"/>
                 </el-select>
             </el-form-item>
+          <el-form-item label="在线状态">
+            <el-select v-model="searchForm.onlineStatus" clearable @clear="searchForm.onlineStatus = null">
+              <el-option :value="false" label="离线"/>
+              <el-option :value="true" label="在线"/>
+              <el-option :value="all" label="全部"/>
+            </el-select>
+          </el-form-item>
             <el-form-item label="创建时间">
                 <el-date-picker
                     v-model="temp.ctime"
@@ -91,7 +98,8 @@ export default {
                 loginName: '',
                 nickName: '',
                 role: null,
-                enable: null
+                enable: null,
+                onlineStatus: null,
             },
             temp: {ctime: []},
             editDialog: false

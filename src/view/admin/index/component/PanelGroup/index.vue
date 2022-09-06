@@ -54,6 +54,14 @@ export default {
                     value: 0,
                     text: '今日注册'
                 },
+                {
+                    id: 'miyunMoney',
+                    path: '/system/user',
+                    icon: 'svg-money',
+                    color: cssVar.success,
+                    value: 0,
+                    text: '米云余额'
+                },
             ]
         }
     },
