@@ -71,7 +71,7 @@
         <el-form-item>
           <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>
           <br>
-          <span style='color: red;'>获取成功后，请到对应app去输入手机号并点击获取验证码</span>
+          <span style='color: red;'>获取成功后，请到对应app去输入手机号并点击获取验证码，验证码获取可能会延时1-2分钟，请耐心等待</span>
         </el-form-item>
       </el-form>
     </el-card>
@@ -228,7 +228,7 @@ export default {
       this.getCodeForm.code = ""
       this.getCodeForm.codeContent = ""
       this.getCodeForm.lastMsgTime = ""
-      this.timer = setInterval(this.handleGetCode, 5000);
+      this.timer = setInterval(this.handleGetCode, 2000);
 
     },
     copy() {
