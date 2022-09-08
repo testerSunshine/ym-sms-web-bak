@@ -1,6 +1,6 @@
 <template functional>
     <div class="copyright">
-        Copyright © 2020 - <a href="https://github.com/toesbieya" target="_blank">toesbieya</a>
+        Copyright © - <a href="https://www.yima123.xyz/" target="_blank">亿码</a>
     </div>
 </template>
 
