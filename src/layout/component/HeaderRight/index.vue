@@ -1,5 +1,6 @@
 <script>
 import NotifyBell from '../NotifyBell'
+import QuestionReport from "../QuestionReport";
 
 export default {
     name: "HeaderRight",
@@ -10,6 +11,7 @@ export default {
 
     render(h, context) {
         const custom = [
+            <QuestionReport class="header-item"></QuestionReport>,
             <NotifyBell class="header-item"/>,
             <div
                 class="setting-btn header-item"

@@ -28,6 +28,7 @@ export default {
                 top={cssVar.dialogTop}
                 width={width}
                 on-close={onClose}
+                append-to-body
                 {...data}
             >
                 <div class="abstract-dialog-container">
