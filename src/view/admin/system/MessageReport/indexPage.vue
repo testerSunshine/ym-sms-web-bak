@@ -15,6 +15,7 @@
     <template v-slot:tableColumn>
       <el-table-column align="center" label="#" type="index" width="80"/>
       <el-table-column align="center" label="用戶id" prop="uid" show-overflow-tooltip/>
+      <el-table-column align="center" label="用户" prop="nickName" show-overflow-tooltip/>
       <el-table-column align="center" label="反馈内容" prop="message" show-overflow-tooltip/>
       <el-table-column align="center" label="时间" prop="updateTime" show-overflow-tooltip/>
     </template>
