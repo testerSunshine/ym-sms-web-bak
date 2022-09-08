@@ -293,6 +293,11 @@ export default {
         clearInterval(this.timer)
       }
       console.log("get code num: " + this.count)
+      if (this.getPhoneForm.projectId === 0) {
+        elError("请选择渠道再获取验证码")
+        clearInterval(this.timer)
+        return
+      }
       getCode.request({
         projectId: this.getPhoneForm.projectId,
         phoneNum: this.getCodeForm.phone,
