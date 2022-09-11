@@ -49,7 +49,8 @@
         </el-form-item>
 
         <el-form-item label="当前渠道：">
-          <el-input v-model="getPhoneForm.projectName" placeholder="点击搜索选择渠道" :disabled="true"></el-input>
+          <el-tag type="success" >{{getPhoneForm.projectName}}</el-tag>
+<!--          <el-input v-model="getPhoneForm.projectName" placeholder="点击搜索选择渠道" :disabled="true"></el-input>-->
         </el-form-item>
 
         <el-form-item label="运营商：">
@@ -59,38 +60,62 @@
             <el-option label="非虚拟运营商" value="4"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="指定号码：">
-          <el-input v-model="getPhoneForm.phone_num" placeholder="填要取的手机号, 可以获得指定号码"></el-input>
-        </el-form-item>
-        <el-form-item label="指定号段：" >
-          <el-input v-model="getPhoneForm.scope" placeholder="指定号段查询 (譬如:137开头的号段或者1371开头的号段)"></el-input>
-        </el-form-item>
-        <el-form-item label="排除号段：" >
-          <el-input v-model="getPhoneForm.scope_black" placeholder="排除号段最长支持4位且可以支持多个,最多支持20个号段。用逗号分隔 比如184,1841"></el-input>
-        </el-form-item>
+
+        <el-collapse v-model="activeNames" @change="handleChange">
+          <el-collapse-item title="其他非必选项(可展开)" name="1">
+
+            <el-form-item label="指定号码：">
+              <el-input v-model="getPhoneForm.phone_num" placeholder="填要取的手机号, 可以获得指定号码"></el-input>
+            </el-form-item>
+
+            <el-form-item label="指定号段：" >
+              <el-input v-model="getPhoneForm.scope" placeholder="指定号段查询 (譬如:137开头的号段或者1371开头的号段)"></el-input>
+            </el-form-item>
+
+            <el-form-item label="排除号段：" >
+              <el-input v-model="getPhoneForm.scope_black" placeholder="排除号段最长支持4位且可以支持多个,最多支持20个号段。用逗号分隔 比如184,1841"></el-input>
+            </el-form-item>
+
+          </el-collapse-item>
+        </el-collapse>
+        <br>
+
         <el-form-item>
           <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>
           <br>
-          <span style='color: red;'>获取成功后，请到对应app去输入手机号并点击获取验证码，验证码获取可能会延时1-2分钟，请耐心等待</span>
+<!--          <span style='color: red;'>获取成功后，请到对应app去输入手机号并点击获取验证码，验证码获取可能会延时1-2分钟，请耐心等待</span>-->
         </el-form-item>
       </el-form>
     </el-card>
     <el-card class="get-code-page" style="margin-top: 20px" shadow="never">
       <el-form ref="getCodeForm" :model="getCodeForm" label-width="120px" size="mini">
         <el-form-item label="手机号：">
-          <el-input v-model="getCodeForm.phone" style="width: 90%" :disabled="true"></el-input>
-          <el-button style="margin-left: 5px"
+          <el-tag type="danger" >{{getCodeForm.phone}}</el-tag>
+<!--          <el-input v-model="getCodeForm.phone" style="width: 90%" :disabled="true"></el-input>-->
+          <el-button style="margin-left: 5px ; margin-right: 5px"
                      v-clipboard:copy="getCodeForm.phone"
                      v-clipboard:success="copy">复制</el-button>
+          <el-tag type="danger">请务必先在选择的项目app里点击发送验证码后再点击下面获取验证码</el-tag>
         </el-form-item>
+
+        <br>
+        <el-form-item>
+          <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
+          <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
+        </el-form-item>
+
         <el-form-item label="最近来码时间：">
           <el-input v-model="getCodeForm.lastMsgTime" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="获取次数：">
-          <el-input v-model="count" :disabled="true"></el-input>
+        <el-form-item label="获取倒计时:">
+          <el-tag type="primary">{{getCodeStatus}}  {{count}}s</el-tag>
+
+          <!--          <el-input v-model="count" :disabled="true"></el-input>-->
+          <span></span>
         </el-form-item>
         <el-form-item label="验证码：">
-          <el-input v-model="getCodeForm.code" style="width: 90%"></el-input>
+<!--          <el-input v-model="getCodeForm.code" style="width: 90%"></el-input>-->
+          <el-tag type="success" >{{getCodeForm.code}}</el-tag>
           <el-button style="margin-left: 5px"
                      v-clipboard:copy="getCodeForm.code"
                      v-clipboard:success="copy">复制</el-button>
@@ -98,10 +123,7 @@
         <el-form-item label="短信内容：">
           <el-input type="textarea" :rows="1" v-model="getCodeForm.codeContent"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
-          <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
-        </el-form-item>
+
         <br>
         <span style='color: red;'>未获取到验证码？</span>
         <br>
@@ -159,8 +181,9 @@ export default {
       keyWord:"",
       projectSearchLoading: false,
       projectInputLoading: false,
+      activeNames : [],
       getPhoneForm: {
-        projectName: '',
+        projectName: '暂未选择渠道，请搜索关键字获取渠道',
         operator: '5',
         phone_num: '',
         scope: '',
@@ -169,15 +192,16 @@ export default {
         projectId: 0,
       },
       getCodeForm: {
-        phone: '',
+        phone: '等待获取',
         lastMsgTime: '',
-        code: '',
+        code: '等待获取',
         codeContent: '',
       },
       projectSearchOptions: [],
       wallet: "0.00",
       timer: null,
-      count: 0,
+      count: 300,
+      getCodeStatus:"",
       editDialog: false,
       remoteSearchQuery: '',
 
@@ -229,11 +253,14 @@ export default {
     stopGetCode() {
       clearInterval(this.timer)
       this.timer = null
+      this.count = 300
+      this.getCodeStatus = "已停止获取验证码"
       elSuccess("已停止获取验证码")
     },
     startGetCode() {
       clearInterval(this.timer)
-      this.count = 0
+      this.count = 300
+      this.getCodeStatus = "获取验证码中..."
       // 定时获取验证码
       elSuccess("开始获取验证码")
       this.getCodeForm.code = ""
@@ -300,12 +327,14 @@ export default {
     // },
 
     handleGetCode() {
-      if (this.count > 100) {
+      if (this.count < 1) {
         clearInterval(this.timer)
+        this.getCodeStatus = "验证码获取超时，请更改手机号或者渠道再重试"
       }
-      console.log("get code num: " + this.count)
+      console.log("timeout: " + this.count)
       if (this.getPhoneForm.projectId === 0) {
         elError("请选择渠道再获取验证码")
+        this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
         clearInterval(this.timer)
         return
       }
@@ -320,10 +349,14 @@ export default {
           clearInterval(this.timer)
           // 获取短信成功就更新用户余额
           elSuccess("获取验证码成功")
+          this.getCodeStatus = "验证码获取成功！！！"
           this.handleGetWallet()
         }
       })
-      this.count++
+      this.count--
+    },
+    handleChange(val) {
+      console.log(val);
     },
 
     handleGetWallet() {
