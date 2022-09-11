@@ -263,7 +263,7 @@ export default {
       this.getCodeStatus = "获取验证码中..."
       // 定时获取验证码
       elSuccess("开始获取验证码")
-      this.getCodeForm.code = ""
+      this.getCodeForm.code = "等待获取"
       this.getCodeForm.codeContent = ""
       this.getCodeForm.lastMsgTime = ""
       this.timer = setInterval(this.handleGetCode, 2000);
