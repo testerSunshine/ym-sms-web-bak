@@ -102,6 +102,17 @@
           <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
           <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
         </el-form-item>
+        <br>
+        <span style='color: red;'>未获取到验证码？</span>
+        <br>
+        <span style='color: red;'>1.确认已经在对应项目的app/web点击了发送验证码</span>
+        <br>
+        <span style='color: red;'>2.手机号被项目风控了，请切换手机号或者切换渠道再试</span>
+        <br>
+        <span style='color: red;'>3.点击获取后请不要刷新页面，如果刷新，请去记录里查看验证码</span>
+        <br>
+        <span style='color: red;'>说明：各个渠道的卡质量不一，与平台无关，收不到短信不扣费！！！</span>
+        <br>
       </el-form>
     </el-card>
 

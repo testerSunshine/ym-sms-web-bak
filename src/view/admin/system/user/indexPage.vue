@@ -99,7 +99,7 @@ export default {
                 nickName: '',
                 role: null,
                 enable: null,
-                onlineStatus: null,
+                onlineStatus: true, //默认查看在线用户
             },
             temp: {ctime: []},
             editDialog: false
