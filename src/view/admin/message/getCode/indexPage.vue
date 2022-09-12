@@ -1,18 +1,59 @@
 <template>
   <div>
-    <div class="user-info-tip">
-      <p>
-        当前用户金币：{{ this.wallet }} <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>
-        <br>
-        使用说明：<br>
-        <span style='color: red;'>1. 具体短信价格需要搜索出项目后显示</span>
-        <br>
-        2. 先在关键字输入短信关键字，比如短信括号里面的内容，程序会自动给筛选符合关键字条件的内容<br>
-          举例短信是：【一时平台】您的验证码为123456。请输入"一时平台"<br>
-        3. 然后点击获取手机号，复制下方的手机号码在你的项目中填入然后发送验证码。<br>
-        4. 点击获取验证码，平台这边会不间断的获取验证码，之后会自动将验证码反馈给您。<br>
-      </p>
-    </div>
+<!--    <div class="user-info-tip">-->
+<!--      <p>-->
+<!--        当前用户金币：{{ this.wallet }} <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>-->
+<!--        <br>-->
+<!--        使用说明：<br>-->
+<!--        <span style='color: red;'>1. 具体短信价格需要搜索出项目后显示</span>-->
+<!--        <br>-->
+<!--        2. 先在关键字输入短信关键字，比如短信括号里面的内容，程序会自动给筛选符合关键字条件的内容<br>-->
+<!--          举例短信是：【一时平台】您的验证码为123456。请输入"一时平台"<br>-->
+<!--        3. 然后点击获取手机号，复制下方的手机号码在你的项目中填入然后发送验证码。<br>-->
+<!--        4. 点击获取验证码，平台这边会不间断的获取验证码，之后会自动将验证码反馈给您。<br>-->
+<!--      </p>-->
+<!--    </div>-->
+
+    <el-row :gutter="20">
+      <el-col :span="16" :xs="24">
+        <div class="grid-content bg-purple">
+          <div class="user-info-tip">
+            <p>
+<!--              当前用户金币：{{ this.wallet }} <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>-->
+<!--              <br>-->
+              <span style='color: red;'>价格说明：单价需要搜索出项目后显示</span>
+              <br>
+              操作说明：<br>
+              1. 搜索短信内容关键字<br>
+              2. 选择渠道，点击获取手机号<br>
+              3. 去项目app/web等端填入获取的手机号，点击发送验证码<br>
+              4. 回到平台点击获取验证码<br>
+            </p>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="8" :xs="24">
+          <div class="grid-content bg-purple-light" style="margin-bottom: 20px">
+            <el-card class="box-card" style="background-color: #FAECD8">
+            <div slot="header" class="clearfix">
+               <el-col :span="16">
+                  <p style="font-style: italic; font-weight: bold; color: #88949d">金币余额</p>
+              </el-col>
+              <el-col :span="8">
+                  <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>
+              </el-col>
+              <!--        <el-button style="float: right; padding: 3px 0" type="text">充值</el-button>-->
+            </div>
+            <div style="height: 50px">
+              <p style="font-style: italic; font-size: 3em; margin: 0px; color: darkslategray">${{ this.wallet }}</p>
+            </div>
+          </el-card>
+          </div>
+      </el-col>
+    </el-row>
+
+
+
     <el-card class="get-phone-page" shadow="never">
       <el-form ref="getPhoneForm" :model="getPhoneForm" label-width="120px" size="mini">
         <el-form-item label="关键字：">
@@ -406,7 +447,7 @@ export default {
   background-color: #ecf8ff;
   border-radius: 4px;
   border-left: 5px solid #50bfff;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 a {

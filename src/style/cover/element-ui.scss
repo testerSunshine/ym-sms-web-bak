@@ -53,6 +53,11 @@
 .el-date-editor--daterange {
     width: 100% !important;
 }
+.el-tag{
+    white-space: normal;
+    height: auto;
+    margin: 5px;
+}
 
 .el-dialog {
     @include deep-shadow;
