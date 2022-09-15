@@ -11,7 +11,7 @@ export default {
 
     render(h, context) {
         const custom = [
-            <el-link class="header-item" type="warning" href="https://www.youtube.com/watch?v=KfzxAdG0EqQ" target="_blank">使用说明（翻墙）</el-link>,
+            <el-link class="header-item" type="warning" href="https://www.youtube.com/watch?v=KfzxAdG0EqQ" target="_blank">使用说明（需翻墙）</el-link>,
             <QuestionReport class="header-item"></QuestionReport>,
             <NotifyBell class="header-item"/>,
             <div

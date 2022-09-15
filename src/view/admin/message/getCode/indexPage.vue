@@ -83,7 +83,7 @@
 <!--            </el-option>-->
           <el-input v-model="keyWord"
                     style="width: 70%"
-                    placeholder="输入关键字搜索"
+                    placeholder="输入短信关键字搜索，不知道啥关键字的，先用自己手机接一条看看，找不到渠道去问题反馈"
           ></el-input>
 
           <el-button :loading="projectSearchLoading" type="primary" @click="handleGetProjectEnterSearch">搜索</el-button>
@@ -136,11 +136,13 @@
           <el-button style="margin-left: 5px ; margin-right: 5px"
                      v-clipboard:copy="getCodeForm.phone"
                      v-clipboard:success="copy">复制</el-button>
-          <el-tag type="danger">请务必先在选择的项目app里点击发送验证码后再点击下面获取验证码</el-tag>
         </el-form-item>
 
-        <br>
         <el-form-item>
+          <el-tag type="danger">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！</el-tag>
+          <el-tag type="danger">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>
+          <el-tag type="danger">操作没问题还收不到码的，渠道的问题，我们只负责对接，感谢大家理解。</el-tag>
+          <br>
           <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
           <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
         </el-form-item>
