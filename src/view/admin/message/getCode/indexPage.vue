@@ -141,7 +141,7 @@
         <el-form-item>
           <el-tag type="danger">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！</el-tag>
           <el-tag type="danger">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>
-          <el-tag type="danger">操作没问题还收不到码的，渠道的问题，我们只负责对接，感谢大家理解。</el-tag>
+          <el-tag type="danger">操作没问题还收不到码的，见下面红字说明，我们只负责对接，感谢大家理解。</el-tag>
           <br>
           <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
           <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
