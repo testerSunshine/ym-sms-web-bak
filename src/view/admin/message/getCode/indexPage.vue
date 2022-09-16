@@ -265,7 +265,6 @@ export default {
   methods: {
     handleGetProjectEnterSearch() {
       this.projectInputLoading = true
-      // this.projectSearchOptions = []
       this.projectSearchLoading = true
       let _this = this
       search
@@ -273,6 +272,7 @@ export default {
           .then(resp => {
             this.loading=false
             this.projectListData = resp.data.list
+            this.dialogTableVisible=true
             // resp.data.list.map(function (p) {
             //   _this.projectSearchOptions.push({
             //     value: p.projectName,
@@ -285,7 +285,6 @@ export default {
               this.projectSearchLoading = false,
               this.loading=true
           )
-      this.dialogTableVisible=true
     },
     projectNameChange() {
       this.$refs.projectNameSelect.query = ""
