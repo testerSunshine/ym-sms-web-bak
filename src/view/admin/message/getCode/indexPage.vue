@@ -37,6 +37,7 @@
     </el-row>
 
 
+
     <el-card class="get-phone-page" shadow="never">
       <el-form ref="getPhoneForm" :model="getPhoneForm" label-width="120px" size="mini">
         <el-form-item label="关键字：">
@@ -45,12 +46,11 @@
                     placeholder="输入短信关键字搜索，不知道啥关键字的，先用自己手机接一条看看，找不到渠道去问题反馈"
           ></el-input>
 
-          <el-button :loading="projectSearchLoading" type="primary" @click="handleGetProjectEnterSearch">搜索</el-button>
+          <el-button :loading="projectSearchLoading" type="primary" @click="loadProjectList">搜索</el-button>
         </el-form-item>
 
         <el-form-item label="当前渠道：">
           <el-tag type="success" >{{getPhoneForm.projectName}}</el-tag>
-<!--          <el-input v-model="getPhoneForm.projectName" placeholder="点击搜索选择渠道" :disabled="true"></el-input>-->
         </el-form-item>
 
         <el-form-item label="运营商：">
@@ -83,7 +83,6 @@
         <el-form-item>
           <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>
           <br>
-<!--          <span style='color: red;'>获取成功后，请到对应app去输入手机号并点击获取验证码，验证码获取可能会延时1-2分钟，请耐心等待</span>-->
         </el-form-item>
       </el-form>
     </el-card>
@@ -140,50 +139,38 @@
       </el-form>
     </el-card>
 
+    <el-dialog title="项目列表" :visible.sync="dialogProjectVisible" width="40%" center>
+      <el-table v-loading="loading" :data="projectList" stripe style="width: 100%">
+        <el-table-column property="id" label="id" width="100"></el-table-column>
+        <el-table-column property="name" label="项目名称" width="250"></el-table-column>
+        <el-table-column
+            fixed="right"
+            label="操作"
+        >
+          <template slot-scope="scope">
+            <el-button @click="handleGetProjectEnterSearch(scope.row.id)" type="text" size="small">查看渠道</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
 
 
-    <el-dialog title="项目列表" :visible.sync="dialogTableVisible" width="40%" center>
-      <template slot-scope="scope">
-        <el-table v-loading="loading" :data="projectList" style="width: 100%">
 
-          <el-table-column label="请准确选择项目" width="500">
-            <template slot-scope="scope">
-              <div>
-                <span>项目ID:{{scope.row.id}}-</span>
-                <span>名称:{{scope.row.name}}</span>
-                <el-button @click="loadProjectList(scope.row.id)" type="text" size="small">展开</el-button>
-                <el-button @click="closeList(scope.row.id)" type="text" size="small">收起</el-button>
-              </div>
-              <div ref="{{scope.row.id}}">
-                <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
-                  <el-table-column property="projectName" label="项目" width="100"></el-table-column>
-                  <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
-                  <el-table-column property="content" label="详情" width="100"></el-table-column>
-                  <el-table-column fixed="right" label="操作">
-                    <template slot-scope="scope">
-                      <el-button @click="handleProjectSelect(scope.row)" type="text" size="small">选择</el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-            </template>
-
-          </el-table-column>
-
-        </el-table>
-      </template>
-
-
-<!--      <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">-->
-<!--        <el-table-column property="projectName" label="项目" width="100"></el-table-column>-->
-<!--        <el-table-column property="userMoney" label="价格" width="70"></el-table-column>-->
-<!--        <el-table-column property="content" label="详情" width="100"></el-table-column>-->
-<!--        <el-table-column fixed="right" label="操作">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-button @click="handleProjectSelect(scope.row)" type="text" size="small">选择</el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-<!--      </el-table>-->
+    <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible" width="40%" center>
+      <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
+        <el-table-column property="projectName" label="项目" width="100"></el-table-column>
+        <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
+<!--        <el-table-column property="canUseMum" label="可用" width="50"></el-table-column>-->
+        <el-table-column property="content" label="详情" width="100"></el-table-column>
+        <el-table-column
+            fixed="right"
+            label="操作"
+            >
+          <template slot-scope="scope">
+            <el-button @click="handleProjectSelect(scope.row)" type="text" size="small">选择</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-dialog>
 
     <recharge-dialog v-model="editDialog" type="recharge" @success="success"/>
@@ -209,7 +196,6 @@ export default {
   data() {
     return {
       keyWord:"",
-      projectList:[],
       projectSearchLoading: false,
       projectInputLoading: false,
       activeNames : [],
@@ -237,9 +223,10 @@ export default {
       remoteSearchQuery: '',
 
       dialogTableVisible:false,
+      dialogProjectVisible:false,
       projectListData:[],
-      loading:true,
-      update: true
+      projectList:[],
+      loading:true
 
     }
   },
@@ -252,28 +239,7 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
-    loadProjectList(id){
-      search
-          .request({"keyword": id})
-          .then(resp => {
-            this.loading=false
-            this.projectListData = resp.data.list
-            this.$refs.id.$el.setAttribute("v-show", "true")
-          })
-          .finally(
-              () =>
-                  this.projectInputLoading = false,
-              this.projectSearchLoading = false,
-              this.loading=true,
-          )
-
-    },
-    closeList(id){
-      this.projectListData = []
-      this.$refs.id.$el.setAttribute("v-show", "false")
-    },
-
-    handleGetProjectEnterSearch() {
+    loadProjectList(){
       this.projectInputLoading = true
       this.projectSearchLoading = true
       searchProject
@@ -282,12 +248,29 @@ export default {
             this.loading=false
             this.projectList = resp.data.list
           }).finally(
-              () => this.projectInputLoading = false,
+          () => this.projectInputLoading = false,
           this.projectSearchLoading = false,
           this.loading=true
       )
-      this.dialogTableVisible=true
+      this.dialogProjectVisible=true
 
+    },
+
+    handleGetProjectEnterSearch(id) {
+      this.projectInputLoading = true
+      this.projectSearchLoading = true
+      let _this = this
+      search
+          .request({"keyword": id})
+          .then(resp => {
+            this.loading=false
+            this.projectListData = resp.data.list
+          })
+          .finally(() => this.projectInputLoading = false,
+              this.projectSearchLoading = false,
+              this.loading=true
+          )
+      this.dialogTableVisible=true
     },
     projectNameChange() {
       this.$refs.projectNameSelect.query = ""
@@ -436,6 +419,7 @@ export default {
         }
         this.getPhoneForm.projectId = resp.data.id
         this.dialogTableVisible=false
+        this.dialogProjectVisible = false
 
       })
 
