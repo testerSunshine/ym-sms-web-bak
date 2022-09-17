@@ -150,7 +150,7 @@ export default {
     return {
       loading: false,
       getPhoneData: [
-        {params: "operator", isMust: "true", default: '5', desc: "5=虚拟，4=非虚拟"},
+        {params: "operator", isMust: "true", default: '0', desc: "0=全部，5=虚拟，4=非虚拟"},
         {params: "phone_num", isMust: "false", default: '空', desc: "是否指定手机号码"},
         {params: "projectId", isMust: "true", default: '空', desc: "渠道id，可以从当前渠道复制"},
         {params: "scope", isMust: "false", default: '空', desc: "指定号段，多个号段排除已逗号隔开"},
