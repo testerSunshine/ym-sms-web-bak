@@ -269,6 +269,7 @@ export default {
 
     },
     closeList(id){
+      this.projectListData = []
       this.$refs.id.$el.setAttribute("v-show", "false")
     },
 
