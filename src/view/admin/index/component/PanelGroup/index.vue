@@ -1,5 +1,7 @@
 <template>
   <div>
+    <div id="lineChart"></div>
+
     <el-row :gutter="40" class="panel-group">
       <el-col v-for="i in list" :key="i.id" :xs="12" :sm="12" :lg="6">
         <div>{{ i.text }}: {{ i.value }}</div>
@@ -127,6 +129,7 @@
 <!--    </el-table>-->
   </div>
 
+
 </template>
 
 <script>
@@ -135,6 +138,8 @@ import cssVar from '@/style/var.scss'
 import {getFourBlock} from '@/api/statistic'
 import {isEmpty} from "@/util"
 import {auth} from "@/util/auth"
+
+var echarts = require("echarts");
 
 export default {
   name: 'panelGroup',
@@ -223,17 +228,52 @@ export default {
 
     jump({path}) {
       if (!isEmpty(path) && auth(path)) this.$router.push(path)
+    },
+
+    drawLineChart(id){
+      this.$nextTick(()=>{
+        this.$echarts.init(document.getElementById(id)).dispose(); //初始化echarts之前先手动销毁之前的echarts图，防止显示错乱
+        let lineChart = this.$echarts.init(document.getElementById(id)); //初始化echarts
+        // 添加配置项
+        lineChart.setOption(
+            {
+              title: { text: "在Vue中使用echarts" },
+              tooltip: {},
+              xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+              },
+              yAxis: {
+                type: 'value'
+              },
+              series: [
+                {
+                  data: [150, 230, 224, 218, 135, 147, 260],
+                  type: 'line'
+                }
+              ]
+            }
+        );
+
+      })
+
     }
   },
 
-  mounted() {
-    this.init()
+
+  mounted(){
+    this.init();
+    this.drawLineChart("lineChart");
   }
 }
 </script>
 
-<style>
+<style scoped>
 .panel-group > .el-col {
   margin-bottom: 32px;
+}
+.lineChart{
+  width:800px;
+  height:800px
 }
 </style>

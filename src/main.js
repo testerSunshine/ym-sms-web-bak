@@ -11,6 +11,8 @@ import filters from './filter'
 import globalMethod from './globalMethod'
 import VueClipboard from 'vue-clipboard2'
 import vueMeta from 'vue-meta'
+import echarts from 'echarts'
+
 Vue.use(vueMeta)
 
 VueClipboard.config.autoSetContainer = true // add this line
@@ -22,6 +24,8 @@ Vue.use(filters)
 Vue.use(globalMethod)
 
 Vue.use(VueClipboard)
+Vue.prototype.$echarts = echarts
+
 
 new Vue({
     el: '#app',
