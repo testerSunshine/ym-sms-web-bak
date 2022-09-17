@@ -94,6 +94,7 @@
           <el-button style="margin-left: 5px ; margin-right: 5px"
                      v-clipboard:copy="getCodeForm.phone"
                      v-clipboard:success="copy">复制</el-button>
+          <el-button type="danger" @click="banPhone()">拉黑该号码</el-button>
         </el-form-item>
 
         <el-form-item>
@@ -187,7 +188,8 @@ import {getCode} from "@/api/message/getCode";
 import RechargeDialog from "./component/RechargeDialog"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {timeFormat} from "@/util"
-import {searchProject} from "../../../../api/message/getCode";
+import {searchProject} from "@/api/message/getCode";
+import {addPhone} from "@/api/message/getPhone";
 
 
 export default {
@@ -423,6 +425,29 @@ export default {
 
       })
 
+    },
+    banPhone(){
+      if(this.getPhoneForm.code === ""){
+        elError("拉黑失败")
+        return
+      }
+      if(this.getCodeForm.phone === "等待获取"){
+        elError("拉黑失败")
+        return
+      }
+      addPhone.request({
+        "code":this.getPhoneForm.code,
+        "phoneNo":this.getCodeForm.phone,
+        "type":0
+      }).then(
+          resp => {
+            if(resp.data === true){
+              elSuccess("拉黑成功")
+            }else{
+              elError("拉黑失败")
+            }
+          }
+      )
     }
   },
   watch: {}
