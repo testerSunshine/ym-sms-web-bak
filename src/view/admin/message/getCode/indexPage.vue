@@ -247,21 +247,22 @@ export default {
       searchProject
           .request({"search": this.keyWord})
           .then(resp => {
-            this.loading=false
-            this.projectList = resp.data.list
+            if (resp.data !== null) {
+              this.dialogProjectVisible=true
+              this.loading=false
+              this.projectList = resp.data.list
+            }
           }).finally(
           () => this.projectInputLoading = false,
           this.projectSearchLoading = false,
           this.loading=true
       )
-      this.dialogProjectVisible=true
 
     },
 
     handleGetProjectEnterSearch(id) {
       this.projectInputLoading = true
       this.projectSearchLoading = true
-      let _this = this
       search
           .request({"keyword": id})
           .then(resp => {
@@ -428,11 +429,11 @@ export default {
     },
     banPhone(){
       if(this.getPhoneForm.code === ""){
-        elError("拉黑失败")
+        elError("请先获取渠道和正确的手机号再试")
         return
       }
       if(this.getCodeForm.phone === "等待获取"){
-        elError("拉黑失败")
+        elError("请先获取渠道和正确的手机号再试")
         return
       }
       addPhone.request({
