@@ -404,8 +404,6 @@ export default {
       this.editDialog = true
     },
     handleProjectSelect(row){
-      this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）"
-      this.getPhoneForm.code = row.code
 
       const loading = this.$loading({
         lock: true,
@@ -422,6 +420,8 @@ export default {
         }
         this.getPhoneForm.projectId = resp.data.id
         this.dialogTableVisible=false
+        this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）" + "projectId: " + this.getPhoneForm.projectId
+        this.getPhoneForm.code = row.code
         this.dialogProjectVisible = false
 
       })
