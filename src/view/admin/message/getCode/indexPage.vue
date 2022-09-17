@@ -445,7 +445,7 @@ export default {
             if(resp.data === true){
               elSuccess("拉黑成功")
             }else{
-              elError("拉黑失败")
+              elError("拉黑失败，可能之前已经拉黑过了")
             }
           }
       )
