@@ -90,8 +90,7 @@
         </el-form-item>
 
         <el-form-item label="当前渠道：">
-          <el-tag type="success" >{{getPhoneForm.projectName}}</el-tag>
-<!--          <el-input v-model="getPhoneForm.projectName" placeholder="点击搜索选择渠道" :disabled="true"></el-input>-->
+          <el-tag size="mini" type="success" >{{getPhoneForm.projectName}}</el-tag>
         </el-form-item>
 
         <el-form-item label="运营商：">
@@ -414,8 +413,6 @@ export default {
       this.editDialog = true
     },
     handleProjectSelect(row){
-      this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）"
-      this.getPhoneForm.code = row.code
 
       const loading = this.$loading({
         lock: true,
@@ -432,7 +429,8 @@ export default {
         }
         this.getPhoneForm.projectId = resp.data.id
         this.dialogTableVisible=false
-
+        this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）" + "projectId: " + this.getPhoneForm.projectId
+        this.getPhoneForm.code = row.code
       })
 
     }
