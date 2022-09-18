@@ -6,11 +6,6 @@
       </el-col>
 
     </el-row>
-    <div id="lineChartReg" style="height: 400px"></div>
-    <div id="lineChartUrlClick" style="height: 400px"></div>
-    <div id="lineChartSellNum" style="height: 400px"></div>
-    <div id="lineChartCodeNumSuccess" style="height: 400px"></div>
-    <div id="lineChartCodeNumAll" style="height: 400px"></div>
     <p>今日验证码top10项目的名称</p>
     <el-table :data="sendSmsCodeTop10Data"
               style="width: 100%">
@@ -130,6 +125,11 @@
 <!--          label="更新时间">-->
 <!--      </el-table-column>-->
 <!--    </el-table>-->
+    <div id="lineChartReg" style="height: 400px"></div>
+    <div id="lineChartUrlClick" style="height: 400px"></div>
+    <div id="lineChartSellNum" style="height: 400px"></div>
+    <div id="lineChartCodeNumSuccess" style="height: 400px"></div>
+    <div id="lineChartCodeNumAll" style="height: 400px"></div>
   </div>
 
 
