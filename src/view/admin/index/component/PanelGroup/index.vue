@@ -1,17 +1,16 @@
 <template>
   <div>
-    <div id="lineChartReg" style="width: 800px ; height: 400px"></div>
-    <div id="lineChartUrlClick" style="width: 800px ; height: 400px"></div>
-    <div id="lineChartSellNum" style="width: 800px ; height: 400px"></div>
-    <div id="lineChartCodeNumSuccess" style="width: 800px ; height: 400px"></div>
-    <div id="lineChartCodeNumAll" style="width: 800px ; height: 400px"></div>
-
     <el-row :gutter="40" class="panel-group">
       <el-col v-for="i in list" :key="i.id" :xs="12" :sm="12" :lg="6">
         <div>{{ i.text }}: {{ i.value }}</div>
       </el-col>
 
     </el-row>
+    <div id="lineChartReg" style="height: 400px"></div>
+    <div id="lineChartUrlClick" style="height: 400px"></div>
+    <div id="lineChartSellNum" style="height: 400px"></div>
+    <div id="lineChartCodeNumSuccess" style="height: 400px"></div>
+    <div id="lineChartCodeNumAll" style="height: 400px"></div>
     <p>今日验证码top10项目的名称</p>
     <el-table :data="sendSmsCodeTop10Data"
               style="width: 100%">
