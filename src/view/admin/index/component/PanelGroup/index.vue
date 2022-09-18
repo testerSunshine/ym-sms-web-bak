@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div id="lineChart"></div>
+    <div id="lineChartReg" style="width: 800px ; height: 400px"></div>
+    <div id="lineChartUrlClick" style="width: 800px ; height: 400px"></div>
+    <div id="lineChartSellNum" style="width: 800px ; height: 400px"></div>
+    <div id="lineChartCodeNumSuccess" style="width: 800px ; height: 400px"></div>
+    <div id="lineChartCodeNumAll" style="width: 800px ; height: 400px"></div>
 
     <el-row :gutter="40" class="panel-group">
       <el-col v-for="i in list" :key="i.id" :xs="12" :sm="12" :lg="6">
@@ -135,7 +139,7 @@
 <script>
 import PanelGroupItem from './PanelGroupItem'
 import cssVar from '@/style/var.scss'
-import {getFourBlock} from '@/api/statistic'
+import {getFourBlock, getOneWeekData} from '@/api/statistic'
 import {isEmpty} from "@/util"
 import {auth} from "@/util/auth"
 
@@ -204,6 +208,11 @@ export default {
       sendSmsFlowLast10List: [],
       userWalletEntity: [],
       userWalletEntityV2:[],
+      regOneWeek:[],
+      urlClickOneWeek:[],
+      sellNumOneWeek:[],
+      smsCodeNumSuccessOneWeek:[],
+      smsCodeNumAllOneWeek:[]
     }
   },
 
@@ -211,6 +220,23 @@ export default {
     init() {
       if (this.loading) return
       this.loading = true
+
+      getOneWeekData.request().then(
+          resp => {
+            this.regOneWeek = resp.data.reg
+            this.urlClickOneWeek = resp.data.urlClick
+            this.sellNumOneWeek = resp.data.sellNum
+            this.smsCodeNumSuccessOneWeek = resp.data.smsCodeNumSuccess
+            this.smsCodeNumAllOneWeek = resp.data.smsCodeNumAll
+
+            this.drawLineChart("lineChartReg", this.regOneWeek, "注册");
+            this.drawLineChart("lineChartUrlClick", this.urlClickOneWeek, "外链点击");
+            this.drawLineChart("lineChartSellNum", this.sellNumOneWeek, "每日金币充值");
+            this.drawLineChart("lineChartCodeNumSuccess", this.smsCodeNumSuccessOneWeek, "成功验证码");
+            this.drawLineChart("lineChartCodeNumAll", this.smsCodeNumAllOneWeek, "全部验证码");
+          }
+      )
+
       getFourBlock
           .request()
           .then(({data}) => {
@@ -230,26 +256,31 @@ export default {
       if (!isEmpty(path) && auth(path)) this.$router.push(path)
     },
 
-    drawLineChart(id){
+    drawLineChart(id, data, text){
       this.$nextTick(()=>{
         this.$echarts.init(document.getElementById(id)).dispose(); //初始化echarts之前先手动销毁之前的echarts图，防止显示错乱
         let lineChart = this.$echarts.init(document.getElementById(id)); //初始化echarts
+        console.log(this.regOneWeek);
         // 添加配置项
         lineChart.setOption(
             {
-              title: { text: "在Vue中使用echarts" },
-              tooltip: {},
+              title: { text: text },
+              tooltip: {
+                trigger: 'axis'
+              },
               xAxis: {
                 type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                data: data.map(item => item.days.split(" ")[0]).reverse()
+
               },
               yAxis: {
-                type: 'value'
+                type: 'value',
               },
+
               series: [
                 {
-                  data: [150, 230, 224, 218, 135, 147, 260],
-                  type: 'line'
+                  type: 'line',
+                  data: data.map(item => item.count).reverse()
                 }
               ]
             }
@@ -263,7 +294,7 @@ export default {
 
   mounted(){
     this.init();
-    this.drawLineChart("lineChart");
+
   }
 }
 </script>
@@ -271,9 +302,5 @@ export default {
 <style scoped>
 .panel-group > .el-col {
   margin-bottom: 32px;
-}
-.lineChart{
-  width:800px;
-  height:800px
 }
 </style>

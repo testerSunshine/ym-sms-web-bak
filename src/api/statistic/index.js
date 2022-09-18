@@ -7,3 +7,6 @@ export const getDailyProfitStat = new GetApi(`/statistic/getDailyProfitStat`)
 export const getDailyFinishOrder = new GetApi(`/statistic/getDailyFinishOrder`)
 
 export const getTotalProfitGoods = new GetApi(`/statistic/getTotalProfitGoods`)
+
+export const getOneWeekData = new GetApi(`/statistic/getOneWeekData`)
+
