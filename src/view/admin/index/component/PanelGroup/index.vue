@@ -46,6 +46,14 @@
           label="项目">
       </el-table-column>
       <el-table-column
+          prop="userMoney"
+          label="价格">
+      </el-table-column>
+      <el-table-column
+          prop="content"
+          label="卡">
+      </el-table-column>
+      <el-table-column
           prop="nickName"
           label="用户">
       </el-table-column>
@@ -128,6 +136,7 @@
     <div id="lineChartReg" style="height: 400px"></div>
     <div id="lineChartUrlClick" style="height: 400px"></div>
     <div id="lineChartSellNum" style="height: 400px"></div>
+    <div id="lineChartMoneyCost" style="height: 400px"></div>
     <div id="lineChartCodeNumSuccess" style="height: 400px"></div>
     <div id="lineChartCodeNumAll" style="height: 400px"></div>
   </div>
@@ -194,6 +203,14 @@ export default {
           text: '米云余额'
         },
         {
+          id: 'allUserMoney',
+          path: '/system/user',
+          icon: 'svg-money',
+          color: cssVar.success,
+          value: 0,
+          text: '用户存量金币'
+        },
+        {
           id: 'sendSmsSuccessCount',
           path: '/system/user',
           icon: 'svg-money',
@@ -201,6 +218,7 @@ export default {
           value: 0,
           text: '今日发送验证码'
         },
+
       ],
       sendSmsCodeTop10Data: [],
       sendSmsFlowTop10List: [],
@@ -210,6 +228,7 @@ export default {
       regOneWeek:[],
       urlClickOneWeek:[],
       sellNumOneWeek:[],
+      moneyCost:[],
       smsCodeNumSuccessOneWeek:[],
       smsCodeNumAllOneWeek:[]
     }
@@ -225,12 +244,14 @@ export default {
             this.regOneWeek = resp.data.reg
             this.urlClickOneWeek = resp.data.urlClick
             this.sellNumOneWeek = resp.data.sellNum
+            this.moneyCost = resp.data.moneyCost
             this.smsCodeNumSuccessOneWeek = resp.data.smsCodeNumSuccess
             this.smsCodeNumAllOneWeek = resp.data.smsCodeNumAll
 
             this.drawLineChart("lineChartReg", this.regOneWeek, "注册");
             this.drawLineChart("lineChartUrlClick", this.urlClickOneWeek, "外链点击");
             this.drawLineChart("lineChartSellNum", this.sellNumOneWeek, "每日金币充值");
+            this.drawLineChart("lineChartMoneyCost", this.moneyCost, "每日金币消耗");
             this.drawLineChart("lineChartCodeNumSuccess", this.smsCodeNumSuccessOneWeek, "成功验证码");
             this.drawLineChart("lineChartCodeNumAll", this.smsCodeNumAllOneWeek, "全部验证码");
           }
@@ -243,6 +264,7 @@ export default {
               if (i.id in data) i.value = data[i.id]
             })
             this.sendSmsCodeTop10Data = data.bizSendSmsTop10EntityList
+
             this.sendSmsFlowTop10List = data.statisticSendSmsFlowTop10List
             this.sendSmsFlowLast10List = data.bizSendSmsLast10EntityList
             // this.userWalletEntity = data.sysUserWalletEntityList
@@ -279,7 +301,7 @@ export default {
               series: [
                 {
                   type: 'line',
-                  data: data.map(item => item.count).reverse()
+                  data: data.map(item => parseInt(item.count)).reverse()
                 }
               ]
             }
