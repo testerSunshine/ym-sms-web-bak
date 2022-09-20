@@ -1,5 +1,5 @@
 <template>
-    <el-select :value="value" :disabled="disabled" multiple collapse-tags size="small" @input="emit">
+    <el-select :value="value" :disabled="disabled" filterable multiple collapse-tags size="small" @input="emit">
         <el-option
             v-for="user in data"
             :key="user.id"

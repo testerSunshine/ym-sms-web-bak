@@ -11,7 +11,7 @@
 
     <template v-slot:tableColumn>
       <el-table-column align="center" label="#" type="index" width="80"/>
-      <el-table-column align="center" label="项目ID" prop="projectId" width="120"/>
+      <el-table-column align="center" label="项目ID" prop="code" width="120"/>
       <el-table-column align="center" label="手机号" prop="phoneNo" width="120"/>
       <el-table-column align="center" label="验证码" prop="smsCode" width="120"/>
       <el-table-column align="center" label="时间" prop="updateTime" width="420"/>
