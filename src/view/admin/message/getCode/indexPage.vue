@@ -8,9 +8,9 @@
               <span style='color: red;'>价格说明：单价需要搜索出项目后显示</span>
               <br>
               操作说明：<br>
-              1. 搜索短信内容关键字<br>
-              2. 选择渠道，点击获取手机号<br>
-              3. 去项目app/web等端填入获取的手机号，点击发送验证码<br>
+              1. 搜索短信内容关键字，用自己手机接一条，看看短信内容抬头叫啥<br>
+              2. 选择渠道，点击获取手机号，项目对不对齐关键字靠自己尝试<br>
+              3. 去刷的项目里填入获取到的手机号，点击发送验证码<br>
               4. 回到平台点击获取验证码<br>
             </p>
           </div>
@@ -43,7 +43,7 @@
         <el-form-item label="关键字：">
           <el-input v-model="keyWord"
                     style="width: 70%"
-                    placeholder="输入短信关键字搜索，不知道啥关键字的，先用自己手机接一条看看，找不到渠道去问题反馈"
+                    placeholder="输入短信关键字搜索，不知道啥关键字的，先用自己手机接一条看看"
           ></el-input>
 
           <el-button :loading="projectSearchLoading" type="primary" @click="loadProjectList">搜索</el-button>
@@ -89,7 +89,7 @@
     <el-card class="get-code-page" style="margin-top: 20px" shadow="never">
       <el-form ref="getCodeForm" :model="getCodeForm" label-width="120px" size="mini">
         <el-form-item label="手机号：">
-          <el-tag type="danger" >{{getCodeForm.phone}}</el-tag>
+          <el-tag type="success" >{{getCodeForm.phone}}</el-tag>
 <!--          <el-input v-model="getCodeForm.phone" style="width: 90%" :disabled="true"></el-input>-->
           <el-button style="margin-left: 5px ; margin-right: 5px"
                      v-clipboard:copy="getCodeForm.phone"
@@ -98,9 +98,10 @@
         </el-form-item>
 
         <el-form-item>
-          <el-tag type="danger">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！</el-tag>
-          <el-tag type="danger">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>
-          <el-tag type="danger">操作没问题还收不到码的，见下面红字说明，我们只负责对接，感谢大家理解。</el-tag>
+          <el-tag type="danger">获取过程别刷新页面，一旦您发了验证码，后台会一直拉取，如果刷新了，请去记录里找</el-tag>
+          <el-tag type="primary">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码</el-tag>
+<!--          <el-tag type="primary">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>-->
+          <el-tag type="primary">操作没问题还收不到码的，见下面红字说明，我们只负责对接，感谢大家理解。</el-tag>
           <br>
           <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
           <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
@@ -202,7 +203,7 @@ export default {
       projectInputLoading: false,
       activeNames : [],
       getPhoneForm: {
-        projectName: '暂未选择渠道，请搜索关键字获取渠道',
+        projectName: '暂未选择渠道，请搜索关键字获取渠道，不知道啥关键字的，先用自己手机接一条看看',
         operator: '0',
         phone_num: '',
         scope: '',
