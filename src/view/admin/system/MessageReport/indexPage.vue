@@ -21,6 +21,7 @@
     </template>
 
     <edit-dialog v-model="editDialog" :data="row" :type="type" @success="success"/>
+    <message-edit-dialog ref="replyChild" v-model="replyDialog" :data="row" :type="type" @success="success"></message-edit-dialog>
   </list-page>
 </template>
 
@@ -28,6 +29,7 @@
 import tableMixin from '@/mixin/tablePageMixin'
 import ListPage from '@/view/_common/ListPage'
 import EditDialog from './EditDialog'
+import MessageEditDialog from './MessageEditDialog'
 import {search} from "@/api/system/MessageReport"
 import {isEmpty} from '@/util'
 import {wic} from "@/util/auth"
@@ -38,7 +40,7 @@ export default {
 
   mixins: [tableMixin],
 
-  components: {ListPage, EditDialog},
+  components: {ListPage, EditDialog, MessageEditDialog},
 
   data() {
     return {
@@ -48,7 +50,8 @@ export default {
       temp: {
         ctime: []
       },
-      editDialog: false
+      editDialog: false,
+      replyDialog: false
     }
   },
 
@@ -60,6 +63,7 @@ export default {
         pageLoading: this.config.operating,
         buttons: [
           {icon: 'el-icon-view', e: this.see, content: '查 看'},
+          {icon: 'el-icon-view', e: this.add, content: '回 复'},
         ],
         dataLoading: this.config.loading,
         search: {
@@ -110,6 +114,13 @@ export default {
       if (isEmpty(this.row)) return elError('请选择要查看的消息')
       this.type = 'see'
       this.editDialog = true
+    },
+
+    add() {
+      if (isEmpty(this.row)) return elError('请选择要回复的消息')
+      this.type = 'add'
+      this.$refs.replyChild.setRecipient(this.row.uid)
+      this.replyDialog = true
     },
 
     success(msg) {
