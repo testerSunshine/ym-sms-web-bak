@@ -1,6 +1,6 @@
 <template functional>
     <div class="copyright">
-        Copyright © - <a href="https://www.yima123.xyz/" target="_blank">接码平台</a>
+        Copyright © - <a href="https://www.yima123.xyz/" target="_blank">yima</a>
     </div>
 </template>
 
