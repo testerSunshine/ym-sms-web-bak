@@ -22,7 +22,7 @@
       </el-tooltip>
       <el-input v-model="form.pwd" placeholder="请输入密码" type="password" :maxlength="20"/>
     </el-form-item>
-    <div style="color: red; margin-top: -10px">注意：密码不要和其他接码平台一样，已有人遭受过损失</div>
+    <div style="color: red; margin-top: -10px">注意：请保存好账号密码，为保护个人隐私，本平台不提供任何渠道找回密码！密码不要和其他接码平台一样，已有人遭受过损失。</div>
     <el-form-item prop="repwd">
             <span class="svg-container">
                 <v-icon icon="svg-password"/>
