@@ -3,15 +3,15 @@
 
         <template v-slot:tableColumn>
             <el-table-column align="center" label="#" type="index" width="80"/>
-            <el-table-column sortable align="center" label="总金额" prop="allMoney" show-overflow-tooltip/>
-            <el-table-column sortable align="center" label="余额" prop="balances" show-overflow-tooltip/>
+            <el-table-column sortable align="center" label="累计充值" prop="allMoney" show-overflow-tooltip/>
+            <el-table-column sortable align="center" label="用户余额" prop="balances" show-overflow-tooltip/>
             <el-table-column align="center" label="最近一条短信" prop="content" show-overflow-tooltip/>
-            <el-table-column sortable align="center" label="金额" prop="dM" show-overflow-tooltip/>
-            <el-table-column sortable align="center" label="时间" prop="dT" show-overflow-tooltip/>
-            <el-table-column sortable align="center" label="用户id" prop="id" show-overflow-tooltip/>
-            <el-table-column sortable align="center" label="金额" prop="money" show-overflow-tooltip/>
-            <el-table-column align="center" label="昵称" prop="nickName" show-overflow-tooltip/>
-            <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip/>
+            <el-table-column sortable align="center" label="最近消费金额" prop="dM" show-overflow-tooltip/>
+            <el-table-column sortable align="center" label="最近消费时间" prop="dT" show-overflow-tooltip/>
+<!--            <el-table-column sortable align="center" label="用户id" prop="id" show-overflow-tooltip/>-->
+            <el-table-column sortable align="center" label="最近充值金额" prop="money" show-overflow-tooltip/>
+            <el-table-column align="center" label="用户名称" prop="nickName" show-overflow-tooltip/>
+<!--            <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip/>-->
         </template>
 
     </list-page>
