@@ -2,9 +2,10 @@
     <list-page :data="listPageConfig">
 
         <template v-slot:tableColumn>
-          <el-table-column align="center" label="#" type="index" width="80"/>
+          <el-table-column align="center" label="#" type="index" width="40"/>
           <el-table-column sortable align="center" label="用户id" prop="id" show-overflow-tooltip/>
           <el-table-column align="center" label="用户名称" prop="nickName" show-overflow-tooltip/>
+          <el-table-column sortable align="center" label="账号创建时间" prop="cT" show-overflow-tooltip/>
           <el-table-column sortable align="center" label="累计充值" prop="allMoney" show-overflow-tooltip/>
           <el-table-column sortable align="center" label="用户余额" prop="balances" show-overflow-tooltip/>
           <el-table-column sortable align="center" label="最近充值金额" prop="aM" show-overflow-tooltip/>
