@@ -20,7 +20,7 @@
       </el-card>
     </el-tab-pane>
     <el-tab-pane label="黑名单管理" name="second">黑名单管理</el-tab-pane>
-    <el-tab-pane label="内部账号管理" name="third">米云账号管理</el-tab-pane>
+    <el-tab-pane label="内部账号管理" name="third">内部账号管理</el-tab-pane>
   </el-tabs>
 </template>
 
