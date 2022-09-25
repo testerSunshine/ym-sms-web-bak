@@ -1,8 +1,10 @@
 <template>
   <div>
     <el-alert
-        title="公告：取数据库最近一条的text"
-        type="error">
+        :title="this.notice"
+        type="error"
+        v-show="noticeBoolen"
+    >
     </el-alert>
     <br>
     <el-row :gutter="20">
@@ -196,6 +198,7 @@ import {elConfirm, elError, elSuccess} from "@/util/message"
 import {timeFormat} from "@/util"
 import {searchProject} from "@/api/message/getCode";
 import {addPhone} from "@/api/message/getPhone";
+import {getLastOne} from "../../../../api/system/notice";
 
 
 export default {
@@ -234,13 +237,24 @@ export default {
       dialogProjectVisible:false,
       projectListData:[],
       projectList:[],
-      loading:true
+      loading:true,
+      notice:"",
+      noticeBoolen: false
 
     }
   },
   computed: {},
   created() {
     this.handleGetWallet()
+    getLastOne.request({}).then(resp => {
+      this.notice = "公告：" + resp.msg
+      if(this.notice === null || this.notice === ""){
+        this.noticeBoolen = false
+      }else{
+        this.noticeBoolen = true
+      }
+
+    })
     // this.handleGetProjectEnterSearch()
   },
   beforeDestroy() {
@@ -409,6 +423,7 @@ export default {
     handleSupplier() {
       this.editDialog = true
     },
+
     handleProjectSelect(row){
 
       const loading = this.$loading({
