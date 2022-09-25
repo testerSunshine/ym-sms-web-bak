@@ -30,7 +30,7 @@ export default {
             progress: true,//是否显示进度条
             pause: false,//是否暂停关闭
             message: '',
-            duration: 1000,
+            duration: 3000,
             startAt: 0,//上一次开始关闭计时的时间
             remainTime: 0,//还剩多少毫秒关闭
             type: '',//默认值改为js控制

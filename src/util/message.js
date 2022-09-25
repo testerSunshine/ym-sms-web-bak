@@ -3,12 +3,16 @@ import {MessageBox} from 'element-ui'
 import {isEmpty} from "@/util"
 
 export function elError(msg = '操作失败') {
-    Message.error(msg)
+    Message.error({
+        msg,
+        duration:3000,
+    })
 }
 
 export function elSuccess(message = '操作成功') {
     Message.success({
         message,
+        duration:3000,
         dangerouslyUseHTMLString: true
     })
 }
@@ -17,6 +21,7 @@ export function elAlert(msg, callback = () => ({})) {
     return MessageBox.alert(msg, {
         type: 'warning',
         cancelButtonClass: 'is-plain',
+        duration:3000,
         callback
     })
 }

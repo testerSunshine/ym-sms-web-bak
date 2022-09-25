@@ -40,6 +40,11 @@ instance.interceptors.response.use(
 
         //服务器异常
         if (res.status === 500) {
+            //miyun钱不够了
+            if (res.msg === "余额不足, 余额剩余: 0") {
+                Message.error("系统异常E00001，请反馈问题异常码")
+                return Promise.reject("系统异常E00001，请反馈问题异常码")
+            }
             Message.error(res.msg || '操作失败')
             return Promise.reject(res.msg)
         }
@@ -64,6 +69,8 @@ instance.interceptors.response.use(
         //其他错误
         Message.error(res.msg || '接口有误')
         return Promise.reject(res)
+
+
     },
     error => {
         if (axios.isCancel(error)) return
