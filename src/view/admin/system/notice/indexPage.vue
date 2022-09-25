@@ -2,38 +2,8 @@
   <list-page :data="listPageConfig">
     <template v-slot:tableColumn>
       <el-table-column align="center" label="#" type="index" width="80"/>
-      <el-table-column align="center" label="账号" prop="account" show-overflow-tooltip/>
-      <el-table-column align="center" label="密码" prop="password" show-overflow-tooltip/>
-      <el-table-column align="center" label="token" prop="token" show-overflow-tooltip/>
-      <el-table-column align="center" label="账号余额" prop="money" show-overflow-tooltip/>
-      <el-table-column align="center" label="状 态" width="120">
-        <template v-slot="{row}">
-          <div v-if="row.type === 1">
-            <span class="success"/>
-            <span>启用</span>
-          </div>
-          <div v-else-if="row.type === 0">
-            <span class="error"/>
-            <span>禁用</span>
-          </div>
-          <div v-else-if="row.type === 2">
-            <span class="error"/>
-            <span>失效</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="账号用途" width="120">
-        <template v-slot="{row}">
-          <div v-if="row.operateType === 1">
-            <span>充值</span>
-          </div>
-          <div v-else-if="row.operateType === 0">
-            <span>搜索</span>
-          </div>
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="公告" prop="content" show-overflow-tooltip/>
       <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip/>
-
     </template>
 
     <edit-dialog v-model="editDialog" :data="row" :type="type" @success="success"/>
@@ -44,14 +14,14 @@
 import tableMixin from '@/mixin/tablePageMixin'
 import ListPage from '@/view/_common/ListPage'
 import EditDialog from './component/EditDialog'
-import {search, add, update, del} from "@/api/system/MYAccount"
+import {search, add, update, del} from "@/api/system/notice"
 import {isEmpty} from '@/util'
 import {wic} from "@/util/auth"
 import {autoCompleteUrl} from "@/util/file"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
-  name: "MYAccountManagement",
+  name: "NoticeManagement",
 
   mixins: [tableMixin],
 
@@ -130,22 +100,22 @@ export default {
     },
 
     see() {
-      if (isEmpty(this.row)) return elError('请选择要查看的用户')
+      if (isEmpty(this.row)) return elError('请选择要查看的公告')
       this.type = 'see'
       this.editDialog = true
     },
 
     edit() {
-      if (isEmpty(this.row)) return elError('请选择要编辑的用户')
+      if (isEmpty(this.row)) return elError('请选择要编辑的公告')
       this.type = 'edit'
       this.editDialog = true
     },
 
 
     del() {
-      if (isEmpty(this.row)) return elError('请选择要删除的用户')
+      if (isEmpty(this.row)) return elError('请选择要删除的公告')
       if (this.config.operating) return
-      elConfirm(`确定删除用户【${this.row.loginName}】？`)
+      elConfirm(`确定删除公告【${this.row.loginName}】？`)
           .then(() => {
             this.config.operating = true
             return del.request({id: this.row.id, LoginName: this.row.loginName})

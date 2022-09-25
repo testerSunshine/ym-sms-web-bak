@@ -1,29 +1,8 @@
 <template>
   <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
     <abstract-form :model="form" :rules="rules" label-width="90px">
-      <el-form-item label="账号" prop="account">
-        <el-input v-model="form.account" :readonly="!!form.id || !canEdit" maxlength="20"/>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" :readonly="!canEdit" maxlength="100"/>
-      </el-form-item>
-      <el-form-item label="token" prop="token">
-        <el-input v-model="form.token" :readonly="!canEdit" maxlength="100"/>
-      </el-form-item>
-
-      <el-form-item label="状 态" prop="enable">
-        <el-radio-group v-model="form.type" :disabled="!canEdit">
-          <el-radio :label="0">禁用</el-radio>
-          <el-radio :label="1">启用</el-radio>
-          <el-radio :label="2">失效</el-radio>
-        </el-radio-group>
-      </el-form-item>
-
-      <el-form-item label="账号用途" prop="enable">
-        <el-radio-group v-model="form.operateType" :disabled="!canEdit">
-          <el-radio :label="0">搜索</el-radio>
-          <el-radio :label="1">充值</el-radio>
-        </el-radio-group>
+      <el-form-item label="公告" prop="content">
+        <el-input v-model="form.content" :readonly="!!form.id || !canEdit" maxlength="20"/>
       </el-form-item>
     </abstract-form>
 
@@ -38,7 +17,7 @@
 import dialogMixin from "@/mixin/dialogMixin"
 import AbstractForm from "@/component/abstract/Form"
 import AbstractDialog from '@/component/abstract/Dialog'
-import {add, update} from "@/api/system/MYAccount"
+import {add, update} from "@/api/system/notice"
 import {isEmpty, debounce, mergeObj} from '@/util'
 
 export default {
@@ -59,17 +38,12 @@ export default {
       loading: false,
       form: {
         id: null,
-        account: null,
-        password: null,
-        token: null,
-        type: null,
-        operateType: null,
+        content: null
       },
       rules: {
-        account: [
-          {required: true, message: '用户名不能为空', trigger: 'change'},
+        content: [
+          {required: true, message: '公告不能为空', trigger: 'change'},
         ],
-        password: [{required: true, message: '密码不能为空', trigger: 'change'}],
       }
     }
   },
@@ -79,18 +53,18 @@ export default {
       if (isEmpty(this.type)) return ''
       switch (this.type) {
         case 'see':
-          return '用户信息'
+          return '公告信息'
         case 'add':
-          return '添加用户'
+          return '添加公告'
         case 'edit':
-          return '编辑用户'
+          return '编辑公告'
       }
     },
 
     confirmMessage() {
       switch (this.type) {
         case 'add':
-          return `确认添加新的用户【${this.form.account}】?`
+          return `确认添加新的公告【${this.form.account}】?`
         case 'edit':
           return `确认提交对【${this.data.account}】作出的修改？`
         default:

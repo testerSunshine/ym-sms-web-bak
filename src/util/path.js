@@ -75,7 +75,6 @@ export function resolvePath() {
     var resolvedPath = ''
     var resolvedAbsolute = false
     var cwd
-
     for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
         var path
         if (i >= 0)
