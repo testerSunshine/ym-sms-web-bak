@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-alert
+        title="公告：取数据库最近一条的text"
+        type="error">
+    </el-alert>
+    <br>
     <el-row :gutter="20">
       <el-col :span="16" :xs="24">
         <div class="grid-content bg-purple">
