@@ -247,10 +247,10 @@ export default {
   created() {
     this.handleGetWallet()
     getLastOne.request({}).then(resp => {
-      this.notice = "公告：" + resp.msg
-      if(this.notice === null || this.notice === ""){
+      if(resp.msg === null || resp.msg === "" || resp.msg.trim() === "关闭"){
         this.noticeBoolen = false
       }else{
+        this.notice = "公告：" + resp.msg
         this.noticeBoolen = true
       }
 
