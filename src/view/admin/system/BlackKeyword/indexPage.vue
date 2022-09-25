@@ -1,5 +1,25 @@
 <template>
   <list-page :data="listPageConfig">
+    <template v-slot:searchForm>
+      <el-form-item label="敏感词">
+        <el-input v-model="searchForm.keyword" clearable maxlength="20"/>
+      </el-form-item>
+      <el-form-item label="状 态">
+        <el-select v-model="searchForm.type" clearable @clear="searchForm.enable = null">
+          <el-option :value="1" label="启用"/>
+          <el-option :value="0" label="禁用"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="创建时间">
+        <el-date-picker
+            v-model="temp.ctime"
+            format="yyyy-MM-dd"
+            range-separator="-"
+            type="daterange"
+            value-format="timestamp"
+        />
+      </el-form-item>
+    </template>
     <template v-slot:tableColumn>
       <el-table-column align="center" label="#" type="index" width="80"/>
       <el-table-column align="center" label="敏感词" prop="keyword" show-overflow-tooltip/>
@@ -42,11 +62,8 @@ export default {
   data() {
     return {
       searchForm: {
-        loginName: '',
-        nickName: '',
-        role: null,
-        enable: null,
-        onlineStatus: true, //默认查看在线用户
+        keyword: "",
+        type: null,
       },
       temp: {ctime: []},
       editDialog: false
