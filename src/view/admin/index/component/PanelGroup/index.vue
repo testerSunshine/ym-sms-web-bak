@@ -226,6 +226,22 @@ export default {
           value: 0,
           text: '最近三天活跃用户数量'
         },
+        {
+          id: 'lastFiveMinutesActiveUserNum',
+          path: '/system/user',
+          icon: 'svg-money',
+          color: cssVar.success,
+          value: 0,
+          text: '5分钟活跃人数'
+        },
+        {
+          id: 'lastFiveMinutesSmsNum',
+          path: '/system/user',
+          icon: 'svg-money',
+          color: cssVar.success,
+          value: 0,
+          text: '5分钟sms量级'
+        },
 
       ],
       sendSmsCodeTop10Data: [],
