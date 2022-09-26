@@ -218,6 +218,14 @@ export default {
           value: 0,
           text: '今日发送验证码'
         },
+        {
+          id: 'lastThreeDaysActiveUserNum',
+          path: '/system/user',
+          icon: 'svg-money',
+          color: cssVar.success,
+          value: 0,
+          text: '最近三天活跃用户数量'
+        },
 
       ],
       sendSmsCodeTop10Data: [],
