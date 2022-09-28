@@ -3,7 +3,7 @@ import {isLogin} from "@/util/auth"
 export default {
     computed: {
         showOfflineTip() {
-            return !this.$store.state.websocket.online && isLogin()
+            return isLogin()
         },
     },
 

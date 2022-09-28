@@ -33,6 +33,3 @@ new Vue({
     store,
     render: h => h(App)
 })
-
-//页面刷新时websocket重连
-store.dispatch('websocket/init').catch()

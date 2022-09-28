@@ -3,10 +3,7 @@ import {MessageBox} from 'element-ui'
 import {isEmpty} from "@/util"
 
 export function elError(msg = '操作失败') {
-    Message.error({
-        msg,
-        duration:3000,
-    })
+    Message.error(msg)
 }
 
 export function elSuccess(message = '操作成功') {
