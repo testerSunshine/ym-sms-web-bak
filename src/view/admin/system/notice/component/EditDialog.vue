@@ -2,7 +2,7 @@
   <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
     <abstract-form :model="form" :rules="rules" label-width="90px">
       <el-form-item label="公告" prop="content">
-        <el-input v-model="form.content" :readonly="!!form.id || !canEdit" maxlength="20"/>
+        <el-input v-model="form.content" :readonly="!!form.id || !canEdit"/>
       </el-form-item>
     </abstract-form>
 

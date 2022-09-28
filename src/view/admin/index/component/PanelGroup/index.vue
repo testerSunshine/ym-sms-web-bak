@@ -162,14 +162,14 @@ export default {
     return {
       loading: false,
       list: [
-        {
-          id: 'online',
-          path: '/system/user',
-          icon: 'svg-user',
-          color: cssVar.info,
-          value: 0,
-          text: '在线用户'
-        },
+        // {
+        //   id: 'online',
+        //   path: '/system/user',
+        //   icon: 'svg-user',
+        //   color: cssVar.info,
+        //   value: 0,
+        //   text: '在线用户'
+        // },
         {
           id: 'sourceCount',
           path: '/system/source',
