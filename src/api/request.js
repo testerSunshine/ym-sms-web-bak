@@ -13,11 +13,11 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     config => {
-        //登录状态下socket断连时，除登出外中断一切请求
-        if (isLogin() && !store.state.websocket.online && config.url !== '/account/logout') {
-            Message.error('请等待与服务器重新连接')
-            return Promise.reject('')
-        }
+        // //登录状态下socket断连时，除登出外中断一切请求
+        // if (isLogin() && !store.state.websocket.online && config.url !== '/account/logout') {
+        //     Message.error('请等待与服务器重新连接')
+        //     return Promise.reject('')
+        // }
 
         //header添加token
         if (store.state.user.token) {

@@ -310,6 +310,12 @@ export default {
     },
     startGetCode() {
       clearInterval(this.timer)
+      if (this.getPhoneForm.projectId === 0) {
+        elError("请选择渠道再获取验证码")
+        this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
+        clearInterval(this.timer)
+        return
+      }
       this.count = 300
       this.getCodeStatus = "获取验证码中..."
       // 定时获取验证码
@@ -317,6 +323,12 @@ export default {
       this.getCodeForm.code = "等待获取"
       this.getCodeForm.codeContent = ""
       this.getCodeForm.lastMsgTime = ""
+      if (this.getPhoneForm.projectId === 0) {
+        elError("请选择渠道再获取验证码")
+        this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
+        clearInterval(this.timer)
+        return
+      }
       this.timer = setInterval(this.handleGetCode, 2000);
 
     },
@@ -381,13 +393,6 @@ export default {
       if (this.count < 1) {
         clearInterval(this.timer)
         this.getCodeStatus = "验证码获取超时，请更改手机号或者渠道再重试"
-      }
-      console.log("timeout: " + this.count)
-      if (this.getPhoneForm.projectId === 0) {
-        elError("请选择渠道再获取验证码")
-        this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
-        clearInterval(this.timer)
-        return
       }
       getCode.request({
         projectId: this.getPhoneForm.projectId,
