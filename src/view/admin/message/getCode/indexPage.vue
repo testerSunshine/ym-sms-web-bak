@@ -57,7 +57,7 @@
         </el-form-item>
 
         <el-form-item label="当前渠道：">
-          <el-tag type="success" >{{getPhoneForm.projectName}}</el-tag>
+          <el-tag type="primary" size="medium" effect="dark">{{getPhoneForm.projectName}}</el-tag>
         </el-form-item>
 
         <el-form-item label="运营商：">
@@ -96,36 +96,37 @@
     <el-card class="get-code-page" style="margin-top: 20px" shadow="never">
       <el-form ref="getCodeForm" :model="getCodeForm" label-width="120px" size="mini">
         <el-form-item label="手机号：">
-          <el-tag type="success" >{{getCodeForm.phone}}</el-tag>
+          <el-tag type="primary"  size="medium" effect="dark" >{{getCodeForm.phone}}</el-tag>
 <!--          <el-input v-model="getCodeForm.phone" style="width: 90%" :disabled="true"></el-input>-->
           <el-button style="margin-left: 5px ; margin-right: 5px"
                      v-clipboard:copy="getCodeForm.phone"
                      v-clipboard:success="copy">复制</el-button>
           <el-button type="danger" @click="banPhone()">拉黑该号码</el-button>
-        </el-form-item>
-
-        <el-form-item>
+            <br>
           <el-tag type="danger">获取过程别刷新页面，一旦您发了验证码，后台会一直拉取，如果刷新了，请去记录里找</el-tag>
+            <br>
           <el-tag type="primary">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码</el-tag>
 <!--          <el-tag type="primary">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>-->
+            <br>
           <el-tag type="primary">操作没问题还收不到码的，见下面红字说明，我们只负责对接，感谢大家理解。</el-tag>
           <br>
           <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
           <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
         </el-form-item>
 
+
         <el-form-item label="最近来码时间：">
           <el-input v-model="getCodeForm.lastMsgTime" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="获取倒计时:">
-          <el-tag type="primary">{{getCodeStatus}}  {{count}}s</el-tag>
+          <el-tag type="primary" size="medium"  effect="dark" >{{getCodeStatus}}  {{count}}s</el-tag>
 
           <!--          <el-input v-model="count" :disabled="true"></el-input>-->
           <span></span>
         </el-form-item>
         <el-form-item label="验证码：">
 <!--          <el-input v-model="getCodeForm.code" style="width: 90%"></el-input>-->
-          <el-tag type="success" >{{getCodeForm.code}}</el-tag>
+          <el-tag type="primary" size="medium" effect="dark" >{{getCodeForm.code}}</el-tag>
           <el-button style="margin-left: 5px"
                      v-clipboard:copy="getCodeForm.code"
                      v-clipboard:success="copy">复制</el-button>
