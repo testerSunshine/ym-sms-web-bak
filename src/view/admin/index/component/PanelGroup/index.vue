@@ -195,6 +195,22 @@ export default {
           text: '今日注册'
         },
         {
+          id: 'dailyNewUserBuyNum',
+          path: '/system/user',
+          icon: 'svg-money',
+          color: cssVar.success,
+          value: 0,
+          text: '今日新用户充值人数'
+        },
+        {
+          id: 'dailyNewUserBuyMoney',
+          path: '/system/user',
+          icon: 'svg-money',
+          color: cssVar.success,
+          value: 0,
+          text: '今日新用户累计充值金币数'
+        },
+        {
           id: 'miyunMoney',
           path: '/system/user',
           icon: 'svg-money',
