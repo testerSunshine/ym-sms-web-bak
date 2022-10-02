@@ -12,3 +12,6 @@ export const getOneWeekData = new GetApi(`/statistic/getOneWeekData`)
 
 export const getPersona = new GetApi(`/statistic/getPersona`)
 
+export const getUserInfo = new GetApi(`/statistic/getUserInfo?uid=1`, uid => ({params: {uid}}))
+
+
