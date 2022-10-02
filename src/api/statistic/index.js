@@ -1,4 +1,4 @@
-import {GetApi} from "@/api/request"
+import {GetApi, PostApi} from "@/api/request"
 
 export const getFourBlock = new GetApi(`/statistic/getFourBlock`)
 
@@ -11,4 +11,6 @@ export const getTotalProfitGoods = new GetApi(`/statistic/getTotalProfitGoods`)
 export const getOneWeekData = new GetApi(`/statistic/getOneWeekData`)
 
 export const getPersona = new GetApi(`/statistic/getPersona`)
+
+export const getUserInfo = new PostApi(`/statistic/getUserInfo`)
 

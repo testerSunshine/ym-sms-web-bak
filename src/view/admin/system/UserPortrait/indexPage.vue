@@ -15,13 +15,15 @@
           <el-table-column align="center" label="最近一条短信" prop="content" show-overflow-tooltip/>
         </template>
 
+        <edit-dialog v-model="editDialog" ref="child" :data="row" :type="type" @success="success"/>
     </list-page>
 </template>
 
 <script>
 import tableMixin from '@/mixin/tablePageMixin'
 import ListPage from '@/view/_common/ListPage'
-import {getPersona} from "@/api/statistic/index"
+import EditDialog from './EditDialog'
+import {getPersona, getUserInfo} from "@/api/statistic/index"
 import {isEmpty} from '@/util'
 import {wic} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
@@ -31,7 +33,7 @@ export default {
 
     mixins: [tableMixin],
 
-    components: {ListPage},
+    components: {ListPage, EditDialog},
 
     data() {
         return {
@@ -53,7 +55,7 @@ export default {
             return {
                 pageLoading: this.config.operating,
                 buttons: [
-                    // {icon: 'el-icon-view', e: this.see, content: '查 看'},
+                    {icon: 'el-icon-view', e: this.see, content: '查 看'},
                 ],
                 dataLoading: this.config.loading,
                 search: {
@@ -99,6 +101,12 @@ export default {
 
         see() {
             if (isEmpty(this.row)) return elError('请选择要查看的用户')
+            getUserInfo
+                .request({"uid": this.row.id})
+                .then(resp => {
+                    this.$refs.child.handleSetUserInfo(resp.data)
+                })
+                .finally(() => this.config.loading = false)
             this.type = 'see'
             this.editDialog = true
         },
