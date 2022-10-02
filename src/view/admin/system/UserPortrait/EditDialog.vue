@@ -37,8 +37,8 @@
                   width="180">
           </el-table-column>
           <el-table-column
-                  prop="手机号"
-                  label="phoneNo"
+                  prop="phoneNo"
+                  label="手机号"
                   width="180">
           </el-table-column>
           <el-table-column
@@ -73,8 +73,8 @@
                   width="180">
           </el-table-column>
           <el-table-column
-                  prop="手机号"
-                  label="phoneNo"
+                  prop="content"
+                  label="content"
                   width="180">
           </el-table-column>
           <el-table-column
