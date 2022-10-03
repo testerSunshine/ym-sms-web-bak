@@ -37,8 +37,8 @@
                   width="180">
           </el-table-column>
           <el-table-column
-                  prop="phoneNo"
-                  label="手机号"
+                  prop="smsCode"
+                  label="验证码"
                   width="180">
           </el-table-column>
           <el-table-column
@@ -134,7 +134,7 @@ export default {
       userInfo: null,
       list: [
         {
-          id: 'id',
+          id: 'uid',
           value: null,
           text: '用户id'
         },
