@@ -135,11 +135,11 @@
           <el-input type="textarea" :rows="1" v-model="getCodeForm.codeContent"></el-input>
         </el-form-item>
 
-        <br>
-        <span style='color: red;'>关于“有余额，提示余额不足问题”说明:</span>
-        <br>
-        <span style='color: red;'>只要您获取了手机号，平台会提前冻结该项目金额的金币，因为平台无法预测您的行为是否获取到了验证码，所以如果您一直不停获取新手机号，系统会冻结的钱越多，导致提示余额不足，当然，如果您在10分钟内该手机号确实没有获取验证码，冻结的钱就会自动解冻，可以继续用。</span>
-        <br>
+<!--        <br>-->
+<!--        <span style='color: red;'>关于“有余额，提示余额不足问题”说明:</span>-->
+<!--        <br>-->
+<!--        <span style='color: red;'>只要您获取了手机号，平台会提前冻结该项目金额的金币，因为平台无法预测您的行为是否获取到了验证码，所以如果您一直不停获取新手机号，系统会冻结的钱越多，导致提示余额不足，当然，如果您在10分钟内该手机号确实没有获取验证码，冻结的钱就会自动解冻，可以继续用。</span>-->
+<!--        <br>-->
         <br>
         <span style='color: red;'>未获取到验证码？</span>
         <br>
@@ -148,6 +148,8 @@
         <span style='color: red;'>2.手机号被项目风控了，请切换手机号或者切换渠道再试</span>
         <br>
         <span style='color: red;'>3.点击获取后请不要刷新页面，如果刷新，请去记录里查看验证码</span>
+        <br>
+        <span style='color: red;'>4.很多项目虚拟手机号接不到，尽量换实卡试试</span>
         <br>
         <span style='color: red;'>说明：各个渠道的卡质量不一，与平台无关，收不到短信不扣费！！！</span>
         <br>
