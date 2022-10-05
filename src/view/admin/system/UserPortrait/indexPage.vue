@@ -16,11 +16,14 @@
         </template>
 
         <edit-dialog v-model="editDialog" ref="child" :data="row" :type="type" @success="success"/>
+        <abstract-pagination :model="searchForm" @current-change="pageChange" @size-change="sizeChange"/>
+
     </list-page>
 </template>
 
 <script>
 import tableMixin from '@/mixin/tablePageMixin'
+import AbstractPagination from '@/component/abstract/Pagination'
 import ListPage from '@/view/_common/ListPage'
 import EditDialog from './EditDialog'
 import {getPersona, getUserInfo} from "@/api/statistic/index"
@@ -33,7 +36,7 @@ export default {
 
     mixins: [tableMixin],
 
-    components: {ListPage, EditDialog},
+    components: {ListPage, EditDialog, AbstractPagination},
 
     data() {
         return {
@@ -91,11 +94,16 @@ export default {
             getPersona
                 .request(this.mergeSearchForm())
                 .then(resp => {
-                    this.searchForm.total = resp.data.length
-                    console.log(resp.data)
-                    this.tableData = resp.data
+                    this.searchForm.total = resp.data.total
+                    console.log(resp.data.list)
+                    this.tableData = resp.data.list
                 })
                 .finally(() => this.config.loading = false)
+        },
+
+        sizeChange(v){
+            this.searchForm.pageSize = v
+            this.search();
         },
 
 
