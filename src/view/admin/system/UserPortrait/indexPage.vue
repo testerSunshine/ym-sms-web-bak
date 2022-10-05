@@ -16,8 +16,6 @@
         </template>
 
         <edit-dialog v-model="editDialog" ref="child" :data="row" :type="type" @success="success"/>
-        <abstract-pagination :model="searchForm" @current-change="pageChange" @size-change="sizeChange"/>
-
     </list-page>
 </template>
 
