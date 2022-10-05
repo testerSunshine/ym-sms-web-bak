@@ -10,7 +10,7 @@ export const getTotalProfitGoods = new GetApi(`/statistic/getTotalProfitGoods`)
 
 export const getOneWeekData = new GetApi(`/statistic/getOneWeekData`)
 
-export const getPersona = new GetApi(`/statistic/getPersona`)
+export const getPersona = new PostApi(`/statistic/getPersona`)
 
 export const getUserInfo = new PostApi(`/statistic/getUserInfo`)
 
