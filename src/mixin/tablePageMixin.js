@@ -69,6 +69,11 @@ const mixin = {
             this.search()
         },
 
+        pageSizeChange(v) {
+            this.searchForm.pageSize = v
+            this.search()
+        },
+
         reSearch(map) {
             const path = this._routePath
             if (map.hasOwnProperty(path) && map[path]) {

@@ -41,6 +41,8 @@ export default {
     data() {
         return {
             searchForm: {
+                page: 1,
+                pageSize: 10,
                 loginName: '',
                 nickName: '',
                 role: null,
@@ -71,7 +73,7 @@ export default {
                 },
                 pagination: {
                     props: {model: this.searchForm},
-                    on: {'current-change': this.pageChange}
+                    on: {'current-change': this.pageChange, 'size-change': this.pageSizeChange}
                 }
             }
         }
