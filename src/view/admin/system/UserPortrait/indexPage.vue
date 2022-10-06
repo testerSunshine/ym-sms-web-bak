@@ -1,5 +1,14 @@
 <template>
     <list-page :data="listPageConfig">
+      <template v-slot:searchForm>
+        <el-form-item label="UID">
+          <el-input v-model="searchForm.id" clearable maxlength="100"/>
+        </el-form-item>
+        <el-form-item label="nickname">
+          <el-input v-model="searchForm.nickName" clearable maxlength="100"/>
+        </el-form-item>
+      </template>
+
 
         <template v-slot:tableColumn>
           <el-table-column align="center" label="#" type="index" width="40"/>
@@ -41,8 +50,9 @@ export default {
             searchForm: {
                 page: 1,
                 pageSize: 10,
+                id:null,
                 loginName: '',
-                nickName: '',
+                nickName: null,
                 role: null,
                 enable: null
             },
