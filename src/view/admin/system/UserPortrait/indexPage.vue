@@ -28,6 +28,7 @@
     </list-page>
 </template>
 
+
 <script>
 import tableMixin from '@/mixin/tablePageMixin'
 import AbstractPagination from '@/component/abstract/Pagination'
@@ -137,3 +138,4 @@ export default {
     }
 }
 </script>
+

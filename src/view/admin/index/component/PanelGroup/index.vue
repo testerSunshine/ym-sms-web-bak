@@ -10,7 +10,7 @@
     <el-table :data="sendSmsCodeTop10Data"
               style="width: 100%">
       <el-table-column
-          prop="projectId"
+          prop="code"
           label="项目id">
       </el-table-column>
       <el-table-column
@@ -38,7 +38,7 @@
     <el-table :data="sendSmsFlowLast10List"
               style="width: 100%">
       <el-table-column
-          prop="projectId"
+          prop="code"
           label="项目id">
       </el-table-column>
       <el-table-column
@@ -66,7 +66,7 @@
     <el-table :data="sendSmsFlowTop10List"
               style="width: 100%">
       <el-table-column
-          prop="projectId"
+          prop="code"
           label="项目id">
       </el-table-column>
       <el-table-column
