@@ -108,7 +108,7 @@
           <el-tag type="primary">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码</el-tag>
 <!--          <el-tag type="primary">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>-->
             <br>
-          <el-tag type="primary">操作没问题还收不到码的，见下面红字说明，我们只负责对接，感谢大家理解。</el-tag>
+          <el-tag type="primary">操作没问题还收不到码的，去看下面问题解释</el-tag>
           <br>
           <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
           <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
@@ -140,20 +140,58 @@
 <!--        <br>-->
 <!--        <span style='color: red;'>只要您获取了手机号，平台会提前冻结该项目金额的金币，因为平台无法预测您的行为是否获取到了验证码，所以如果您一直不停获取新手机号，系统会冻结的钱越多，导致提示余额不足，当然，如果您在10分钟内该手机号确实没有获取验证码，冻结的钱就会自动解冻，可以继续用。</span>-->
 <!--        <br>-->
-        <br>
-        <span style='color: red;'>未获取到验证码？</span>
-        <br>
-        <span style='color: red;'>1.确认已经在对应项目的app/web点击了发送验证码</span>
-        <br>
-        <span style='color: red;'>2.手机号被项目风控了，请切换手机号或者切换渠道再试</span>
-        <br>
-        <span style='color: red;'>3.点击获取后请不要刷新页面，如果刷新，请去记录里查看验证码</span>
-        <br>
-        <span style='color: red;'>4.很多项目虚拟手机号接不到，尽量换实卡试试</span>
-        <br>
-        <span style='color: red;'>说明：各个渠道的卡质量不一，与平台无关，收不到短信不扣费！！！</span>
-        <br>
+<!--        <br>-->
+<!--        <span style='color: red;'>未获取到验证码？</span>-->
+<!--        <br>-->
+<!--        <span style='color: red;'>1.确认已经在对应项目的app/web点击了发送验证码</span>-->
+<!--        <br>-->
+<!--        <span style='color: red;'>2.手机号被项目风控了，请切换手机号或者切换渠道再试</span>-->
+<!--        <br>-->
+<!--        <span style='color: red;'>3.点击获取后请不要刷新页面，如果刷新，请去记录里查看验证码</span>-->
+<!--        <br>-->
+<!--        <span style='color: red;'>4.很多项目虚拟手机号接不到，尽量换实卡试试</span>-->
+<!--        <br>-->
+<!--        <span style='color: red;'>说明：各个渠道的卡质量不一，与平台无关，收不到短信不扣费！！！</span>-->
+<!--        <br>-->
       </el-form>
+    </el-card>
+
+    <el-card style="margin-top: 20px" shadow="never">
+      <div style="margin: 20px">问题解释Q&A</div>
+      <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse-item title="为什么我收不到验证码" name="1">
+          <div>1.确认已经在对应项目的app/web点击了发送验证码</div>
+          <div>2.手机号被项目风控了，请切换手机号或者切换渠道再试</div>
+          <div>3.手机号被用过了，注册相关的项目收不到，登录可以收到</div>
+          <div>4.项目不支持虚拟号，请切换实卡再试</div>
+          <div>5.相对来说，价格高的渠道优质一点</div>
+          <div>6.大热门很难找到首次资源，比如抖音-米哈游等等</div>
+          <div>说明：各个渠道的卡质量不一，与平台无关，收不到短信不扣费！！！</div>
+        </el-collapse-item>
+        <el-collapse-item title="为什么莫名其妙扣钱了" name="2">
+          <div>在短信倒计时结束前均有可能收到验证码，即使点击停止获取也有可能获取到；</div>
+          <div>如果您在这个时间段刷新了页面，后台依然会获取手机号，毕竟您已经发送了；</div>
+          <div>所以您需要耐心等待，如果刷新了，需要去记录里面寻找验证码</div>
+        </el-collapse-item>
+        <el-collapse-item title="我怎么指定手机号？" name="3">
+          <div>1.项目选择那有一个"其他非必选项(可展开)"，展开可以指定手机号</div>
+        </el-collapse-item>
+        <el-collapse-item title="为什么找不到指定手机号了？" name="4">
+          <div>1.找不到手机号第一是你选择的项目池子不对</div>
+          <div>2.如果确认池子没错，那就是池子里的卡已经被替换成新卡了，无法再找到</div>
+          <div>温馨提示：做好账号维护，做好账号密码登录，不要指望卡能保持很久</div>
+        </el-collapse-item>
+        <el-collapse-item title="手机号能保存多久" name="5">
+          <div>上游供应商决定，平台无法确定时效</div>
+        </el-collapse-item>
+        <el-collapse-item title="为什么我搜不到项目" name="6">
+          <div>高危不做，搜不到就是没得玩</div>
+          <div>搜索是模糊搜索</div>
+        </el-collapse-item>
+        <el-collapse-item title="有其他问题？" name="7">
+          <div>点击右上角问题反馈，会有人回复</div>
+        </el-collapse-item>
+      </el-collapse>
     </el-card>
 
     <el-dialog title="项目列表" :visible.sync="dialogProjectVisible" width="40%" center>
