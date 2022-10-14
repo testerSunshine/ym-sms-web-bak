@@ -87,73 +87,73 @@
         </el-collapse>
         <br>
 
-        <el-form-item>
-          <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>
-          <br>
-        </el-form-item>
+<!--        <el-form-item>-->
+<!--          <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>-->
+<!--          <br>-->
+<!--        </el-form-item>-->
       </el-form>
     </el-card>
-    <el-card class="get-code-page" style="margin-top: 20px" shadow="never">
-      <el-form ref="getCodeForm" :model="getCodeForm" label-width="120px" size="mini">
-        <el-form-item label="手机号：">
-          <el-tag type="primary"  size="medium" effect="dark" >{{getCodeForm.phone}}</el-tag>
+<!--    <el-card class="get-code-page" style="margin-top: 20px" shadow="never">-->
+<!--      <el-form ref="getCodeForm" :model="getCodeForm" label-width="120px" size="mini">-->
+<!--        <el-form-item label="手机号：">-->
+<!--          <el-tag type="primary"  size="medium" effect="dark" >{{getCodeForm.phone}}</el-tag>-->
 <!--          <el-input v-model="getCodeForm.phone" style="width: 90%" :disabled="true"></el-input>-->
-          <el-button style="margin-left: 5px ; margin-right: 5px"
-                     v-clipboard:copy="getCodeForm.phone"
-                     v-clipboard:success="copy">复制</el-button>
-          <el-button type="danger" @click="banPhone()">拉黑该号码</el-button>
-            <br>
-          <el-tag type="danger">获取过程别刷新页面，一旦您发了验证码，后台会一直拉取，如果刷新了，请去记录里找，这种情况也会扣费，所以您发现异常扣费，就是您发了验证码，但是您刷新页面了</el-tag>
-            <br>
-          <el-tag type="primary">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码</el-tag>
-<!--          <el-tag type="primary">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>-->
-            <br>
-          <el-tag type="primary">操作没问题还收不到码的，去看下面问题解释</el-tag>
-          <br>
-          <el-button type="primary" @click="startGetCode()">获取验证码</el-button>
-          <el-button type="primary" @click="stopGetCode()">停止获取</el-button>
-        </el-form-item>
+<!--          <el-button style="margin-left: 5px ; margin-right: 5px"-->
+<!--                     v-clipboard:copy="getCodeForm.phone"-->
+<!--                     v-clipboard:success="copy">复制</el-button>-->
+<!--          <el-button type="danger" @click="banPhone()">拉黑该号码</el-button>-->
+<!--            <br>-->
+<!--          <el-tag type="danger">获取过程别刷新页面，一旦您发了验证码，后台会一直拉取，如果刷新了，请去记录里找，这种情况也会扣费，所以您发现异常扣费，就是您发了验证码，但是您刷新页面了</el-tag>-->
+<!--            <br>-->
+<!--          <el-tag type="primary">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码</el-tag>-->
+<!--&lt;!&ndash;          <el-tag type="primary">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>&ndash;&gt;-->
+<!--            <br>-->
+<!--          <el-tag type="primary">操作没问题还收不到码的，去看下面问题解释</el-tag>-->
+<!--          <br>-->
+<!--          <el-button type="primary" @click="startGetCode()">获取验证码</el-button>-->
+<!--          <el-button type="primary" @click="stopGetCode()">停止获取</el-button>-->
+<!--        </el-form-item>-->
 
 
-        <el-form-item label="最近来码时间：">
-          <el-input v-model="getCodeForm.lastMsgTime" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="获取倒计时:">
-          <el-tag type="primary" size="medium"  effect="dark" >{{getCodeStatus}}  {{count}}s</el-tag>
+<!--        <el-form-item label="最近来码时间：">-->
+<!--          <el-input v-model="getCodeForm.lastMsgTime" :disabled="true"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="获取倒计时:">-->
+<!--          <el-tag type="primary" size="medium"  effect="dark" >{{getCodeStatus}}  {{count}}s</el-tag>-->
+<!--          <span></span>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="验证码：">-->
+<!--          <el-tag type="primary" size="medium" effect="dark" >{{getCodeForm.code}}</el-tag>-->
+<!--          <el-button style="margin-left: 5px"-->
+<!--                     v-clipboard:copy="getCodeForm.code"-->
+<!--                     v-clipboard:success="copy">复制</el-button>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="短信内容：">-->
+<!--          <el-input type="textarea" :rows="1" v-model="getCodeForm.codeContent"></el-input>-->
+<!--        </el-form-item>-->
 
-          <!--          <el-input v-model="count" :disabled="true"></el-input>-->
-          <span></span>
-        </el-form-item>
-        <el-form-item label="验证码：">
-<!--          <el-input v-model="getCodeForm.code" style="width: 90%"></el-input>-->
-          <el-tag type="primary" size="medium" effect="dark" >{{getCodeForm.code}}</el-tag>
-          <el-button style="margin-left: 5px"
-                     v-clipboard:copy="getCodeForm.code"
-                     v-clipboard:success="copy">复制</el-button>
-        </el-form-item>
-        <el-form-item label="短信内容：">
-          <el-input type="textarea" :rows="1" v-model="getCodeForm.codeContent"></el-input>
-        </el-form-item>
+<!--      </el-form>-->
+<!--    </el-card>-->
 
-<!--        <br>-->
-<!--        <span style='color: red;'>关于“有余额，提示余额不足问题”说明:</span>-->
-<!--        <br>-->
-<!--        <span style='color: red;'>只要您获取了手机号，平台会提前冻结该项目金额的金币，因为平台无法预测您的行为是否获取到了验证码，所以如果您一直不停获取新手机号，系统会冻结的钱越多，导致提示余额不足，当然，如果您在10分钟内该手机号确实没有获取验证码，冻结的钱就会自动解冻，可以继续用。</span>-->
-<!--        <br>-->
-<!--        <br>-->
-<!--        <span style='color: red;'>未获取到验证码？</span>-->
-<!--        <br>-->
-<!--        <span style='color: red;'>1.确认已经在对应项目的app/web点击了发送验证码</span>-->
-<!--        <br>-->
-<!--        <span style='color: red;'>2.手机号被项目风控了，请切换手机号或者切换渠道再试</span>-->
-<!--        <br>-->
-<!--        <span style='color: red;'>3.点击获取后请不要刷新页面，如果刷新，请去记录里查看验证码</span>-->
-<!--        <br>-->
-<!--        <span style='color: red;'>4.很多项目虚拟手机号接不到，尽量换实卡试试</span>-->
-<!--        <br>-->
-<!--        <span style='color: red;'>说明：各个渠道的卡质量不一，与平台无关，收不到短信不扣费！！！</span>-->
-<!--        <br>-->
-      </el-form>
+    <el-card class="get-code-pool" style="margin-top: 20px" shadow="never">
+      <div>当前任务池数量3，距离升级到4还差充值10金币</div>
+      <el-row>
+        <el-col :span="12" :xs="24">
+          <GetCodeTask :get-phone-form=this.getPhoneForm></GetCodeTask>
+        </el-col>
+        <el-col :span="12" :xs="24">
+          <GetCodeTask :get-phone-form=this.getPhoneForm></GetCodeTask>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12" :xs="24">
+          <GetCodeTask :get-phone-form=this.getPhoneForm></GetCodeTask>
+        </el-col>
+        <el-col :span="12" :xs="24">
+          <GetCodeTask :get-phone-form=this.getPhoneForm></GetCodeTask>
+        </el-col>
+      </el-row>
+
     </el-card>
 
     <el-card style="margin-top: 20px" shadow="never">
@@ -188,7 +188,13 @@
           <div>高危不做，搜不到就是没得玩</div>
           <div>搜索是模糊搜索</div>
         </el-collapse-item>
-        <el-collapse-item title="有其他问题？" name="7">
+        <el-collapse-item title="有国外卡吗？" name="7">
+          <div>没有，只有国内卡</div>
+        </el-collapse-item>
+        <el-collapse-item title="能发短信吗？能接语音短信吗？" name="8">
+          <div>都不能，只能接</div>
+        </el-collapse-item>
+        <el-collapse-item title="有其他问题？" name="9">
           <div>点击右上角问题反馈，会有人回复</div>
         </el-collapse-item>
       </el-collapse>
@@ -240,16 +246,17 @@ import {list} from "@/api/message/smsCollect";
 import {getPhone} from "@/api/message/getPhone";
 import {getCode} from "@/api/message/getCode";
 import RechargeDialog from "./component/RechargeDialog"
+import GetCodeTask from "./component/GetCodeTask"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {timeFormat} from "@/util"
 import {searchProject} from "@/api/message/getCode";
 import {addPhone} from "@/api/message/getPhone";
-import {getLastOne} from "../../../../api/system/notice";
+import {getLastOne} from "@/api/system/notice";
 
 
 export default {
   name: "getCode",
-  components: {RechargeDialog},
+  components: {RechargeDialog, GetCodeTask},
   data() {
     return {
       keyWord:"",
@@ -375,19 +382,6 @@ export default {
     copy() {
       elSuccess("复制成功")
     },
-    // submitGetPhoneForm() {
-    //   if (this.getPhoneForm.projectId === '') {
-    //     elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
-    //     return
-    //   }
-    //   getPhone.request(this.getPhoneForm).then(resp => {
-    //     this.getCodeForm.phone = resp.data.mobile
-    //     clearInterval(this.timer)
-    //     this.count = 0
-    //     // 定时获取验证码
-    //     this.timer = setInterval(this.handleGetCode, 5000);
-    //   })
-    // },
     submitGetPhoneForm() {
       if (this.getPhoneForm.projectId === '') {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
@@ -497,29 +491,7 @@ export default {
       })
 
     },
-    banPhone(){
-      if(this.getPhoneForm.code === ""){
-        elError("请先获取渠道和正确的手机号再试")
-        return
-      }
-      if(this.getCodeForm.phone === "等待获取"){
-        elError("请先获取渠道和正确的手机号再试")
-        return
-      }
-      addPhone.request({
-        "code":this.getPhoneForm.code,
-        "phoneNo":this.getCodeForm.phone,
-        "type":0
-      }).then(
-          resp => {
-            if(resp.data === true){
-              elSuccess("拉黑成功")
-            }else{
-              elError("拉黑失败，可能之前已经拉黑过了")
-            }
-          }
-      )
-    }
+
   },
   watch: {}
 }
