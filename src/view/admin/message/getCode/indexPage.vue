@@ -139,18 +139,18 @@
       <div>当前任务池数量3，距离升级到4还差充值10金币</div>
       <el-row>
         <el-col :span="12" :xs="24">
-          <GetCodeTask :get-phone-form=this.getPhoneForm></GetCodeTask>
+          <GetCodeTask ref="GetCodeTask" :get-phone-form=this.getPhoneForm :status=this.taskList[0]></GetCodeTask>
         </el-col>
         <el-col :span="12" :xs="24">
-          <GetCodeTask :get-phone-form=this.getPhoneForm></GetCodeTask>
+          <GetCodeTask ref="GetCodeTask" :get-phone-form=this.getPhoneForm :status=this.taskList[1]></GetCodeTask>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12" :xs="24">
-          <GetCodeTask :get-phone-form=this.getPhoneForm></GetCodeTask>
+          <GetCodeTask ref="GetCodeTask" :get-phone-form=this.getPhoneForm :status=this.taskList[2]></GetCodeTask>
         </el-col>
         <el-col :span="12" :xs="24">
-          <GetCodeTask :get-phone-form=this.getPhoneForm></GetCodeTask>
+          <GetCodeTask ref="GetCodeTask" :get-phone-form=this.getPhoneForm :status=this.taskList[3]></GetCodeTask>
         </el-col>
       </el-row>
 
@@ -252,6 +252,8 @@ import {timeFormat} from "@/util"
 import {searchProject} from "@/api/message/getCode";
 import {addPhone} from "@/api/message/getPhone";
 import {getLastOne} from "@/api/system/notice";
+import {getTask} from "@/api/message/smsTask";
+import {getTaskRole} from "@/api/message/smsTask";
 
 
 export default {
@@ -292,11 +294,24 @@ export default {
       projectList:[],
       loading:true,
       notice:"",
-      noticeBoolen: false
+      noticeBoolen: false,
+
+      taskRole:{
+        hasNext: true,
+        nextLevel: 0,
+        nextTaskMoney: 0,
+        nextUserCanTaskNum: 0,
+        userCanTaskNum: 0
+      },
+
+      taskList:[true,false,false,false],
+
 
     }
   },
   computed: {},
+
+
   created() {
     this.handleGetWallet()
     getLastOne.request({}).then(resp => {
@@ -308,6 +323,25 @@ export default {
       }
 
     })
+
+    getTask.request({}).then(
+        resp => {
+          console.log(resp.data)
+        }
+    )
+
+    getTaskRole.request({}).then(
+        resp => {
+          this.taskRole = resp.data;
+          for(var i=0; i<resp.data.userCanTaskNum; i++){
+            this.taskList[i] = true
+          }
+          console.log(this.taskList)
+          this.$refs.GetCodeTask.updateStatus();
+        }
+    )
+
+
     // this.handleGetProjectEnterSearch()
   },
   beforeDestroy() {

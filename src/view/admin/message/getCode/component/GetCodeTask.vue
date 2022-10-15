@@ -6,6 +6,7 @@
       </el-form-item>
 
       <el-form-item label="状态:">
+        {{this.status}}
         <el-button v-model="form.status" type="success" icon="el-icon-check" circle></el-button>
       </el-form-item>
 
@@ -63,7 +64,7 @@ export default {
   name: "GetCodeTask",
 
   props: {
-    "status": String,
+    "status": Boolean,
     "taskId": String,
 
     "getPhoneForm": Object,
@@ -81,11 +82,12 @@ export default {
     // "countDownTime": Number,
   },
 
+
   data() {
     return {
       form:{
         taskId:"",
-        status:"",
+        status:false,
         projectName:"",
         phone:"",
         lastMsgTime:"",
@@ -97,9 +99,15 @@ export default {
 
   },
 
+
   methods:{
     copy() {
       elSuccess("复制成功")
+    },
+
+    updateStatus(){
+      console.log("ininininin")
+      this.form.status = this.status
     },
 
     submitGetPhoneForm() {
