@@ -1,41 +1,45 @@
 <template>
   <el-card class="get-code-task" style="margin: 20px" shadow="never">
     <el-form ref="form" :model="form" label-width="80px" size="mini">
-      <el-form-item label="任务id:">
-        <el-input v-model="form.taskId" disabled="true"></el-input>
-      </el-form-item>
+<!--      <el-form-item label="任务id:">-->
+<!--        <el-input v-model="id" :disabled=true></el-input>-->
+<!--      </el-form-item>-->
 
-      <el-form-item label="状态:">
-        {{this.status}}
-        <el-button v-model="form.status" type="success" icon="el-icon-check" circle></el-button>
-      </el-form-item>
+      任务状态：<el-tag type="success" size="mini" effect="dark" v-if="this.taskStatus">可用</el-tag>
+      <el-tag type="danger" size="mini" effect="dark" v-if="!this.taskStatus">禁用</el-tag>
+      <br>
 
-      <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()">获取手机号</el-button>
+<!--      <el-form-item label="状态:">-->
+<!--        <el-input v-model="status" :disabled=true></el-input>-->
+<!--        <el-button v-model="form.status" type="success" icon="el-icon-check" circle></el-button>-->
+<!--      </el-form-item>-->
+
+      <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()" v-if="this.taskStatus">获取手机号</el-button>
       <el-button style="margin: 10px"
                  size="mini"
                  v-clipboard:copy="this.form.phone"
-                 v-clipboard:success="copy">复制手机号</el-button>
-      <el-button style="margin: 10px" type="danger" size="mini" @click="banPhone()">拉黑该号码</el-button>
+                 v-clipboard:success="copy" v-if="this.taskStatus">复制手机号</el-button>
+      <el-button style="margin: 10px" type="danger" size="mini" @click="banPhone()" v-if="this.taskStatus">拉黑该号码</el-button>
 
       <el-form-item label="项目信息:">
-        <el-input v-model="form.projectName" disabled="true"></el-input>
+        <el-input v-model="form.projectName" :disabled=true></el-input>
       </el-form-item>
 
       <el-form-item label="手机号:">
-        <el-input v-model="form.phone" disabled="true"></el-input>
+        <el-input v-model="form.phone" :disabled=true></el-input>
       </el-form-item>
 
       <el-form-item label="最近来码:">
-        <el-input v-model="form.lastMsgTime" disabled="true">time</el-input>
+        <el-input v-model="form.lastMsgTime" :disabled=true>time</el-input>
       </el-form-item>
 
-      <el-button style="margin: 10px" type="primary" size="mini" @click="startGetCode()">获取验证码</el-button>
+      <el-button style="margin: 10px" type="primary" size="mini" @click="startGetCode()" v-if="this.taskStatus">获取验证码</el-button>
       <el-button style="margin: 10px"
                  size="mini"
                  v-clipboard:copy="this.form.code"
-                 v-clipboard:success="copy">复制验证码</el-button>
-      <el-button style="margin: 10px" type="danger" size="mini" @click="stopGetCode()">终止任务</el-button>
-      <el-tag  style="margin: 10px" type="primary" size="medium" effect="dark" >300s</el-tag>
+                 v-clipboard:success="copy" v-if="this.taskStatus">复制验证码</el-button>
+      <el-button style="margin: 10px" type="danger" size="mini" @click="stopGetCode()" v-if="this.taskStatus">终止任务</el-button>
+      <el-tag  style="margin: 10px" type="primary" size="medium" effect="dark" >{{this.countDownTime}}s</el-tag>
 
       <el-form-item label="验证码:">
         <el-input v-model="form.code">code</el-input>
@@ -64,30 +68,24 @@ export default {
   name: "GetCodeTask",
 
   props: {
-    "status": Boolean,
+    "taskStatus": {
+      type: Boolean,
+      default: false
+    },
     "taskId": String,
 
     "getPhoneForm": Object,
     "taskData": Object,
 
-    // "projectName": String,
-    // "money":Number,
-    // "code": String,
-    //
-    // "phone": String,
-    // "lastCodeTime": String,
-    //
-    // "smsCode": String,
-    // "smsContent": String,
-    // "countDownTime": Number,
   },
 
 
   data() {
     return {
+      countDownTime: 300,
+
       form:{
-        taskId:"",
-        status:false,
+        projectId:"",
         projectName:"",
         phone:"",
         lastMsgTime:"",
@@ -99,15 +97,26 @@ export default {
 
   },
 
+  watch:{
+    taskData:{
+      handler(n,o){
+        console.log("ininininin")
+        console.log(n.phoneNo)
+        this.form.phone = n.phoneNo
+        this.countDownTime = n.leftSeconds
+        this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
+        this.form.projectId = n.projectId
+        if(n.phoneNo != null && n.phoneNo !== "" && n.status === 1){
+          this.handleGetCode();
+        }
+      }
+    }
+  },
+
 
   methods:{
     copy() {
       elSuccess("复制成功")
-    },
-
-    updateStatus(){
-      console.log("ininininin")
-      this.form.status = this.status
     },
 
     submitGetPhoneForm() {
@@ -116,6 +125,7 @@ export default {
         return
       }
       this.form.projectName = this.getPhoneForm.projectName
+      this.form.projectId = this.getPhoneForm.projectId
       getPhone.request(this.getPhoneForm).then(resp => {
         if (resp.data.mobile === "") {
           elError("没找到符合条件的号码，请检查搜索条件再试")
@@ -161,7 +171,7 @@ export default {
         clearInterval(this.timer)
         return
       }
-      this.count = 300
+      this.countDownTime = 300
       this.getCodeStatus = "获取验证码中..."
       // 定时获取验证码
       elSuccess("开始获取验证码")
@@ -172,15 +182,43 @@ export default {
 
     },
 
+    handleGetCode() {
+      if (this.countDownTime < 1) {
+        clearInterval(this.timer)
+        this.getCodeStatus = "验证码获取超时，请更改手机号或者渠道再重试"
+      }
+      getCode.request({
+        projectId: this.form.projectId,
+        phoneNum: this.form.phone,
+      }).then(resp => {
+        if (resp === undefined) {
+          this.stopGetCode()
+          return
+        }
+        if (resp.data.message === "ok") {
+          this.form.code = resp.data.code
+          this.form.codeContent = resp.data.modle
+          this.form.lastMsgTime = timeFormat()
+          clearInterval(this.timer)
+          // 获取短信成功就更新用户余额
+          elSuccess("获取验证码成功")
+          this.getCodeStatus = "验证码获取成功！！！"
+          this.handleGetWallet()
+        }
+      })
+      this.countDownTime--
+    },
+
     stopGetCode() {
       clearInterval(this.timer)
       this.timer = null
-      this.count = 300
+      this.countDownTime = 300
       this.getCodeStatus = "已停止获取验证码"
       elSuccess("已停止获取验证码")
     },
 
-  }
+  },
+
 }
 </script>
 

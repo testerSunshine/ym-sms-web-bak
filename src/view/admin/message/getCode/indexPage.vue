@@ -136,21 +136,21 @@
 <!--    </el-card>-->
 
     <el-card class="get-code-pool" style="margin-top: 20px" shadow="never">
-      <div>当前任务池数量3，距离升级到4还差充值10金币</div>
+      <div>当前可用多开任务池数量{{this.taskRole.userCanTaskNum}}个，开启下一个需累冲金币到{{this.taskRole.nextTaskMoney}}</div>
       <el-row>
         <el-col :span="12" :xs="24">
-          <GetCodeTask ref="GetCodeTask" :get-phone-form=this.getPhoneForm :status=this.taskList[0]></GetCodeTask>
+          <GetCodeTask ref="GetCodeTask1" :get-phone-form=this.getPhoneForm :task-status=this.taskList[0] :task-data=this.taskDataList[0]></GetCodeTask>
         </el-col>
         <el-col :span="12" :xs="24">
-          <GetCodeTask ref="GetCodeTask" :get-phone-form=this.getPhoneForm :status=this.taskList[1]></GetCodeTask>
+          <GetCodeTask ref="GetCodeTask2" :get-phone-form=this.getPhoneForm :task-status=this.taskList[1] :task-data=this.taskDataList[1]></GetCodeTask>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12" :xs="24">
-          <GetCodeTask ref="GetCodeTask" :get-phone-form=this.getPhoneForm :status=this.taskList[2]></GetCodeTask>
+          <GetCodeTask ref="GetCodeTask3" :get-phone-form=this.getPhoneForm :task-status=this.taskList[2] :task-data=this.taskDataList[2]></GetCodeTask>
         </el-col>
         <el-col :span="12" :xs="24">
-          <GetCodeTask ref="GetCodeTask" :get-phone-form=this.getPhoneForm :status=this.taskList[3]></GetCodeTask>
+          <GetCodeTask ref="GetCodeTask4" :get-phone-form=this.getPhoneForm :task-status=this.taskList[3] :task-data=this.taskDataList[3]></GetCodeTask>
         </el-col>
       </el-row>
 
@@ -304,8 +304,19 @@ export default {
         userCanTaskNum: 0
       },
 
-      taskList:[true,false,false,false],
+      taskList:[false,false,false,false],
+      taskData:{
+        leftSeconds:300,
+        phoneNo:"",
+        projectId:"",
+        projectName:"",
+        projectCode:"",
+        projectContent:"",
+        userMoney:"",
+        status:"",
+      },
 
+      taskDataList:[null, null, null, null]
 
     }
   },
@@ -326,18 +337,41 @@ export default {
 
     getTask.request({}).then(
         resp => {
-          console.log(resp.data)
+          // console.log(resp.data)
+          if(resp.data.length <= 0){
+            console.log("null data")
+          }else{
+            for(let i=0; i<resp.data.length; i++){
+              let taskData = {}
+              taskData.leftSeconds = resp.data[i].leftSeconds
+              taskData.phoneNo = resp.data[i].phoneNo
+              taskData.projectName = resp.data[i].projectName
+              taskData.projectId = resp.data[i].projectId
+              taskData.status = resp.data[i].status
+
+              taskData.projectCode = resp.data[i].bizSmsProjectDetailInfo.code
+              taskData.projectContent = resp.data[i].bizSmsProjectDetailInfo.content
+              taskData.userMoney = resp.data[i].bizSmsProjectDetailInfo.userMoney
+
+              this.$set(this.taskDataList, i ,taskData);
+              console.log(taskData.phoneNo)
+              // this.taskList[i] = true 非响应式
+            }
+          }
+          console.log(this.taskDataList)
+
+
         }
     )
 
     getTaskRole.request({}).then(
         resp => {
           this.taskRole = resp.data;
-          for(var i=0; i<resp.data.userCanTaskNum; i++){
-            this.taskList[i] = true
+          for(let i=0; i<resp.data.userCanTaskNum; i++){
+            this.$set(this.taskList, i ,true);
+            // this.taskList[i] = true 非响应式
           }
-          console.log(this.taskList)
-          this.$refs.GetCodeTask.updateStatus();
+          // console.log(this.taskList)
         }
     )
 
@@ -388,50 +422,7 @@ export default {
     getProjectRemoteData(query) {
       this.remoteSearchQuery = query
     },
-    stopGetCode() {
-      clearInterval(this.timer)
-      this.timer = null
-      this.count = 300
-      this.getCodeStatus = "已停止获取验证码"
-      elSuccess("已停止获取验证码")
-    },
-    startGetCode() {
-      clearInterval(this.timer)
-      if (this.getPhoneForm.projectId === 0) {
-        elError("请选择渠道再获取验证码")
-        this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
-        clearInterval(this.timer)
-        return
-      }
-      this.count = 300
-      this.getCodeStatus = "获取验证码中..."
-      // 定时获取验证码
-      elSuccess("开始获取验证码")
-      this.getCodeForm.code = "等待获取"
-      this.getCodeForm.codeContent = ""
-      this.getCodeForm.lastMsgTime = ""
-      this.timer = setInterval(this.handleGetCode, 2000);
 
-    },
-    copy() {
-      elSuccess("复制成功")
-    },
-    submitGetPhoneForm() {
-      if (this.getPhoneForm.projectId === '') {
-        elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
-        return
-      }
-      getPhone.request(this.getPhoneForm).then(resp => {
-        if (resp.data.mobile === "") {
-          elError("没找到符合条件的号码，请检查搜索条件再试")
-          return
-        }
-        this.getCodeForm.phone = resp.data.mobile
-        this.getCodeForm.lastMsgTime = resp.data.lastMsgTime
-        clearInterval(this.timer)
-        elSuccess("获取手机号成功，点击获取验证码即可获取验证码")
-      })
-    },
     //
     // handleGetCollectProject() {
     //   this.collectOptions = []
@@ -457,32 +448,6 @@ export default {
     //       })
     // },
 
-    handleGetCode() {
-      if (this.count < 1) {
-        clearInterval(this.timer)
-        this.getCodeStatus = "验证码获取超时，请更改手机号或者渠道再重试"
-      }
-      getCode.request({
-        projectId: this.getPhoneForm.projectId,
-        phoneNum: this.getCodeForm.phone,
-      }).then(resp => {
-        if (resp === undefined) {
-          this.stopGetCode()
-          return
-        }
-        if (resp.data.message === "ok") {
-          this.getCodeForm.code = resp.data.code
-          this.getCodeForm.codeContent = resp.data.modle
-          this.getCodeForm.lastMsgTime = timeFormat()
-          clearInterval(this.timer)
-          // 获取短信成功就更新用户余额
-          elSuccess("获取验证码成功")
-          this.getCodeStatus = "验证码获取成功！！！"
-          this.handleGetWallet()
-        }
-      })
-      this.count--
-    },
     handleChange(val) {
       console.log(val);
     },
