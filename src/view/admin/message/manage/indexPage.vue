@@ -22,6 +22,7 @@
     <template v-slot:tableColumn>
       <el-table-column align="center" label="#" type="index" width="80"/>
       <el-table-column align="center" label="标 题" prop="title" show-overflow-tooltip/>
+      <el-table-column align="center" label="内 容" prop="content" width="500" show-overflow-tooltip/>
       <el-table-column align="center" label="类 型" show-overflow-tooltip>
         <template v-slot="{row}">{{ row.type === 0 ? '通知提醒' : '系统公告' }}</template>
       </el-table-column>
