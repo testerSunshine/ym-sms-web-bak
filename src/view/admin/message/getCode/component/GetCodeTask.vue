@@ -61,6 +61,7 @@ import {getCode} from "@/api/message/getCode";
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {addPhone} from "@/api/message/getPhone";
 import {search, add} from "@/api/message/publicJoin"
+import {updateTask} from "@/api/message/smsTask";
 
 
 
@@ -83,7 +84,7 @@ export default {
   data() {
     return {
       countDownTime: 300,
-
+      taskId:"",
       form:{
         projectId:"",
         projectName:"",
@@ -106,6 +107,7 @@ export default {
         this.countDownTime = n.leftSeconds
         this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
         this.form.projectId = n.projectId
+        this.taskId = n.id
         if(n.phoneNo != null && n.phoneNo !== "" && n.status === 1){
           this.handleGetCode();
         }
@@ -133,6 +135,7 @@ export default {
         }
         this.form.phone = resp.data.mobile
         this.form.lastMsgTime = resp.data.lastMsgTime
+        this.taskId = resp.data.smsTask.id
         clearInterval(this.timer)
         elSuccess("获取手机号成功，点击获取验证码即可获取验证码")
 
@@ -210,11 +213,20 @@ export default {
     },
 
     stopGetCode() {
-      clearInterval(this.timer)
-      this.timer = null
-      this.countDownTime = 300
-      this.getCodeStatus = "已停止获取验证码"
-      elSuccess("已停止获取验证码")
+      updateTask.request({"id":this.taskId, "status":2}).then(
+          resp =>{
+            console.log(resp)
+            clearInterval(this.timer)
+            this.timer = null
+            this.countDownTime = 300
+            this.getCodeStatus = "已停止获取验证码"
+            this.form.phone = null
+            this.form.projectName = null
+            this.form.projectCode = null
+            elSuccess("已停止获取验证码")
+          }
+      )
+
     },
 
   },
