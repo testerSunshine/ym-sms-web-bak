@@ -216,14 +216,17 @@ export default {
       updateTask.request({"id":this.taskId, "status":2}).then(
           resp =>{
             console.log(resp)
-            clearInterval(this.timer)
-            this.timer = null
-            this.countDownTime = 300
-            this.getCodeStatus = "已停止获取验证码"
-            this.form.phone = null
-            this.form.projectName = null
-            this.form.projectCode = null
-            elSuccess("已停止获取验证码")
+            if(resp === true){
+              clearInterval(this.timer)
+              this.timer = null
+              this.countDownTime = 300
+              this.getCodeStatus = "已停止获取验证码"
+              this.form.phone = null
+              this.form.projectName = null
+              this.form.projectCode = null
+              elSuccess("已停止获取验证码")
+            }
+
           }
       )
 
