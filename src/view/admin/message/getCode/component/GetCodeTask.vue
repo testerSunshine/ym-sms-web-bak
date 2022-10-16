@@ -30,7 +30,7 @@
                  size="mini"
                  v-clipboard:copy="this.form.code"
                  v-clipboard:success="copy" v-if="this.taskStatus">复制验证码</el-button>
-      <el-button style="margin: 10px" type="danger" size="mini" @click="stopGetCode()" v-if="this.taskStatus">终止任务</el-button>
+      <el-button style="margin: 10px" type="danger" size="mini" @click="stopGetCode()" v-if="this.taskStatus">清空该任务</el-button>
       <br>
       <el-tag  style="margin: 10px" type="primary" size="medium"  >{{this.getCodeStatus}}</el-tag>
       <el-tag  style="margin: 10px" type="primary" size="medium"  >倒计时：{{this.countDownTime}}s</el-tag>
@@ -269,6 +269,8 @@ export default {
                 this.form.projectName = null
                 this.form.projectCode = null
                 this.form.lastMsgTime = null
+                this.form.code = null
+                this.form.codeContent = null
 
                 elSuccess("已停止获取验证码")
               }else{
