@@ -138,6 +138,7 @@
     <el-card class="get-code-pool" style="margin-top: 10px" shadow="never">
       <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差充值【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
       <el-tag type="success" size="medium" effect="dark" v-if="!taskRole.hasNext">恭喜您！多开任务池数量已经开满！</el-tag>
+      <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>
       <el-row>
         <el-col :span="12" :xs="24">
           <GetCodeTask ref="GetCodeTask1" :get-phone-form=this.getPhoneForm :task-status=this.taskList[0] :task-data=this.taskDataList[0]></GetCodeTask>

@@ -3,7 +3,8 @@
     <abstract-form :model="form" :rules="rules">
       <el-form-item label="卡密" prop="cardId">
         <el-input v-model="form.cardId" style="width: 70%"/>
-        <el-link type="primary" style="margin-left: 15px" href="https://www.ysfaka.com/links/95FA5D22" target="_blank" :underline="false">没有卡密？点击购买(如不能访问，请关闭翻墙)</el-link>
+        <p>说明：从卡密商店购买卡密，获取一串英文+数字序列，然后在这里填入序列，充值对应卡密金币数</p>
+        <el-link type="primary" style="margin-left: 15px" href="https://www.ysfaka.com/links/95FA5D22" target="_blank" :underline="false">卡密商店(如不能访问，请关闭翻墙)</el-link>
       </el-form-item>
     </abstract-form>
 
