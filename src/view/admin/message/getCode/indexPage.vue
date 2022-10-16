@@ -12,7 +12,7 @@
         <div class="grid-content bg-purple">
           <div class="user-info-tip">
             <p>
-              <span style='color: red;'>价格说明：单价需要搜索出项目后显示</span>
+              <span style='color: red;'>大部门问题都能在最底下问题解释找到答案！价格搜索后显示！！！</span>
               <br>
               操作说明：<br>
               1. 搜索短信内容关键字，不知道关键字？用自己手机接一条，看看短信内容抬头叫啥<br>
