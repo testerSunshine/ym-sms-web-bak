@@ -74,6 +74,7 @@ export default {
   data() {
     return {
       timer: null,
+      endFlag: false,
       countDownTime: 300,
       taskId:"",
       getCodeStatus:"等待获取验证码",
@@ -132,6 +133,7 @@ export default {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
         return
       }
+      this.endFlag = false
       this.form.projectName = this.getPhoneForm.projectName
       this.form.projectId = this.getPhoneForm.projectId
       this.form.projectCode = this.getPhoneForm.code
@@ -194,16 +196,17 @@ export default {
     },
 
     handleGetCode() {
-      if (this.countDownTime < 1) {
+      if (this.countDownTime < 2 || this.endFlag) {
         clearInterval(this.timer)
-        this.getCodeStatus = "验证码获取超时，请更改手机号或者渠道再重试"
+        this.getCodeStatus = "获取验证码任务结束"
+        return
       }
       getCode.request({
         projectId: this.form.projectId,
         phoneNum: this.form.phone,
       }).then(resp => {
         if (resp === undefined) {
-          this.stopGetCode()
+          this.stopAuto()
           return
         }
         if (resp.data.message === "ok") {
@@ -221,10 +224,39 @@ export default {
 
     },
 
+    stopAuto(){
+      if(this.taskId == null || this.taskId ===""){
+        elError("任务不存在")
+      }else{
+        this.endFlag = true
+        updateTask.request({"id":this.taskId, "status":2}).then(
+            resp =>{
+              // console.log(resp)
+              if(resp.data){
+                clearInterval(this.timer)
+                this.timer = null
+                this.countDownTime = 300
+                this.getCodeStatus = "已停止获取验证码"
+                // this.form.phone = null
+                // this.form.projectName = null
+                // this.form.projectCode = null
+                // this.form.lastMsgTime = null
+
+                elSuccess("已停止获取验证码")
+              }else{
+                elError("停止失败")
+              }
+
+            }
+        )
+      }
+    },
+
     stopGetCode() {
       if(this.taskId == null || this.taskId ===""){
         elError("任务不存在")
       }else{
+        this.endFlag = true
         updateTask.request({"id":this.taskId, "status":2}).then(
             resp =>{
               // console.log(resp)
