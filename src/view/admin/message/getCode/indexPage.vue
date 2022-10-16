@@ -402,12 +402,12 @@ export default {
           .then(resp => {
             this.loading=false
             this.projectListData = resp.data.list
+            this.dialogTableVisible=true
           })
           .finally(() => this.projectInputLoading = false,
               this.projectSearchLoading = false,
               this.loading=true
           )
-      this.dialogTableVisible=true
     },
     projectNameChange() {
       this.$refs.projectNameSelect.query = ""
