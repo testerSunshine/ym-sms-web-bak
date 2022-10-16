@@ -136,7 +136,7 @@
 <!--    </el-card>-->
 
     <el-card class="get-code-pool" style="margin-top: 20px" shadow="never">
-      <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
+      <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差充值【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
       <el-tag type="danger" size="medium" effect="dark" v-if="!taskRole.hasNext">多开任务池数量已经开满</el-tag>
       <el-row>
         <el-col :span="12" :xs="24">
@@ -268,17 +268,17 @@ export default {
         code: '',
         projectId: 0,
       },
-      getCodeForm: {
-        phone: '等待获取',
-        lastMsgTime: '',
-        code: '等待获取',
-        codeContent: '',
-      },
+      // getCodeForm: {
+      //   phone: '等待获取',
+      //   lastMsgTime: '',
+      //   code: '等待获取',
+      //   codeContent: '',
+      // },
       projectSearchOptions: [],
       wallet: "0.00",
-      timer: null,
-      count: 300,
-      getCodeStatus:"",
+      // timer: null,
+      // count: 300,
+      // getCodeStatus:"",
       editDialog: false,
       remoteSearchQuery: '',
 
@@ -299,6 +299,7 @@ export default {
       },
 
       taskList:[false,false,false,false],
+
       taskData:{
         id:0,
         leftSeconds:300,
@@ -367,7 +368,6 @@ export default {
             this.$set(this.taskList, i ,true);
             // this.taskList[i] = true 非响应式
           }
-          // console.log(this.taskList)
         }
     )
 
@@ -409,12 +409,12 @@ export default {
               this.loading=true
           )
     },
-    projectNameChange() {
-      this.$refs.projectNameSelect.query = ""
-    },
-    getProjectRemoteData(query) {
-      this.remoteSearchQuery = query
-    },
+    // projectNameChange() {
+    //   this.$refs.projectNameSelect.query = ""
+    // },
+    // getProjectRemoteData(query) {
+    //   this.remoteSearchQuery = query
+    // },
 
     handleChange(val) {
       console.log(val);

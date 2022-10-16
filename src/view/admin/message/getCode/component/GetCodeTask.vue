@@ -90,46 +90,37 @@ export default {
 
   },
 
+  // mounted() {
+  //   if(this.form.phoneNo != null && this.form.projectId != null && this.taskData.status === 1){
+  //     this.startGetCode();
+  //   }
+  // },
+
   watch:{
     taskData:{
       handler(n,o){
-        console.log("nnnnnnnnn")
-        console.log(n)
-        console.log("ooooooooo")
-        console.log(o)
-        if(n!=null){
-          this.form.phone = n.phoneNo
-          this.countDownTime = n.leftSeconds
-          this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
-          this.form.projectId = n.projectId
-          this.form.projectCode = n.projectCode
-          this.taskId = n.id
+        this.form.phone = n.phoneNo
+        this.countDownTime = n.leftSeconds
+        this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
+        this.form.projectId = n.projectId
+        this.form.projectCode = n.projectCode
+        this.taskId = n.id
 
-          this.getPhoneForm.code = n.projectCode
-          this.getPhoneForm.projectId = n.projectId
-        }else{
-          this.form.phone = o.phoneNo
-          this.countDownTime = o.leftSeconds
-          this.form.projectName = o.projectName + "("+o.userMoney+")"+ o.projectContent + "projectId"  + o.projectId
-          this.form.projectId = o.projectId
-          this.form.projectCode = o.projectCode
-          this.taskId = o.id
+        this.getPhoneForm.code = n.projectCode
+        this.getPhoneForm.projectId = n.projectId
 
-          this.getPhoneForm.code = o.projectCode
-          this.getPhoneForm.projectId = o.projectId
-        }
+        console.log("ssdsada")
+        console.log(this.form.projectName)
 
-
-        if(n.phoneNo != null && n.phoneNo !== "" && n.status === 1){
-          this.handleGetCode();
-        }
       }
     }
   },
 
-  beforeDestroy() {
-    clearInterval(this.timer);
+  deactivated() {
+    clearInterval(this.timer)
+    this.timer = null
   },
+
 
   methods:{
     copy() {
@@ -137,7 +128,7 @@ export default {
     },
 
     submitGetPhoneForm() {
-      if (this.getPhoneForm.projectId === '') {
+      if (this.getPhoneForm.projectId === '' || this.getPhoneForm.projectId == null) {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
         return
       }
@@ -191,7 +182,7 @@ export default {
         clearInterval(this.timer)
         return
       }
-      this.countDownTime = 300
+      // this.countDownTime = 300
       this.getCodeStatus = "获取验证码中..."
       // 定时获取验证码
       elSuccess("开始获取验证码")
