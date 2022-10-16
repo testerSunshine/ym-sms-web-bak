@@ -54,6 +54,7 @@ import {addPhone, getPhone} from "@/api/message/getPhone";
 import {getCode} from "@/api/message/getCode";
 import {elError, elSuccess} from "@/util/message"
 import {updateTask} from "@/api/message/smsTask";
+import {timeFormat} from "@/util"
 
 
 export default {
@@ -212,12 +213,12 @@ export default {
         if (resp.data.message === "ok") {
           this.form.code = resp.data.code
           this.form.codeContent = resp.data.modle
-          this.form.lastMsgTime = timeFormat()
+          this.form.lastMsgTime = timeFormat("yyyy-MM-dd HH:mm:ss")
           clearInterval(this.timer)
           // 获取短信成功就更新用户余额
           elSuccess("获取验证码成功")
           this.getCodeStatus = "验证码获取成功！！！"
-          this.handleGetWallet()
+          this.$emit("handleGetWallet")
         }
       }).finally(
           () => this.countDownTime = this.countDownTime - 2)
