@@ -300,6 +300,7 @@ export default {
 
       taskList:[false,false,false,false],
       taskData:{
+        id:0,
         leftSeconds:300,
         phoneNo:"",
         projectId:"",
@@ -337,6 +338,7 @@ export default {
           }else{
             for(let i=0; i<resp.data.length; i++){
               let taskData = {}
+              taskData.id = resp.data[i].id
               taskData.leftSeconds = resp.data[i].leftSeconds
               taskData.phoneNo = resp.data[i].phoneNo
               taskData.projectName = resp.data[i].projectName

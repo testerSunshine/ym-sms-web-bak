@@ -93,15 +93,32 @@ export default {
   watch:{
     taskData:{
       handler(n,o){
-        this.form.phone = n.phoneNo
-        this.countDownTime = n.leftSeconds
-        this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
-        this.form.projectId = n.projectId
-        this.form.projectCode = n.projectCode
-        this.taskId = n.id
+        console.log("nnnnnnnnn")
+        console.log(n)
+        console.log("ooooooooo")
+        console.log(o)
+        if(n!=null){
+          this.form.phone = n.phoneNo
+          this.countDownTime = n.leftSeconds
+          this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
+          this.form.projectId = n.projectId
+          this.form.projectCode = n.projectCode
+          this.taskId = n.id
 
-        this.getPhoneForm.code = n.projectCode
-        this.getPhoneForm.projectId = n.projectId
+          this.getPhoneForm.code = n.projectCode
+          this.getPhoneForm.projectId = n.projectId
+        }else{
+          this.form.phone = o.phoneNo
+          this.countDownTime = o.leftSeconds
+          this.form.projectName = o.projectName + "("+o.userMoney+")"+ o.projectContent + "projectId"  + o.projectId
+          this.form.projectId = o.projectId
+          this.form.projectCode = o.projectCode
+          this.taskId = o.id
+
+          this.getPhoneForm.code = o.projectCode
+          this.getPhoneForm.projectId = o.projectId
+        }
+
 
         if(n.phoneNo != null && n.phoneNo !== "" && n.status === 1){
           this.handleGetCode();
