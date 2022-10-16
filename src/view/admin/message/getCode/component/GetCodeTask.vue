@@ -135,6 +135,7 @@ export default {
         return
       }
       this.endFlag = false
+      this.countDownTime = 300
       this.form.projectName = this.getPhoneForm.projectName
       this.form.projectId = this.getPhoneForm.projectId
       this.form.projectCode = this.getPhoneForm.code
