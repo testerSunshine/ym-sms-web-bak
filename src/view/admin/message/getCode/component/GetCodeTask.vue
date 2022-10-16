@@ -217,7 +217,7 @@ export default {
           this.handleGetWallet()
         }
       }).finally(
-          () => this.countDownTime--)
+          () => this.countDownTime = this.countDownTime - 2)
 
     },
 
