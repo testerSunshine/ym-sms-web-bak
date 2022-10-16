@@ -109,8 +109,8 @@ export default {
         this.getPhoneForm.code = n.projectCode
         this.getPhoneForm.projectId = n.projectId
 
-        console.log("ssdsada")
-        console.log(this.form.projectName)
+        // console.log("ssdsada")
+        // console.log(this.form.projectName)
 
       }
     }
@@ -227,7 +227,7 @@ export default {
       }else{
         updateTask.request({"id":this.taskId, "status":2}).then(
             resp =>{
-              console.log(resp)
+              // console.log(resp)
               if(resp.data){
                 clearInterval(this.timer)
                 this.timer = null
@@ -237,8 +237,7 @@ export default {
                 this.form.projectName = null
                 this.form.projectCode = null
                 this.form.lastMsgTime = null
-                this.form.code = null
-                this.form.codeContent = null
+
                 elSuccess("已停止获取验证码")
               }else{
                 elError("停止失败")

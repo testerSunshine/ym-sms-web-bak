@@ -351,11 +351,11 @@ export default {
               taskData.userMoney = resp.data[i].bizSmsProjectDetailInfo.userMoney
 
               this.$set(this.taskDataList, i ,taskData);
-              console.log(taskData.phoneNo)
+              // console.log(taskData.phoneNo)
               // this.taskList[i] = true 非响应式
             }
           }
-          console.log(this.taskDataList)
+          // console.log(this.taskDataList)
 
 
         }
