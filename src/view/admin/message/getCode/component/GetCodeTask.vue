@@ -99,6 +99,10 @@ export default {
         this.form.projectId = n.projectId
         this.form.projectCode = n.projectCode
         this.taskId = n.id
+
+        this.getPhoneForm.code = n.projectCode
+        this.getPhoneForm.projectId = n.projectId
+
         if(n.phoneNo != null && n.phoneNo !== "" && n.status === 1){
           this.handleGetCode();
         }
@@ -204,32 +208,37 @@ export default {
           this.getCodeStatus = "验证码获取成功！！！"
           this.handleGetWallet()
         }
-      })
-      this.countDownTime--
+      }).finally(
+          () => this.countDownTime--)
+
     },
 
     stopGetCode() {
-      updateTask.request({"id":this.taskId, "status":2}).then(
-          resp =>{
-            console.log(resp)
-            if(resp){
-              clearInterval(this.timer)
-              this.timer = null
-              this.countDownTime = 300
-              this.getCodeStatus = "已停止获取验证码"
-              this.form.phone = null
-              this.form.projectName = null
-              this.form.projectCode = null
-              this.form.lastMsgTime = null
-              this.form.code = null
-              this.form.codeContent = null
-              elSuccess("已停止获取验证码")
-            }else{
-              elError("停止失败")
-            }
+      if(this.taskId == null || this.taskId ===""){
+        elError("任务不存在")
+      }else{
+        updateTask.request({"id":this.taskId, "status":2}).then(
+            resp =>{
+              console.log(resp)
+              if(resp.data){
+                clearInterval(this.timer)
+                this.timer = null
+                this.countDownTime = 300
+                this.getCodeStatus = "已停止获取验证码"
+                this.form.phone = null
+                this.form.projectName = null
+                this.form.projectCode = null
+                this.form.lastMsgTime = null
+                this.form.code = null
+                this.form.codeContent = null
+                elSuccess("已停止获取验证码")
+              }else{
+                elError("停止失败")
+              }
 
-          }
-      )
+            }
+        )
+      }
 
     },
 
