@@ -12,7 +12,7 @@
         <div class="grid-content bg-purple">
           <div class="user-info-tip">
             <p>
-              <span style='color: red;'>大部门问题都能在最底下问题解释找到答案！价格搜索后显示！！！</span>
+              <span style='color: red;'>大部分问题都能在最底下问题解释找到答案！价格搜索后显示！！！</span>
               <br>
               操作说明：<br>
               1. 搜索短信内容关键字，不知道关键字？用自己手机接一条，看看短信内容抬头叫啥<br>
@@ -137,7 +137,7 @@
 
     <el-card class="get-code-pool" style="margin-top: 20px" shadow="never">
       <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差充值【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
-      <el-tag type="danger" size="medium" effect="dark" v-if="!taskRole.hasNext">多开任务池数量已经开满</el-tag>
+      <el-tag type="success" size="medium" effect="dark" v-if="!taskRole.hasNext">恭喜您！多开任务池数量已经开满！</el-tag>
       <el-row>
         <el-col :span="12" :xs="24">
           <GetCodeTask ref="GetCodeTask1" :get-phone-form=this.getPhoneForm :task-status=this.taskList[0] :task-data=this.taskDataList[0]></GetCodeTask>
