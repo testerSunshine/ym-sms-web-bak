@@ -25,7 +25,7 @@
         <el-input v-model="form.lastMsgTime" :disabled=true>time</el-input>
       </el-form-item>
 
-      <el-button style="margin-right: 10px" type="primary" size="mini" @click="startGetCode()" v-if="this.taskStatus">获取验证码</el-button>
+      <el-button style="margin-left: 10px; margin-right: 10px" type="primary" size="mini" @click="startGetCode()" v-if="this.taskStatus">获取验证码</el-button>
       <el-button style="margin-right: 10px"
                  size="mini"
                  v-clipboard:copy="this.form.code"

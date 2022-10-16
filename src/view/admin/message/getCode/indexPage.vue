@@ -24,7 +24,7 @@
         </div>
       </el-col>
       <el-col :span="8" :xs="24">
-          <div class="grid-content bg-purple-light" style="margin-bottom: 20px">
+          <div class="grid-content bg-purple-light" style="margin-bottom: 10px">
             <el-card class="box-card" style="background-color: #FAECD8">
             <div slot="header" class="clearfix">
                <el-col :span="16">
@@ -135,7 +135,7 @@
 <!--      </el-form>-->
 <!--    </el-card>-->
 
-    <el-card class="get-code-pool" style="margin-top: 20px" shadow="never">
+    <el-card class="get-code-pool" style="margin-top: 10px" shadow="never">
       <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差充值【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
       <el-tag type="success" size="medium" effect="dark" v-if="!taskRole.hasNext">恭喜您！多开任务池数量已经开满！</el-tag>
       <el-row>
@@ -157,7 +157,7 @@
 
     </el-card>
 
-    <el-card style="margin-top: 20px" shadow="never">
+    <el-card style="margin-top: 10px" shadow="never">
       <div style="margin: 20px">问题解释Q&A</div>
       <el-collapse v-model="activeNames" @change="handleChange">
         <el-collapse-item title="为什么我收不到验证码" name="1">
@@ -470,11 +470,14 @@ export default {
   background-color: #ecf8ff;
   border-radius: 4px;
   border-left: 5px solid #50bfff;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 a {
   color: #409eff;
   text-decoration: none;
+}
+.el-card__body {
+  padding: 10px;
 }
 </style>
