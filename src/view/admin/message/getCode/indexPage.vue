@@ -136,7 +136,8 @@
 <!--    </el-card>-->
 
     <el-card class="get-code-pool" style="margin-top: 20px" shadow="never">
-      <div>当前可用多开任务池数量{{this.taskRole.userCanTaskNum}}个，开启下一个需累冲金币到{{this.taskRole.nextTaskMoney}}</div>
+      <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
+      <el-tag type="danger" size="medium" effect="dark" v-if="!taskRole.hasNext">多开任务池数量已经开满</el-tag>
       <el-row>
         <el-col :span="12" :xs="24">
           <GetCodeTask ref="GetCodeTask1" :get-phone-form=this.getPhoneForm :task-status=this.taskList[0] :task-data=this.taskDataList[0]></GetCodeTask>
@@ -160,12 +161,12 @@
       <div style="margin: 20px">问题解释Q&A</div>
       <el-collapse v-model="activeNames" @change="handleChange">
         <el-collapse-item title="为什么我收不到验证码" name="1">
-          <div>1.确认已经在对应项目的app/web点击了发送验证码</div>
-          <div>2.手机号被项目风控了，请切换手机号或者切换渠道再试</div>
-          <div>3.手机号被用过了，注册相关的项目收不到，登录可以收到</div>
+          <div>1.确认已经在对应项目的app/web等端给获取到的手机号发送了验证码，不发平台怎么接？</div>
+          <div>2.手机号被项目风控了，请切换手机号或者切换渠道再试，建议多换手机号试试，不要轻易放弃渠道</div>
+          <div>3.手机号被用过了，注册相关的项目收不到，登录可能可以收到</div>
           <div>4.项目不支持虚拟号，请切换实卡再试</div>
           <div>5.相对来说，价格高的渠道优质一点</div>
-          <div>6.大热门很难找到首次资源，比如抖音-米哈游等等</div>
+          <div>6.大热门很难找到首次资源，比如抖音-米哈游等等，基本走注册是收不到的</div>
           <div>说明：各个渠道的卡质量不一，与平台无关，收不到短信不扣费！！！</div>
         </el-collapse-item>
         <el-collapse-item title="为什么莫名其妙扣钱了" name="2">
@@ -239,21 +240,14 @@
 </template>
 
 <script>
-import {search, add} from "@/api/message/publicJoin"
+import {add, search} from "@/api/message/publicJoin"
 import {getWallet} from "@/api/system/SysUserWallet"
-import {selectProjectByProjectIdList} from "@/api/message/smsProject";
-import {list} from "@/api/message/smsCollect";
-import {getPhone} from "@/api/message/getPhone";
-import {getCode} from "@/api/message/getCode";
+import {searchProject} from "@/api/message/getCode";
 import RechargeDialog from "./component/RechargeDialog"
 import GetCodeTask from "./component/GetCodeTask"
-import {elConfirm, elError, elSuccess} from "@/util/message"
-import {timeFormat} from "@/util"
-import {searchProject} from "@/api/message/getCode";
-import {addPhone} from "@/api/message/getPhone";
+import {elError, elSuccess} from "@/util/message"
 import {getLastOne} from "@/api/system/notice";
-import {getTask} from "@/api/message/smsTask";
-import {getTaskRole} from "@/api/message/smsTask";
+import {getTask, getTaskRole} from "@/api/message/smsTask";
 
 
 export default {
@@ -376,11 +370,8 @@ export default {
     )
 
 
-    // this.handleGetProjectEnterSearch()
   },
-  beforeDestroy() {
-    clearInterval(this.timer);
-  },
+
   methods: {
     loadProjectList(){
       this.projectInputLoading = true
@@ -422,31 +413,6 @@ export default {
     getProjectRemoteData(query) {
       this.remoteSearchQuery = query
     },
-
-    //
-    // handleGetCollectProject() {
-    //   this.collectOptions = []
-    //   list
-    //       .request({size: 50})
-    //       .then(resp => {
-    //         let projectList = [];
-    //         resp.data.map(function (l) {
-    //           projectList.push(l.projectId)
-    //         })
-    //         let _this = this
-    //         selectProjectByProjectIdList
-    //             .request({projectIdList: projectList})
-    //             .then(resp => {
-    //               resp.data.map(function (p) {
-    //                 _this.collectOptions.push({
-    //                   value: p.projectName,
-    //                   label: '项目: ' + p.projectName,
-    //                 })
-    //                 _this.getPhoneForm.projectId = _this.collectOptions[0].value
-    //               })
-    //             })
-    //       })
-    // },
 
     handleChange(val) {
       console.log(val);

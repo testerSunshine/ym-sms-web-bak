@@ -1,18 +1,10 @@
 <template>
   <el-card class="get-code-task" style="margin: 20px" shadow="never">
     <el-form ref="form" :model="form" label-width="80px" size="mini">
-<!--      <el-form-item label="任务id:">-->
-<!--        <el-input v-model="id" :disabled=true></el-input>-->
-<!--      </el-form-item>-->
 
       任务状态：<el-tag type="success" size="mini" effect="dark" v-if="this.taskStatus">可用</el-tag>
       <el-tag type="danger" size="mini" effect="dark" v-if="!this.taskStatus">禁用</el-tag>
       <br>
-
-<!--      <el-form-item label="状态:">-->
-<!--        <el-input v-model="status" :disabled=true></el-input>-->
-<!--        <el-button v-model="form.status" type="success" icon="el-icon-check" circle></el-button>-->
-<!--      </el-form-item>-->
 
       <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()" v-if="this.taskStatus">获取手机号</el-button>
       <el-button style="margin: 10px"
@@ -39,14 +31,16 @@
                  v-clipboard:copy="this.form.code"
                  v-clipboard:success="copy" v-if="this.taskStatus">复制验证码</el-button>
       <el-button style="margin: 10px" type="danger" size="mini" @click="stopGetCode()" v-if="this.taskStatus">终止任务</el-button>
-      <el-tag  style="margin: 10px" type="primary" size="medium" effect="dark" >{{this.countDownTime}}s</el-tag>
+      <br>
+      <el-tag  style="margin: 10px" type="primary" size="medium"  >{{this.getCodeStatus}}</el-tag>
+      <el-tag  style="margin: 10px" type="primary" size="medium"  >倒计时：{{this.countDownTime}}s</el-tag>
 
       <el-form-item label="验证码:">
-        <el-input v-model="form.code">code</el-input>
+        <el-input v-model="form.code" :disabled=!this.taskStatus>code</el-input>
       </el-form-item>
 
       <el-form-item label="短信内容:">
-        <el-input type="textarea" :rows="2" v-model="form.codeContent" placeholder="如果验证码提取有错，请自取短信内容里的验证码"></el-input>
+        <el-input type="textarea" :disabled=!this.taskStatus :rows="2" v-model="form.codeContent" placeholder="如果验证码提取有错，请自取短信内容里的验证码"></el-input>
       </el-form-item>
 
     </el-form>
@@ -56,13 +50,10 @@
 </template>
 
 <script>
-import {getPhone} from "@/api/message/getPhone";
+import {addPhone, getPhone} from "@/api/message/getPhone";
 import {getCode} from "@/api/message/getCode";
-import {elConfirm, elError, elSuccess} from "@/util/message"
-import {addPhone} from "@/api/message/getPhone";
-import {search, add} from "@/api/message/publicJoin"
+import {elError, elSuccess} from "@/util/message"
 import {updateTask} from "@/api/message/smsTask";
-
 
 
 export default {
@@ -73,7 +64,6 @@ export default {
       type: Boolean,
       default: false
     },
-    "taskId": String,
 
     "getPhoneForm": Object,
     "taskData": Object,
@@ -83,8 +73,10 @@ export default {
 
   data() {
     return {
+      timer: null,
       countDownTime: 300,
       taskId:"",
+      getCodeStatus:"等待获取验证码",
       form:{
         projectId:"",
         projectName:"",
@@ -101,12 +93,11 @@ export default {
   watch:{
     taskData:{
       handler(n,o){
-        console.log("ininininin")
-        console.log(n.phoneNo)
         this.form.phone = n.phoneNo
         this.countDownTime = n.leftSeconds
         this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
         this.form.projectId = n.projectId
+        this.form.projectCode = n.projectCode
         this.taskId = n.id
         if(n.phoneNo != null && n.phoneNo !== "" && n.status === 1){
           this.handleGetCode();
@@ -115,6 +106,9 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
 
   methods:{
     copy() {
@@ -128,6 +122,8 @@ export default {
       }
       this.form.projectName = this.getPhoneForm.projectName
       this.form.projectId = this.getPhoneForm.projectId
+      this.form.projectCode = this.getPhoneForm.code
+
       getPhone.request(this.getPhoneForm).then(resp => {
         if (resp.data.mobile === "") {
           elError("没找到符合条件的号码，请检查搜索条件再试")
@@ -216,7 +212,7 @@ export default {
       updateTask.request({"id":this.taskId, "status":2}).then(
           resp =>{
             console.log(resp)
-            if(resp === true){
+            if(resp){
               clearInterval(this.timer)
               this.timer = null
               this.countDownTime = 300
@@ -224,7 +220,12 @@ export default {
               this.form.phone = null
               this.form.projectName = null
               this.form.projectCode = null
+              this.form.lastMsgTime = null
+              this.form.code = null
+              this.form.codeContent = null
               elSuccess("已停止获取验证码")
+            }else{
+              elError("停止失败")
             }
 
           }
