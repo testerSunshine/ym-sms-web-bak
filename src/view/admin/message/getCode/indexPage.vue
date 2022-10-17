@@ -83,6 +83,10 @@
               <el-input v-model="getPhoneForm.scope_black" placeholder="排除号段最长支持4位且可以支持多个,最多支持20个号段。用逗号分隔 比如184,1841"></el-input>
             </el-form-item>
 
+            <el-form-item label="归属地：" >
+              <el-input v-model="getPhoneForm.address" placeholder="归属地选择 例如 北京 不需要带省、市字样"></el-input>
+            </el-form-item>
+
           </el-collapse-item>
         </el-collapse>
         <br>
@@ -268,6 +272,7 @@ export default {
         scope_black: '',
         code: '',
         projectId: 0,
+        address: '',
       },
       // getCodeForm: {
       //   phone: '等待获取',
