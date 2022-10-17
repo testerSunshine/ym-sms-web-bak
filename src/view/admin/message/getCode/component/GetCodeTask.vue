@@ -18,7 +18,7 @@
       </el-form-item>
 
       <el-form-item label="手机号:">
-        <el-input v-model="form.phone" :disabled=true></el-input>
+        <el-tag type="primary"  size="mini" effect="dark" >{{form.phone}}</el-tag>
       </el-form-item>
 
       <el-form-item label="最近来码:">
@@ -82,7 +82,7 @@ export default {
       form:{
         projectId:"",
         projectName:"",
-        phone:"",
+        phone:"等待获取",
         lastMsgTime:"",
         projectCode:"",
         code:"",
