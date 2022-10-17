@@ -4,7 +4,6 @@
 
       任务状态：<el-tag type="success" size="mini" effect="dark" v-if="this.taskStatus">可用</el-tag>
       <el-tag type="danger" size="mini" effect="dark" v-if="!this.taskStatus">禁用</el-tag>
-      项目信息：<el-tag type="success" size="mini" effect="dark" >{{ this.form.projectName }}</el-tag>
       <br>
       <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()" v-if="this.taskStatus">获取手机号</el-button>
       <el-button style="margin: 10px"
@@ -13,7 +12,7 @@
                  v-clipboard:success="copy" v-if="this.taskStatus">复制手机号</el-button>
       <el-button style="margin: 10px" type="danger" size="mini" @click="banPhone()" v-if="this.taskStatus">拉黑该号码</el-button>
       <el-form-item label="项目信息:">
-        <el-input v-model="form.projectName" :disabled=true></el-input>
+        <el-tag type="success" size="mini" effect="dark" >{{ this.form.projectName }}</el-tag>
       </el-form-item>
       <el-form-item label="手机号:">
         <el-tag type="primary"  size="mini" effect="dark" >{{form.phone}}</el-tag>
@@ -181,6 +180,11 @@ export default {
       if (this.getPhoneForm.projectId === 0) {
         elError("请选择渠道再获取验证码")
         this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
+        clearInterval(this.timer)
+        return
+      }
+      if (this.form.phone === "等待获取") {
+        elError("请先获取手机号再试")
         clearInterval(this.timer)
         return
       }
