@@ -1,22 +1,20 @@
 <template>
-  <el-card class="get-code-task" style="margin: 5px" shadow="never">
+  <el-card class="get-code-task" style="margin: 5px; border-color: #4AB7BD" shadow="never">
     <el-form ref="form" :model="form" label-width="80px" size="mini">
 
       任务状态：<el-tag type="success" size="mini" effect="dark" v-if="this.taskStatus">可用</el-tag>
       <el-tag type="danger" size="mini" effect="dark" v-if="!this.taskStatus">禁用</el-tag>
+      项目信息：<el-tag type="success" size="mini" effect="dark" >{{ this.form.projectName }}</el-tag>
       <br>
-
       <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()" v-if="this.taskStatus">获取手机号</el-button>
       <el-button style="margin: 10px"
                  size="mini"
                  v-clipboard:copy="this.form.phone"
                  v-clipboard:success="copy" v-if="this.taskStatus">复制手机号</el-button>
       <el-button style="margin: 10px" type="danger" size="mini" @click="banPhone()" v-if="this.taskStatus">拉黑该号码</el-button>
-
       <el-form-item label="项目信息:">
         <el-input v-model="form.projectName" :disabled=true></el-input>
       </el-form-item>
-
       <el-form-item label="手机号:">
         <el-tag type="primary"  size="mini" effect="dark" >{{form.phone}}</el-tag>
       </el-form-item>
