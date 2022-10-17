@@ -292,6 +292,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style ang="scss">
+  .get-code-task .el-card__body {
+    padding: 10px;
+  }
 </style>
