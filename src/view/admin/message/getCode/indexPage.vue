@@ -484,7 +484,4 @@ a {
   color: #409eff;
   text-decoration: none;
 }
-.el-card__body {
-  padding: 10px;
-}
 </style>
