@@ -4,18 +4,19 @@
 
       任务状态：<el-tag type="success" size="mini" effect="dark" v-if="this.taskStatus">可用</el-tag>
       <el-tag type="danger" size="mini" effect="dark" v-if="!this.taskStatus">禁用</el-tag>
-      <br>
       <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()" v-if="this.taskStatus">获取手机号</el-button>
-      <el-button style="margin: 10px"
-                 size="mini"
-                 v-clipboard:copy="this.form.phone"
-                 v-clipboard:success="copy" v-if="this.taskStatus">复制手机号</el-button>
-      <el-button style="margin: 10px" type="danger" size="mini" @click="banPhone()" v-if="this.taskStatus">拉黑该号码</el-button>
+
+      <br>
       <el-form-item label="项目信息:">
         <el-tag type="success" size="mini" effect="dark" >{{ this.form.projectName }}</el-tag>
       </el-form-item>
       <el-form-item label="手机号:">
         <el-tag type="primary"  size="mini" effect="dark" >{{form.phone}}</el-tag>
+        <el-button style="margin: 10px"
+                   size="mini"
+                   v-clipboard:copy="this.form.phone"
+                   v-clipboard:success="copy" v-if="this.taskStatus">复制手机号</el-button>
+        <el-button style="margin: 10px" type="danger" size="mini" @click="banPhone()" v-if="this.taskStatus">拉黑该号码</el-button>
       </el-form-item>
 
       <el-form-item label="最近来码:">
@@ -131,6 +132,10 @@ export default {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
         return
       }
+      if(this.form.phone != null && this.form.phone.startsWith("1")){
+        elError("该任务已被占用，请先清空任务，或者使用其他任务池")
+        return
+      }
       this.endFlag = false
       this.countDownTime = 300
       this.form.projectName = this.getPhoneForm.projectName
@@ -146,7 +151,7 @@ export default {
         this.form.lastMsgTime = resp.data.lastMsgTime
         this.taskId = resp.data.smsTask.id
         clearInterval(this.timer)
-        elSuccess("获取手机号成功，点击获取验证码即可获取验证码")
+        elSuccess("获取手机号成功，请先去【"+ this.form.projectName.split("（")[0] +"】发送验证码，再点击获取验证码")
 
       })
     },
