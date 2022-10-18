@@ -15,7 +15,7 @@
         <el-button style="margin-left: 10px" size="mini"
                    v-clipboard:copy="this.form.phone"
                    v-clipboard:success="copy" v-if="this.taskStatus">复制手机号</el-button>
-        <el-button type="danger" size="mini" @click="banPhone()" v-if="this.taskStatus">拉黑该号码</el-button>
+        <el-button style="margin-left: 10px" type="danger" size="mini" @click="banPhone()" v-if="this.taskStatus">拉黑该号码</el-button>
       </el-form-item>
 
       <el-form-item label="最近来码:">
