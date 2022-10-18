@@ -226,6 +226,7 @@
     <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible" width="40%" center>
       <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
         <el-table-column property="code" label="项目id" width="100"></el-table-column>
+        <el-table-column property="projectName" label="项目名称" width="100"></el-table-column>
         <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
 <!--        <el-table-column property="canUseMum" label="可用" width="50"></el-table-column>-->
         <el-table-column property="content" label="详情" width="100"></el-table-column>
