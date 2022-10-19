@@ -131,7 +131,7 @@ export default {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
         return
       }
-      if(this.form.phone != null && this.form.phone.startsWith("1")){
+      if(this.form.phone != null && this.form.phone.startsWith("1") && !this.from.code){
         elError("该任务已被占用，请先清空任务，或者使用其他任务池")
         return
       }
@@ -196,7 +196,7 @@ export default {
       this.getCodeStatus = "获取验证码中..."
       // 定时获取验证码
       elSuccess("开始获取验证码")
-      this.form.code = "等待获取"
+      // this.form.code = "等待获取"
       this.form.codeContent = ""
       this.form.lastMsgTime = ""
       this.timer = setInterval(this.handleGetCode, 2000);
