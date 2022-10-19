@@ -135,6 +135,7 @@ export default {
         elError("该任务已被占用，请先清空任务，或者使用其他任务池")
         return
       }
+      this.form.code = null
       this.endFlag = false
       this.countDownTime = 300
       this.form.projectName = this.getPhoneForm.projectName
