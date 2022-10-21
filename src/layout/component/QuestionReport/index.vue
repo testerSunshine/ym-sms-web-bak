@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="text" @click="jump">问题反馈</el-button>
+<!--    <el-button type="text" @click="jump">问题反馈</el-button>-->
     <question-report-dialog v-model="editDialog" type="recharge" @success="success"></question-report-dialog>
   </div>
 </template>
