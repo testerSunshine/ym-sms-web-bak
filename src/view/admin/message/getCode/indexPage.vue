@@ -4,6 +4,7 @@
         :title="this.notice"
         type="error"
         v-show="noticeBoolen"
+
     >
     </el-alert>
     <br>
@@ -483,5 +484,9 @@ export default {
 a {
   color: #409eff;
   text-decoration: none;
+}
+.el-alert__title {
+  font-size: 20px;
+  line-height: 18px;
 }
 </style>
