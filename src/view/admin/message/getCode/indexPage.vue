@@ -216,7 +216,7 @@
             label="操作"
         >
           <template slot-scope="scope">
-            <el-button @click="handleGetProjectEnterSearch(scope.row.id)" type="text" size="small">查看渠道</el-button>
+            <el-button @click="handleGetProjectEnterSearch(scope.row.id, scope.row.channelIdList)" type="text" size="small">查看渠道</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -255,6 +255,7 @@ import GetCodeTask from "./component/GetCodeTask"
 import {elError, elSuccess} from "@/util/message"
 import {getLastOne} from "@/api/system/notice";
 import {getTask, getTaskRole} from "@/api/message/smsTask";
+import {bpSend} from "@/api/bp";
 
 
 export default {
@@ -294,6 +295,7 @@ export default {
       dialogProjectVisible:false,
       projectListData:[],
       projectList:[],
+      channelIdList:[],
       loading:true,
       notice:"",
       noticeBoolen: false,
@@ -328,6 +330,11 @@ export default {
 
 
   created() {
+    bpSend.request({
+      "action_code":"101",
+      "action_name":"created"
+    }).then()
+
     this.handleGetWallet()
     getLastOne.request({}).then(resp => {
       if(resp.msg === null || resp.msg === "" || resp.msg.trim() === "关闭"){
@@ -402,11 +409,11 @@ export default {
 
     },
 
-    handleGetProjectEnterSearch(id) {
+    handleGetProjectEnterSearch(id, channelIdList) {
       this.projectInputLoading = true
       this.projectSearchLoading = true
       search
-          .request({"keyword": id})
+          .request({"keyword": id, "channelIdList":channelIdList})
           .then(resp => {
             this.loading=false
             this.projectListData = resp.data.list
