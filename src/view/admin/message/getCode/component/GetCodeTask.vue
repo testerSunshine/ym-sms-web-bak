@@ -84,6 +84,7 @@ export default {
         projectCode:"",
         code:"",
         codeContent:"",
+        channelId:""
       }
     }
 
@@ -103,8 +104,9 @@ export default {
         this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
         this.form.projectId = n.projectId
         this.form.projectCode = n.projectCode
-        this.taskId = n.id
+        this.form.channelId = n.channelId
 
+        this.taskId = n.id
         this.getPhoneForm.code = n.projectCode
         this.getPhoneForm.projectId = n.projectId
 
@@ -127,7 +129,7 @@ export default {
     },
 
     submitGetPhoneForm() {
-      if (this.getPhoneForm.projectId === '' || this.getPhoneForm.projectId == null) {
+      if (this.getPhoneForm.code === '' || this.getPhoneForm.code == null) {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
         return
       }
@@ -141,6 +143,9 @@ export default {
       this.form.projectName = this.getPhoneForm.projectName
       this.form.projectId = this.getPhoneForm.projectId
       this.form.projectCode = this.getPhoneForm.code
+      this.form.channelId = this.getPhoneForm.channelId
+
+
 
       getPhone.request(this.getPhoneForm).then(resp => {
         if (resp.data.mobile === "") {
@@ -166,6 +171,7 @@ export default {
         return
       }
       addPhone.request({
+        "channelId":this.form.channelId,
         "code":this.form.projectCode,
         "phoneNo":this.form.phone,
         "type":0
@@ -182,7 +188,7 @@ export default {
 
     startGetCode() {
       clearInterval(this.timer)
-      if (this.getPhoneForm.projectId === 0) {
+      if (this.getPhoneForm.code === 0) {
         elError("请选择渠道再获取验证码")
         this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
         clearInterval(this.timer)
@@ -205,14 +211,16 @@ export default {
     },
 
     handleGetCode() {
-      if (this.countDownTime < 2 || this.endFlag) {
+      if (this.countDownTime < 5 || this.endFlag) {
         clearInterval(this.timer)
         this.getCodeStatus = "获取验证码任务结束"
         return
       }
       getCode.request({
-        projectId: this.form.projectId,
-        phoneNum: this.form.phone,
+        "code":this.form.projectCode,
+        "projectId": this.form.projectId,
+        "phoneNum": this.form.phone,
+        "channelId" : this.form.channelId
       }).then(resp => {
         if (resp === undefined) {
           this.stopAuto()
@@ -229,7 +237,7 @@ export default {
           this.$emit("handleGetWallet")
         }
       }).finally(
-          () => this.countDownTime = this.countDownTime - 2)
+          () => this.countDownTime = this.countDownTime - 5)
 
     },
 
@@ -280,6 +288,7 @@ export default {
                 this.form.lastMsgTime = null
                 this.form.code = null
                 this.form.codeContent = null
+                this.form.channelId = null
 
                 elSuccess("已停止获取验证码")
               }else{

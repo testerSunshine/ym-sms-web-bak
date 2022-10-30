@@ -44,8 +44,6 @@
       </el-col>
     </el-row>
 
-
-
     <el-card class="get-phone-page" shadow="never">
       <el-form ref="getPhoneForm" :model="getPhoneForm" label-width="120px" size="mini">
         <el-form-item label="关键字：">
@@ -92,53 +90,9 @@
         </el-collapse>
         <br>
 
-<!--        <el-form-item>-->
-<!--          <el-button type="primary" @click="submitGetPhoneForm('getPhoneForm')">获取手机号</el-button>-->
-<!--          <br>-->
-<!--        </el-form-item>-->
       </el-form>
     </el-card>
-<!--    <el-card class="get-code-page" style="margin-top: 20px" shadow="never">-->
-<!--      <el-form ref="getCodeForm" :model="getCodeForm" label-width="120px" size="mini">-->
-<!--        <el-form-item label="手机号：">-->
-<!--          <el-tag type="primary"  size="medium" effect="dark" >{{getCodeForm.phone}}</el-tag>-->
-<!--          <el-input v-model="getCodeForm.phone" style="width: 90%" :disabled="true"></el-input>-->
-<!--          <el-button style="margin-left: 5px ; margin-right: 5px"-->
-<!--                     v-clipboard:copy="getCodeForm.phone"-->
-<!--                     v-clipboard:success="copy">复制</el-button>-->
-<!--          <el-button type="danger" @click="banPhone()">拉黑该号码</el-button>-->
-<!--            <br>-->
-<!--          <el-tag type="danger">获取过程别刷新页面，一旦您发了验证码，后台会一直拉取，如果刷新了，请去记录里找，这种情况也会扣费，所以您发现异常扣费，就是您发了验证码，但是您刷新页面了</el-tag>-->
-<!--            <br>-->
-<!--          <el-tag type="primary">点击"获取验证码"之前请务必保证自己发送了这个手机号的验证码，怎么发？去你刷的app里面发！！！自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码</el-tag>-->
-<!--&lt;!&ndash;          <el-tag type="primary">自己都没去发验证码就来这里获取的，说收不到码的，我建议你别玩了！！！（渠道关键字务必对齐你刷的app，别张三的渠道刷李四的码）</el-tag>&ndash;&gt;-->
-<!--            <br>-->
-<!--          <el-tag type="primary">操作没问题还收不到码的，去看下面问题解释</el-tag>-->
-<!--          <br>-->
-<!--          <el-button type="primary" @click="startGetCode()">获取验证码</el-button>-->
-<!--          <el-button type="primary" @click="stopGetCode()">停止获取</el-button>-->
-<!--        </el-form-item>-->
 
-
-<!--        <el-form-item label="最近来码时间：">-->
-<!--          <el-input v-model="getCodeForm.lastMsgTime" :disabled="true"></el-input>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="获取倒计时:">-->
-<!--          <el-tag type="primary" size="medium"  effect="dark" >{{getCodeStatus}}  {{count}}s</el-tag>-->
-<!--          <span></span>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="验证码：">-->
-<!--          <el-tag type="primary" size="medium" effect="dark" >{{getCodeForm.code}}</el-tag>-->
-<!--          <el-button style="margin-left: 5px"-->
-<!--                     v-clipboard:copy="getCodeForm.code"-->
-<!--                     v-clipboard:success="copy">复制</el-button>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="短信内容：">-->
-<!--          <el-input type="textarea" :rows="1" v-model="getCodeForm.codeContent"></el-input>-->
-<!--        </el-form-item>-->
-
-<!--      </el-form>-->
-<!--    </el-card>-->
 
     <el-card class="get-code-pool" style="margin-top: 10px" shadow="never">
       <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差充值【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
@@ -216,7 +170,7 @@
             label="操作"
         >
           <template slot-scope="scope">
-            <el-button @click="handleGetProjectEnterSearch(scope.row.id, scope.row.channelIdList)" type="text" size="small">查看渠道</el-button>
+            <el-button @click="handleGetProjectEnterSearch(scope.row)" type="text" size="small">查看渠道</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -276,6 +230,7 @@ export default {
         code: '',
         projectId: 0,
         address: '',
+        channelId: '',
       },
       // getCodeForm: {
       //   phone: '等待获取',
@@ -409,11 +364,11 @@ export default {
 
     },
 
-    handleGetProjectEnterSearch(id, channelIdList) {
+    handleGetProjectEnterSearch(row) {
       this.projectInputLoading = true
       this.projectSearchLoading = true
       search
-          .request({"keyword": id, "channelIdList":channelIdList})
+          .request({"keyword": row.id, "channelIdList":row.channelIdList})
           .then(resp => {
             this.loading=false
             this.projectListData = resp.data.list
@@ -464,10 +419,11 @@ export default {
           elError("该渠道无法使用，请换一个渠道试试")
           return
         }
+        this.getPhoneForm.channelId = resp.data.channelId
         this.getPhoneForm.projectId = resp.data.id
         this.dialogTableVisible=false
-        this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）" + "projectId: " + this.getPhoneForm.projectId
         this.getPhoneForm.code = row.code
+        this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）" + "projectId: " + this.getPhoneForm.code
         this.dialogProjectVisible = false
 
       })
