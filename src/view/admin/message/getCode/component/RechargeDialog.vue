@@ -3,7 +3,7 @@
     <abstract-form :model="form" :rules="rules">
       <el-form-item label="卡密" prop="cardId">
         <el-input v-model="form.cardId" style="width: 70%"/>
-        <el-link type="primary" href="https://www.ysfaka.com/links/95FA5D22" target="_blank" :underline="false">没有卡密？点击购买(如不能访问，请关闭翻墙)</el-link>
+        <el-link type="primary" href="https://www.ysfaka.com/links/95FA5D22" target="_blank" :underline="false" @click.native="sendBp">没有卡密？点击购买(如不能访问，请关闭翻墙)</el-link>
         <br>
         <span>说明：从卡密商店购买卡密，获取一串英文+数字序列，然后在这里填入序列，充值对应卡密金币数</span>
       </el-form-item>
@@ -23,6 +23,8 @@ import AbstractDialog from '@/component/abstract/Dialog'
 import {activateCard} from "@/api/message/idCard"
 import {isEmpty, mergeObj, resetObj} from '@/util'
 import {elConfirm} from "@/util/message"
+import {bpSend} from "@/api/bp";
+
 
 export default {
   name: "RechargeDialog",
@@ -65,6 +67,10 @@ export default {
   methods: {
 
     open() {
+      bpSend.request({
+        "action_code":"200000",
+        "action_name":"打开充值界面"
+      }).then()
       if (this.type !== 'add') mergeObj(this.form, this.data)
     },
 
@@ -78,7 +84,18 @@ export default {
       this.clearForm()
     },
 
+    sendBp(){
+      bpSend.request({
+        "action_code":"200001",
+        "action_name":"点击商店链接"
+      }).then()
+    },
+
     confirm() {
+      bpSend.request({
+        "action_code":"200002",
+        "action_name":"点击确认充值按钮"
+      }).then()
       if (this.loading) return
       this.$refs.form.validate(v => {
         if (!v) return

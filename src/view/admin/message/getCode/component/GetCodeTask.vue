@@ -52,6 +52,7 @@ import {getCode} from "@/api/message/getCode";
 import {elError, elSuccess} from "@/util/message"
 import {updateTask} from "@/api/message/smsTask";
 import {timeFormat} from "@/util"
+import {bpSend} from "@/api/bp";
 
 
 export default {
@@ -118,6 +119,10 @@ export default {
   },
 
   deactivated() {
+    bpSend.request({
+      "action_code":"100000",
+      "action_name":"任务组件被刷新"
+    }).then()
     clearInterval(this.timer)
     this.timer = null
   },
@@ -125,10 +130,19 @@ export default {
 
   methods:{
     copy() {
+      bpSend.request({
+        "action_code":"100020",
+        "action_name":"使用复制按钮"
+      }).then()
       elSuccess("复制成功")
     },
 
     submitGetPhoneForm() {
+      bpSend.request({
+        "action_code":"100001",
+        "action_name":"获取手机号"
+      }).then()
+
       if (this.getPhoneForm.code === '' || this.getPhoneForm.code == null) {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
         return
@@ -162,6 +176,11 @@ export default {
     },
 
     banPhone(){
+      bpSend.request({
+        "action_code":"100100",
+        "action_name":"拉黑手机号"
+      }).then()
+
       if(this.form.projectCode === ""){
         elError("请先获取渠道和正确的手机号再试")
         return
@@ -187,6 +206,11 @@ export default {
     },
 
     startGetCode() {
+      bpSend.request({
+        "action_code":"100003",
+        "action_name":"开始获取验证码"
+      }).then()
+
       clearInterval(this.timer)
       if (this.getPhoneForm.code === 0) {
         elError("请选择渠道再获取验证码")
@@ -242,6 +266,10 @@ export default {
     },
 
     stopAuto(){
+      bpSend.request({
+        "action_code":"100004",
+        "action_name":"系统停止获取验证码"
+      }).then()
       if(this.taskId == null || this.taskId ===""){
         elError("任务不存在")
       }else{
@@ -270,6 +298,10 @@ export default {
     },
 
     stopGetCode() {
+      bpSend.request({
+        "action_code":"100005",
+        "action_name":"用户停止获取验证码"
+      }).then()
       if(this.taskId == null || this.taskId ===""){
         elError("任务不存在")
       }else{

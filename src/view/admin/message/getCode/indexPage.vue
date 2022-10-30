@@ -32,7 +32,7 @@
                   <p style="font-style: italic; font-weight: bold; color: #88949d">金币余额</p>
               </el-col>
               <el-col :span="8">
-<!--                  <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>-->
+                  <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>
               </el-col>
               <!--        <el-button style="float: right; padding: 3px 0" type="text">充值</el-button>-->
             </div>
@@ -97,7 +97,7 @@
     <el-card class="get-code-pool" style="margin-top: 10px" shadow="never">
       <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差充值【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
       <el-tag type="success" size="medium" effect="dark" v-if="!taskRole.hasNext">恭喜您！多开任务池数量已经开满！</el-tag>
-<!--      <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>-->
+      <el-button @click="handleSupplier" type="danger" size="mini">立即充值</el-button>
       <el-row>
         <el-col :span="12" :xs="24">
           <GetCodeTask ref="GetCodeTask1" :get-phone-form=this.getPhoneForm :task-status=this.taskList[0] :task-data=this.taskDataList[0]></GetCodeTask>
@@ -163,7 +163,7 @@
 
     <el-dialog title="项目列表" :visible.sync="dialogProjectVisible" width="40%" center>
       <el-table v-loading="loading" :data="projectList" stripe style="width: 100%">
-        <el-table-column property="id" label="id" width="100"></el-table-column>
+<!--        <el-table-column property="id" label="id" width="100"></el-table-column>-->
         <el-table-column property="name" label="项目名称" width="250"></el-table-column>
         <el-table-column
             fixed="right"
@@ -286,8 +286,8 @@ export default {
 
   created() {
     bpSend.request({
-      "action_code":"101",
-      "action_name":"created"
+      "action_code":"000001",
+      "action_name":"打开/刷新页面"
     }).then()
 
     this.handleGetWallet()
@@ -346,6 +346,10 @@ export default {
 
   methods: {
     loadProjectList(){
+      bpSend.request({
+        "action_code":"000002",
+        "action_name":"搜索项目" + this.keyWord
+      }).then()
       this.projectInputLoading = true
       this.projectSearchLoading = true
       searchProject
@@ -365,6 +369,10 @@ export default {
     },
 
     handleGetProjectEnterSearch(row) {
+      bpSend.request({
+        "action_code":"000002",
+        "action_name":"查看渠道"
+      }).then()
       this.projectInputLoading = true
       this.projectSearchLoading = true
       search
@@ -405,7 +413,6 @@ export default {
     },
 
     handleProjectSelect(row){
-
       const loading = this.$loading({
         lock: true,
         text: '渠道切换中...',
@@ -427,6 +434,11 @@ export default {
         this.dialogProjectVisible = false
 
       })
+
+      bpSend.request({
+        "action_code":"000020",
+        "action_name":"选择渠道" + this.getPhoneForm.projectName
+      }).then()
 
     },
 
