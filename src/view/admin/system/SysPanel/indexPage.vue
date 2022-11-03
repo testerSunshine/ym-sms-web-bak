@@ -3,9 +3,9 @@
     <el-tab-pane label="充值管理" name="first">
       <el-input v-model="num" placeholder="请输入生成卡密数量"></el-input>
       <el-button type="primary" @click="create5">生成5元卡密</el-button>
-      <el-button type="primary" @click="create10">生成10元卡密（送1）</el-button>
-      <el-button type="primary" @click="create50">生成50元卡密（送10）</el-button>
-      <el-button type="primary" @click="create100">生成100元卡密（送30）</el-button>
+      <el-button type="primary" @click="create10">生成10元卡密</el-button>
+      <el-button type="primary" @click="create50">生成50元卡密（送3）</el-button>
+      <el-button type="primary" @click="create100">生成100元卡密（送10）</el-button>
       <br>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
@@ -60,7 +60,7 @@ export default {
       generateIdCard.request({
         "size": this.num,
         "cardMoney": 10,
-        "cardMoneyGift": 1
+        "cardMoneyGift": 0
       }).then(
           resp => {
             this.cardList = resp.data
@@ -76,7 +76,7 @@ export default {
       generateIdCard.request({
         "size": this.num,
         "cardMoney": 50,
-        "cardMoneyGift": 10
+        "cardMoneyGift": 3
       }).then(
           resp => {
             this.cardList = resp.data
@@ -92,7 +92,7 @@ export default {
       generateIdCard.request({
         "size": this.num,
         "cardMoney": 100,
-        "cardMoneyGift": 30
+        "cardMoneyGift": 10
       }).then(
           resp => {
             this.cardList = resp.data
