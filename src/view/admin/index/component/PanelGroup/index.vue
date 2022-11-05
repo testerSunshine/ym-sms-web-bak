@@ -7,6 +7,8 @@
       <el-col>
         <div>樱桃:{{this.yingtaoAccount}}</div>
         <div>流星:{{this.liuxingAccount}}</div>
+        <div>未来:{{this.weilaiAccount}}</div>
+
       </el-col>
 
     </el-row>
@@ -278,6 +280,7 @@ export default {
       smsCodeNumAllOneWeek:[],
       yingtaoAccount:"",
       liuxingAccount:"",
+      weilaiAccount:"",
     }
   },
 
@@ -343,6 +346,12 @@ export default {
       //       console.log(resp)
       //     }
       // )
+
+      getThirdAccount.request({"code":"5"}).then(
+          resp => {
+            this.weilaiAccount = resp.data.data.money
+          }
+      )
     },
 
     jump({path}) {
