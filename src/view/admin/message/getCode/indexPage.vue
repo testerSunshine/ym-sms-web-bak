@@ -37,7 +37,16 @@
               <!--        <el-button style="float: right; padding: 3px 0" type="text">充值</el-button>-->
             </div>
             <div style="height: 50px">
-              <p style="font-style: italic; font-size: 3em; margin: 0px; color: darkslategray">${{ this.wallet }}</p>
+              <el-row>
+                <el-col :span="6">
+                  <span class="svg-container">
+                    <v-icon style="width: 50px; height: 50px" icon="svg-coin"/>
+                  </span>
+                </el-col>
+                <el-col :span="18">
+                  <p style="font-style: italic; font-size: 3em; margin: 0px; color: darkslategray">{{ this.wallet }}</p>
+                </el-col>
+              </el-row>
             </div>
           </el-card>
           </div>
@@ -288,7 +297,7 @@ export default {
     bpSend.request({
       "action_code":"000001",
       "action_name":"打开/刷新页面"
-    }).then()
+    })
 
     this.handleGetWallet()
     getLastOne.request({}).then(resp => {
@@ -349,7 +358,7 @@ export default {
       bpSend.request({
         "action_code":"000002",
         "action_name":"搜索项目" + this.keyWord
-      }).then()
+      })
       this.projectInputLoading = true
       this.projectSearchLoading = true
       searchProject
@@ -372,7 +381,7 @@ export default {
       bpSend.request({
         "action_code":"000002",
         "action_name":"查看渠道"
-      }).then()
+      })
       this.projectInputLoading = true
       this.projectSearchLoading = true
       search
@@ -438,7 +447,7 @@ export default {
       bpSend.request({
         "action_code":"000020",
         "action_name":"选择渠道" + this.getPhoneForm.projectName
-      }).then()
+      })
 
     },
 
