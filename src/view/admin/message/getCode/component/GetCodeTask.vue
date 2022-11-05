@@ -85,7 +85,8 @@ export default {
         projectCode:"",
         code:"",
         codeContent:"",
-        channelId:""
+        channelId:"",
+        phoneId:""
       }
     }
 
@@ -168,6 +169,7 @@ export default {
         }
         this.form.phone = resp.data.mobile
         this.form.lastMsgTime = resp.data.lastMsgTime
+        this.form.phoneId = resp.data.phoneId
         this.taskId = resp.data.smsTask.id
         clearInterval(this.timer)
         elSuccess("获取手机号成功，请先去【"+ this.form.projectName.split("（")[0] +"】发送验证码，再点击获取验证码")
@@ -244,7 +246,8 @@ export default {
         "code":this.form.projectCode,
         "projectId": this.form.projectId,
         "phoneNum": this.form.phone,
-        "channelId" : this.form.channelId
+        "channelId" : this.form.channelId,
+        "phoneId": this.form.phoneId
       }).then(resp => {
         if (resp === undefined) {
           this.stopAuto()
@@ -315,6 +318,7 @@ export default {
                 this.countDownTime = 300
                 this.getCodeStatus = "已停止获取验证码"
                 this.form.phone = null
+                this.form.phoneId = null
                 this.form.projectName = null
                 this.form.projectCode = null
                 this.form.lastMsgTime = null
