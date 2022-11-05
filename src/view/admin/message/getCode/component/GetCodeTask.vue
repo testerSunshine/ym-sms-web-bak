@@ -230,7 +230,7 @@ export default {
       // this.form.code = "等待获取"
       this.form.codeContent = ""
       this.form.lastMsgTime = ""
-      this.timer = setInterval(this.handleGetCode, 2000);
+      this.timer = setInterval(this.handleGetCode, 5000);
 
     },
 
