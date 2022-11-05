@@ -4,6 +4,10 @@
       <el-col v-for="i in list" :key="i.id" :xs="12" :sm="12" :lg="6">
         <div>{{ i.text }}: {{ i.value }}</div>
       </el-col>
+      <el-col>
+        <div>樱桃:{{this.yingtaoAccount}}</div>
+        <div>流星:{{this.liuxingAccount}}</div>
+      </el-col>
 
     </el-row>
     <p>今日验证码top10项目的名称</p>
@@ -150,6 +154,7 @@ import cssVar from '@/style/var.scss'
 import {getFourBlock, getOneWeekData} from '@/api/statistic'
 import {isEmpty} from "@/util"
 import {auth} from "@/util/auth"
+import {getThirdAccount} from "../../../../../api/system/ThirdAccount";
 
 var echarts = require("echarts");
 
@@ -270,7 +275,9 @@ export default {
       sellNumOneWeek:[],
       moneyCost:[],
       smsCodeNumSuccessOneWeek:[],
-      smsCodeNumAllOneWeek:[]
+      smsCodeNumAllOneWeek:[],
+      yingtaoAccount:"",
+      liuxingAccount:"",
     }
   },
 
@@ -311,6 +318,31 @@ export default {
             this.userWalletEntityV2 = data.sysUserWalletActiveLast10EntityList
           })
           .finally(() => this.loading = false)
+
+      // getThirdAccount.request({"code":"1"}).then(
+      //     resp => {
+      //       console.log(resp)
+      //     }
+      // )
+
+      getThirdAccount.request({"code":"2"}).then(
+          resp => {
+            this.liuxingAccount = resp.data.data.money
+          }
+      )
+
+      getThirdAccount.request({"code":"3"}).then(
+          resp => {
+            this.yingtaoAccount = resp.data.data.money
+          }
+      )
+
+
+      // getThirdAccount.request({"code":"4"}).then(
+      //     resp => {
+      //       console.log(resp)
+      //     }
+      // )
     },
 
     jump({path}) {
