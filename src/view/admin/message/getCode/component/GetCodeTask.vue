@@ -22,7 +22,7 @@
         <el-input v-model="form.lastMsgTime" :disabled=true>time</el-input>
       </el-form-item>
 
-      <el-button style="margin-left: 10px; margin-right: 10px" type="primary" size="mini" @click="startGetCode()" v-if="this.taskStatus">获取验证码</el-button>
+      <el-button style="margin-left: 10px; margin-right: 10px" type="primary" size="mini" @click="startGetCode()" v-if="this.taskStatus" disabled=this.getCodeFlag>获取验证码</el-button>
       <el-button style="margin-right: 10px"
                  size="mini"
                  v-clipboard:copy="this.form.code"
@@ -77,6 +77,7 @@ export default {
       countDownTime: 300,
       taskId:"",
       getCodeStatus:"等待获取验证码",
+      getCodeFlag:true,
       form:{
         projectId:"",
         projectName:"",
@@ -122,7 +123,7 @@ export default {
     bpSend.request({
       "action_code":"100000",
       "action_name":"任务组件被刷新"
-    }).then()
+    })
     clearInterval(this.timer)
     this.timer = null
   },
@@ -133,7 +134,7 @@ export default {
       bpSend.request({
         "action_code":"100020",
         "action_name":"使用复制按钮"
-      }).then()
+      })
       elSuccess("复制成功")
     },
 
@@ -141,7 +142,7 @@ export default {
       bpSend.request({
         "action_code":"100001",
         "action_name":"获取手机号"
-      }).then()
+      })
 
       if (this.getPhoneForm.code === '' || this.getPhoneForm.code == null) {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
@@ -179,7 +180,7 @@ export default {
       bpSend.request({
         "action_code":"100100",
         "action_name":"拉黑手机号"
-      }).then()
+      })
 
       if(this.form.projectCode === ""){
         elError("请先获取渠道和正确的手机号再试")
@@ -206,10 +207,11 @@ export default {
     },
 
     startGetCode() {
+      this.getCodeFlag = false
       bpSend.request({
         "action_code":"100003",
         "action_name":"开始获取验证码"
-      }).then()
+      })
 
       clearInterval(this.timer)
       if (this.getPhoneForm.code === 0) {
@@ -269,7 +271,7 @@ export default {
       bpSend.request({
         "action_code":"100004",
         "action_name":"系统停止获取验证码"
-      }).then()
+      })
       if(this.taskId == null || this.taskId ===""){
         elError("任务不存在")
       }else{
@@ -288,6 +290,7 @@ export default {
                 // this.form.lastMsgTime = null
 
                 elSuccess("已停止获取验证码")
+                this.getCodeFlag = true
               }else{
                 elError("停止失败")
               }
@@ -301,7 +304,7 @@ export default {
       bpSend.request({
         "action_code":"100005",
         "action_name":"用户停止获取验证码"
-      }).then()
+      })
       if(this.taskId == null || this.taskId ===""){
         elError("任务不存在")
       }else{
@@ -322,6 +325,7 @@ export default {
                 this.form.codeContent = null
                 this.form.channelId = null
 
+                this.getCodeFlag = true
                 elSuccess("已停止获取验证码")
               }else{
                 elError("停止失败")

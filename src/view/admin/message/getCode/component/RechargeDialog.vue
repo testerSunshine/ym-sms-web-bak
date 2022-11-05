@@ -70,7 +70,7 @@ export default {
       bpSend.request({
         "action_code":"200000",
         "action_name":"打开充值界面"
-      }).then()
+      })
       if (this.type !== 'add') mergeObj(this.form, this.data)
     },
 
@@ -88,14 +88,14 @@ export default {
       bpSend.request({
         "action_code":"200001",
         "action_name":"点击商店链接"
-      }).then()
+      })
     },
 
     confirm() {
       bpSend.request({
         "action_code":"200002",
         "action_name":"点击确认充值按钮"
-      }).then()
+      })
       if (this.loading) return
       this.$refs.form.validate(v => {
         if (!v) return
