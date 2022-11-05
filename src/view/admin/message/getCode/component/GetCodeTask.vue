@@ -22,7 +22,7 @@
         <el-input v-model="form.lastMsgTime" :disabled=true>time</el-input>
       </el-form-item>
 
-      <el-button style="margin-left: 10px; margin-right: 10px" type="primary" size="mini" @click="startGetCode()" v-if="this.taskStatus" disabled=this.getCodeFlag>获取验证码</el-button>
+      <el-button style="margin-left: 10px; margin-right: 10px" type="primary" size="mini" @click="startGetCode()" v-if="this.taskStatus" :disabled=this.getCodeFlag>获取验证码</el-button>
       <el-button style="margin-right: 10px"
                  size="mini"
                  v-clipboard:copy="this.form.code"
@@ -77,7 +77,7 @@ export default {
       countDownTime: 300,
       taskId:"",
       getCodeStatus:"等待获取验证码",
-      getCodeFlag:true,
+      getCodeFlag:false,
       form:{
         projectId:"",
         projectName:"",
@@ -209,7 +209,7 @@ export default {
     },
 
     startGetCode() {
-      this.getCodeFlag = false
+      this.getCodeFlag = true
       bpSend.request({
         "action_code":"100003",
         "action_name":"开始获取验证码"
@@ -293,7 +293,7 @@ export default {
                 // this.form.lastMsgTime = null
 
                 elSuccess("已停止获取验证码")
-                this.getCodeFlag = true
+                this.getCodeFlag = false
               }else{
                 elError("停止失败")
               }
@@ -329,7 +329,7 @@ export default {
                 this.form.codeContent = null
                 this.form.channelId = null
 
-                this.getCodeFlag = true
+                this.getCodeFlag = false
                 elSuccess("已停止获取验证码")
               }else{
                 elError("停止失败")
