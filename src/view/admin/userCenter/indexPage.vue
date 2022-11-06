@@ -37,10 +37,10 @@ export default {
 
     data() {
         return {
-            activeTab: 'login-history',
+            // activeTab: 'login-history',
             tabs: [
-                {label: '登录历史', name: 'login-history', intro: '只保留最近7天的记录'},
-                {label: '操作记录', name: 'user-action', intro: '只保留最近7天的记录'},
+                // {label: '登录历史', name: 'login-history', intro: '只保留最近7天的记录'},
+                // {label: '操作记录', name: 'user-action', intro: '只保留最近7天的记录'},
             ]
         }
     }

@@ -20,7 +20,7 @@
             </template>
         </el-admin-layout>
 
-        <setting-drawer ref="setting-drawer"/>
+<!--        <setting-drawer ref="setting-drawer"/>-->
     </div>
 </template>
 
