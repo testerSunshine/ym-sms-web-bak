@@ -439,7 +439,7 @@ export default {
         this.getPhoneForm.projectId = resp.data.id
         this.dialogTableVisible=false
         this.getPhoneForm.code = row.code
-        this.getPhoneForm.projectName = row.projectName + "（$" + row.userMoney + ")" + "（可用：" + row.content + "）" + "projectId: " + this.getPhoneForm.code
+        this.getPhoneForm.projectName = row.projectName + "（金币：" + row.userMoney + ")" + "（可用：" + row.content + "）" + "projectId: " + this.getPhoneForm.code
         this.dialogProjectVisible = false
 
       })
