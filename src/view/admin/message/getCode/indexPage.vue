@@ -442,12 +442,13 @@ export default {
         this.getPhoneForm.projectName = row.projectName + "（金币：" + row.userMoney + ")" + "（可用：" + row.content + "）" + "projectId: " + this.getPhoneForm.code
         this.dialogProjectVisible = false
 
+        bpSend.request({
+          "action_code":"000020",
+          "action_name":"选择渠道：" + this.getPhoneForm.projectName
+        })
+
       })
 
-      bpSend.request({
-        "action_code":"000020",
-        "action_name":"选择渠道：" + this.getPhoneForm.projectName
-      })
 
     },
 
