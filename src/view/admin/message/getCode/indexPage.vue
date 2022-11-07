@@ -446,7 +446,7 @@ export default {
 
       bpSend.request({
         "action_code":"000020",
-        "action_name":"选择渠道" + this.getPhoneForm.projectName
+        "action_name":"选择渠道：" + this.getPhoneForm.projectName
       })
 
     },

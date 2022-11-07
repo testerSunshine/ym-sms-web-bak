@@ -140,11 +140,6 @@ export default {
     },
 
     submitGetPhoneForm() {
-      bpSend.request({
-        "action_code":"100001",
-        "action_name":"获取手机号"
-      })
-
       if (this.getPhoneForm.code === '' || this.getPhoneForm.code == null) {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
         return
@@ -161,8 +156,6 @@ export default {
       this.form.projectCode = this.getPhoneForm.code
       this.form.channelId = this.getPhoneForm.channelId
 
-
-
       getPhone.request(this.getPhoneForm).then(resp => {
         if (resp.data.mobile === "") {
           elError("没找到符合条件的号码，请检查搜索条件再试")
@@ -174,14 +167,18 @@ export default {
         this.taskId = resp.data.smsTask.id
         clearInterval(this.timer)
         elSuccess("获取手机号成功，请先去【"+ this.form.projectName.split("（")[0] +"】发送验证码，再点击获取验证码")
+      })
 
+      bpSend.request({
+        "action_code":"100001",
+        "action_name":"获取手机号：" + this.form.phone
       })
     },
 
     banPhone(){
       bpSend.request({
         "action_code":"100100",
-        "action_name":"拉黑手机号"
+        "action_name":"拉黑手机号：" + this.form.phone
       })
 
       if(this.form.projectCode === ""){
@@ -264,6 +261,12 @@ export default {
           elSuccess("获取验证码成功")
           this.getCodeStatus = "验证码获取成功！！！"
           this.$emit("handleGetWallet")
+
+          bpSend.request({
+            "action_code":"100200",
+            "action_name":"获取验证码成功"
+          })
+
         }
       }).finally(
           () => this.countDownTime = this.countDownTime - 5)

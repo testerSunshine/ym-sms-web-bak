@@ -29,6 +29,7 @@ import {search} from "@/api/message/smsFlow"
 import {isEmpty} from '@/util'
 import {wic} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
+import {bpSend} from "@/api/bp";
 
 export default {
   name: "codeHistoryMessage",
@@ -76,6 +77,10 @@ export default {
 
   methods: {
     search() {
+      bpSend.request({
+        "action_code":"010000",
+        "action_name":"查看短信记录"
+      })
       if (this.config.loading) return
       this.config.loading = true
       this.row = null

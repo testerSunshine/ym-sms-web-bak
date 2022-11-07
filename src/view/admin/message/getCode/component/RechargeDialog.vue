@@ -80,6 +80,10 @@ export default {
     },
 
     cancel() {
+      bpSend.request({
+        "action_code":"210000",
+        "action_name":"关闭充值页面"
+      })
       this.closeDialog()
       this.clearForm()
     },
