@@ -121,10 +121,10 @@ export default {
   },
 
   deactivated() {
-    bpSend.request({
-      "action_code":"100000",
-      "action_name":"任务组件被刷新"
-    })
+    // bpSend.request({
+    //   "action_code":"100000",
+    //   "action_name":"任务组件被刷新"
+    // })
     clearInterval(this.timer)
     this.timer = null
   },
@@ -167,12 +167,15 @@ export default {
         this.taskId = resp.data.smsTask.id
         clearInterval(this.timer)
         elSuccess("获取手机号成功，请先去【"+ this.form.projectName.split("（")[0] +"】发送验证码，再点击获取验证码")
+
+        bpSend.request({
+          "action_code":"100001",
+          "action_name":"获取手机号：" + this.form.phone
+        })
+
       })
 
-      bpSend.request({
-        "action_code":"100001",
-        "action_name":"获取手机号：" + this.form.phone
-      })
+
     },
 
     banPhone(){
