@@ -42,9 +42,13 @@
               label="描述">
       </el-table-column>
     </el-table>
+    <p>请求实例</p>
+    <pre>
+      {"projectName":"","operator":"0","phone_num":"","scope":"","scope_black":"","code":"22833-L5teSLiV","projectId":null,"address":"","channelId":"1171909953355517964"}
+    </pre>
     <p>返回实例</p>
     <pre>
-    {"data":{"code":null,"desc":null,"lastMsgTime":"2022-09-14 23:12:18","message":"ok","minute":240,"mobile":"17038163996"},"msg":"操作成功","status":200,"success":true}
+      {"data":{"code":0,"desc":null,"lastMsgTime":null,"message":"success","minute":null,"mobile":"16215794469","phoneId":null,"smsTask":{"createTime":null,"endTime":null,"id":12117,"phoneNo":"16215794469","projectId":14102,"startTime":"2022-11-08 20:32:45","status":0,"uid":146,"updateTime":null}},"msg":"操作成功","status":200,"success":true}
     </pre>
     <h3>获取验证码</h3>
     <p></p>
@@ -73,9 +77,13 @@
           label="描述">
       </el-table-column>
     </el-table>
+    <p>请求实例</p>
+    <pre>
+      {"code":"22833-L5teSLiV","projectId":null,"phoneNum":"16215794469","channelId":"1171909953355517964","phoneId":null}
+    </pre>
     <p>返回实例</p>
     <pre>
-      {"data":{"message":"ok","code":"123411","modle":"【apple】您的验证码为123411，有效期30分钟"},"msg":"操作成功","status":200,"success":true}
+      {"data":{"message":"ok","code":"123411","modle":"【雪球】您的验证码为111111，有效期30分钟"},"msg":"操作成功","status":200,"success":true}
     </pre>
 
     <h3>拉黑手机号码</h3>
@@ -105,7 +113,6 @@
           label="描述">
       </el-table-column>
     </el-table>
-    <p>返回实例</p>
     <pre>
       {
           "data": true,
@@ -151,13 +158,19 @@ export default {
       loading: false,
       getPhoneData: [
         {params: "operator", isMust: "true", default: '0', desc: "0=全部，5=虚拟，4=非虚拟"},
+        {params: "channelId", isMust: "true", default: '空', desc: "渠道id，你选择渠道的时候的接口会返回"},
+        {params: "code", isMust: "true", default: '空', desc: "对接码，你选择渠道的时候的接口会返回"},
+        {params: "supplierId", isMust: "false", default: '空', desc: "供应商id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
         {params: "phone_num", isMust: "false", default: '空', desc: "是否指定手机号码"},
-        {params: "projectId", isMust: "true", default: '空', desc: "渠道id，可以从当前渠道复制"},
+        {params: "projectId", isMust: "false", default: '空', desc: "项目id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
         {params: "scope", isMust: "false", default: '空', desc: "指定号段，多个号段排除已逗号隔开"},
         {params: "scope_black", isMust: "false", default: '空', desc: "排除号段，多个号段排除已逗号隔开"},
       ],
       getCodeData: [
-        {params: "projectId", isMust: "true", default: '空', desc: "渠道id，可以从当前渠道复制"},
+        {params: "projectId", isMust: "false", default: '空', desc: "项目id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
+        {params: "phoneId", isMust: "false", default: '空', desc: "手机id，获取手机号的是如果有返回则必须填上，否则可以为空"},
+        {params: "channelId", isMust: "true", default: '空', desc: "渠道id，你选择渠道的时候的接口会返回"},
+        {params: "code", isMust: "true", default: '空', desc: "对接码，你选择渠道的时候的接口会返回"},
         {params: "phone_num", isMust: "true", default: '空', desc: "是否指定手机号码"},
       ],
       phoneCollectData: [
