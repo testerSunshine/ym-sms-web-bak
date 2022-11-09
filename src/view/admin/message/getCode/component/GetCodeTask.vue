@@ -267,7 +267,7 @@ export default {
     },
 
     handleGetCode() {
-      if (this.countDownTime < 5 || this.endFlag) {
+      if (this.countDownTime < 5 || this.endFlag || this.percentage < 0) {
         clearInterval(this.timer)
         clearInterval(this.timerLine)
         this.getCodeStatus = "获取验证码任务结束"
