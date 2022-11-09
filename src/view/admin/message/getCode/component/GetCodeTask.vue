@@ -108,7 +108,8 @@ export default {
         this.form.phone = n.phoneNo
         this.countDownTime = n.leftSeconds
         this.percentage = Math.round(n.leftSeconds/3)
-        this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
+        this.form.projectName = n.projectName + "(金币："+n.userMoney+")"+ "（可用：" + n.projectContent + "）" + "projectId:"  + n.projectCode
+
         this.form.projectId = n.projectId
         this.form.projectCode = n.projectCode
         this.form.channelId = n.channelId
