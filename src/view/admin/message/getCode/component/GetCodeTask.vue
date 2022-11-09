@@ -220,11 +220,13 @@ export default {
         elError("请选择渠道再获取验证码")
         this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
         clearInterval(this.timer)
+        this.getCodeFlag = false
         return
       }
       if (this.form.phone === "等待获取") {
         elError("请先获取手机号再试")
         clearInterval(this.timer)
+        this.getCodeFlag = false
         return
       }
       // this.countDownTime = 300
@@ -252,10 +254,12 @@ export default {
         "phoneId": this.form.phoneId
       }).then(resp => {
         if (resp === undefined) {
+          this.getCodeFlag = false
           this.stopAuto()
           return
         }
         if (resp.data.message === "ok") {
+          this.getCodeFlag = false
           this.form.code = resp.data.code
           this.form.codeContent = resp.data.modle
           this.form.lastMsgTime = timeFormat("yyyy-MM-dd HH:mm:ss")
@@ -299,7 +303,6 @@ export default {
                 // this.form.lastMsgTime = null
 
                 elSuccess("已停止获取验证码")
-                this.getCodeFlag = false
               }else{
                 elError("停止失败")
               }
@@ -312,7 +315,7 @@ export default {
     stopGetCode() {
       bpSend.request({
         "action_code":"100005",
-        "action_name":"用户停止获取验证码"
+        "action_name":"用户清空任务"
       })
       if(this.taskId == null || this.taskId ===""){
         elError("任务不存在")
