@@ -29,8 +29,20 @@
                  v-clipboard:success="copy" v-if="this.taskStatus">复制验证码</el-button>
       <el-button style="margin-right: 10px" type="danger" size="mini" @click="stopGetCode()" v-if="this.taskStatus">清空该任务</el-button>
       <br>
-      <el-tag  style="margin: 10px" type="primary" size="medium"  >{{this.getCodeStatus}}</el-tag>
-      <el-tag  style="margin: 10px" type="primary" size="medium"  >倒计时：{{this.countDownTime}}s</el-tag>
+      <el-row>
+        <el-col :span="8">
+          <el-tag  style="margin: 10px" type="primary" size="medium"  >{{this.getCodeStatus}}</el-tag>
+        </el-col>
+        <el-col :span="6">
+          <el-tag  style="margin: 10px" type="primary" size="medium"  >超时倒计时：</el-tag>
+        </el-col>
+        <el-col :span="10">
+          <!--      <el-tag  style="margin: 10px" type="primary" size="medium"  >倒计时：{{this.countDownTime}}s</el-tag>-->
+          <el-progress :percentage=percentage :color="customColorMethod"></el-progress>
+        </el-col>
+      </el-row>
+
+
 
       <el-form-item label="验证码:">
         <el-input v-model="form.code" :disabled=!this.taskStatus>code</el-input>
@@ -73,6 +85,7 @@ export default {
   data() {
     return {
       timer: null,
+      timerLine: null,
       endFlag: false,
       countDownTime: 300,
       taskId:"",
@@ -88,7 +101,8 @@ export default {
         codeContent:"",
         channelId:"",
         phoneId:""
-      }
+      },
+      percentage: 100,
     }
 
   },
@@ -104,6 +118,7 @@ export default {
       handler(n,o){
         this.form.phone = n.phoneNo
         this.countDownTime = n.leftSeconds
+        this.percentage = Math.round(n.leftSeconds/3)
         this.form.projectName = n.projectName + "("+n.userMoney+")"+ n.projectContent + "projectId"  + n.projectId
         this.form.projectId = n.projectId
         this.form.projectCode = n.projectCode
@@ -127,10 +142,21 @@ export default {
     // })
     clearInterval(this.timer)
     this.timer = null
+    clearInterval(this.timerLine)
+    this.timerLine = null
   },
 
 
   methods:{
+    customColorMethod(percentage) {
+      if (percentage < 30) {
+        return '#909399';
+      } else if (percentage < 70) {
+        return '#e6a23c';
+      } else {
+        return '#67c23a';
+      }
+    },
     copy() {
       bpSend.request({
         "action_code":"100020",
@@ -166,6 +192,7 @@ export default {
         this.form.phoneId = resp.data.phoneId
         this.taskId = resp.data.smsTask.id
         clearInterval(this.timer)
+        clearInterval(this.timerLine)
         elSuccess("获取手机号成功，请先去【"+ this.form.projectName.split("（")[0] +"】发送验证码，再点击获取验证码")
 
         bpSend.request({
@@ -216,16 +243,19 @@ export default {
       })
 
       clearInterval(this.timer)
+      clearInterval(this.timerLine)
       if (this.getPhoneForm.code === 0) {
         elError("请选择渠道再获取验证码")
         this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
         clearInterval(this.timer)
+        clearInterval(this.timerLine)
         this.getCodeFlag = false
         return
       }
       if (this.form.phone === "等待获取") {
         elError("请先获取手机号再试")
         clearInterval(this.timer)
+        clearInterval(this.timerLine)
         this.getCodeFlag = false
         return
       }
@@ -237,12 +267,20 @@ export default {
       this.form.codeContent = ""
       this.form.lastMsgTime = ""
       this.timer = setInterval(this.handleGetCode, 5000);
+      this.timerLine = setInterval(this.countTimerLine, 5000)
 
+    },
+
+    countTimerLine(){
+      if(this.percentage !== 0){
+        this.percentage = Math.round(this.percentage-1.67);
+      }
     },
 
     handleGetCode() {
       if (this.countDownTime < 5 || this.endFlag) {
         clearInterval(this.timer)
+        clearInterval(this.timerLine)
         this.getCodeStatus = "获取验证码任务结束"
         return
       }
@@ -264,6 +302,8 @@ export default {
           this.form.codeContent = resp.data.modle
           this.form.lastMsgTime = timeFormat("yyyy-MM-dd HH:mm:ss")
           clearInterval(this.timer)
+          clearInterval(this.timerLine)
+
           // 获取短信成功就更新用户余额
           elSuccess("获取验证码成功")
           this.getCodeStatus = "验证码获取成功！！！"
@@ -294,7 +334,11 @@ export default {
               // console.log(resp)
               if(resp.data){
                 clearInterval(this.timer)
+                clearInterval(this.timerLine)
+
                 this.timer = null
+                this.timerLine = null
+
                 this.countDownTime = 300
                 this.getCodeStatus = "已停止获取验证码"
                 // this.form.phone = null
@@ -326,7 +370,9 @@ export default {
               // console.log(resp)
               if(resp.data){
                 clearInterval(this.timer)
+                clearInterval(this.timerLine)
                 this.timer = null
+                this.timerLine = null
                 this.countDownTime = 300
                 this.getCodeStatus = "已停止获取验证码"
                 this.form.phone = null

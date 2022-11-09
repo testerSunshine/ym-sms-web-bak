@@ -284,6 +284,7 @@ export default {
         projectContent:"",
         userMoney:"",
         status:"",
+        channelId:"",
       },
 
       taskDataList:[null, null, null, null]
@@ -322,12 +323,13 @@ export default {
               taskData.leftSeconds = resp.data[i].leftSeconds
               taskData.phoneNo = resp.data[i].phoneNo
               taskData.projectName = resp.data[i].projectName
-              taskData.projectId = resp.data[i].projectId
+              taskData.projectId = resp.data[i].bizSmsProjectDetailInfo.projectId
               taskData.status = resp.data[i].status
 
               taskData.projectCode = resp.data[i].bizSmsProjectDetailInfo.code
               taskData.projectContent = resp.data[i].bizSmsProjectDetailInfo.content
               taskData.userMoney = resp.data[i].bizSmsProjectDetailInfo.userMoney
+              taskData.channelId = resp.data[i].bizSmsProjectDetailInfo.channelId
 
               this.$set(this.taskDataList, i ,taskData);
               // console.log(taskData.phoneNo)
@@ -431,7 +433,7 @@ export default {
 
       add.request(row).then(resp => {
         loading.close()
-        if (resp.data.desc !== "添加成功") {
+        if(resp.data.desc !== "添加成功") {
           elError("该渠道无法使用，请换一个渠道试试")
           return
         }
