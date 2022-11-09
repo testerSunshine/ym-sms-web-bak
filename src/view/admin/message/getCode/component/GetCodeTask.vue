@@ -32,7 +32,7 @@
       <el-tag  style="margin: 10px" type="primary" size="medium"  >{{this.getCodeStatus}}</el-tag>
       <el-tag  style="margin: 10px; -ms-text-align-last: center" type="primary" size="medium"  >超时倒计时：</el-tag>
       <!--      <el-tag  style="margin: 10px" type="primary" size="medium"  >倒计时：{{this.countDownTime}}s</el-tag>-->
-      <el-progress style="margin-top: -10px; margin-left: 10px; margin-bottom: 5px" :percentage=percentage :color="customColorMethod"></el-progress>
+      <el-progress style="width:20%; display:inline-block;" :percentage=percentage :color="customColorMethod"></el-progress>
       <el-form-item label="验证码:">
         <el-input v-model="form.code" :disabled=!this.taskStatus>code</el-input>
       </el-form-item>
