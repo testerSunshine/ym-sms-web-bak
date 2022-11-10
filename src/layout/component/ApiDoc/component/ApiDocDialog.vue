@@ -1,7 +1,7 @@
 <template>
   <abstract-dialog width="70%" :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
     <h3>详细说明</h3>
-    <p>域名地址为: https://ymsms.xyz</p>
+    <p>域名地址为: https://www.ymsms.xyz</p>
     <p>统一编码格式：UTF-8</p>
     <p>header中需要带入X-Token(登录态)，注意维护好自己的token不可透露给其他人 <el-button
         size="mini"
@@ -18,7 +18,7 @@
     <br>
     <h3>获取手机号</h3>
     <p>调用方式：POST</p>
-    <p>调用地址: https://ymsms.xyz/api/phone/getPhone</p>
+    <p>调用地址: https://www.ymsms.xyz/api/phone/getPhone</p>
     <p>提交参数:</p>
     <el-table
             :data="getPhoneData"
@@ -53,7 +53,7 @@
     <h3>获取验证码</h3>
     <p></p>
     <p>调用方式：POST</p>
-    <p>调用地址: https://ymsms.xyz/api/code/getCode</p>
+    <p>调用地址: https://www.ymsms.xyz/api/code/getCode</p>
     <p>提交参数:</p>
     <el-table
         :data="getCodeData"
@@ -89,7 +89,7 @@
     <h3>拉黑手机号码</h3>
     <p></p>
     <p>调用方式：POST</p>
-    <p>调用地址: https://ymsms.xyz/api/phoneCollect/add</p>
+    <p>调用地址: https://www.ymsms.xyz/api/phoneCollect/add</p>
     <p>提交参数:</p>
     <el-table
         :data="phoneCollectData"
