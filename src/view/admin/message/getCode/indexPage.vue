@@ -285,6 +285,7 @@ export default {
         userMoney:"",
         status:"",
         channelId:"",
+        refreshTime: 5000
       },
 
       taskDataList:[null, null, null, null]
@@ -319,6 +320,7 @@ export default {
           }else{
             for(let i=0; i<resp.data.length; i++){
               let taskData = {}
+              taskData.refreshTime = 5000
               taskData.id = resp.data[i].id
               taskData.leftSeconds = resp.data[i].leftSeconds
               taskData.phoneNo = resp.data[i].phoneNo
@@ -330,6 +332,9 @@ export default {
               taskData.projectContent = resp.data[i].bizSmsProjectDetailInfo.content
               taskData.userMoney = resp.data[i].bizSmsProjectDetailInfo.userMoney
               taskData.channelId = resp.data[i].bizSmsProjectDetailInfo.channelId
+              if(resp.data[i].refreshTime !=null || resp.data[i].refreshTime !==""){
+                taskData.refreshTime = resp.data[i].refreshTime
+              }
 
               this.$set(this.taskDataList, i ,taskData);
               // console.log(taskData.phoneNo)
