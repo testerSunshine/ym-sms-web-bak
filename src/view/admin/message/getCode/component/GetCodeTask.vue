@@ -78,6 +78,7 @@ export default {
       endFlag: false,
       countDownTime: 300,
       taskId:"",
+      refreshTime:5000,
       getCodeStatus:"等待获取验证码",
       getCodeFlag:false,
       form:{
@@ -181,6 +182,9 @@ export default {
         this.form.lastMsgTime = resp.data.lastMsgTime
         this.form.phoneId = resp.data.phoneId
         this.taskId = resp.data.smsTask.id
+        if(resp.data.refreshTime != null || resp.data.refreshTime !== ""){
+          this.refreshTime = resp.data.refreshTime
+        }
         clearInterval(this.timer)
         clearInterval(this.timerLine)
         elSuccess("获取手机号成功，请先去【"+ this.form.projectName.split("（")[0] +"】发送验证码，再点击获取验证码")
@@ -256,8 +260,8 @@ export default {
       // this.form.code = "等待获取"
       this.form.codeContent = ""
       this.form.lastMsgTime = ""
-      this.timer = setInterval(this.handleGetCode, 5000);
-      this.timerLine = setInterval(this.countTimerLine, 5000)
+      this.timer = setInterval(this.handleGetCode, this.refreshTime);
+      this.timerLine = setInterval(this.countTimerLine, this.refreshTime)
 
     },
 
@@ -268,7 +272,7 @@ export default {
     },
 
     handleGetCode() {
-      if (this.countDownTime < 5 || this.endFlag || this.percentage < 0) {
+      if (this.countDownTime < Math.round(this.refreshTime/1000) || this.endFlag || this.percentage < 0) {
         clearInterval(this.timer)
         clearInterval(this.timerLine)
         this.getCodeStatus = "获取验证码任务结束"
