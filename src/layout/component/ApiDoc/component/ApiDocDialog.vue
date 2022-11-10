@@ -1,4 +1,4 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <abstract-dialog width="70%" :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
     <h3>详细说明</h3>
     <p>域名地址为: https://www.ymsms.xyz</p>
@@ -113,6 +113,7 @@
           label="描述">
       </el-table-column>
     </el-table>
+    <p>返回参数:</p>
     <pre>
       {
           "data": true,
@@ -120,6 +121,131 @@
           "status": 200,
           "success": true
       }
+    </pre>
+    <p></p>
+    <h3>一个基于python开箱即用的demo:</h3>
+    <pre>
+import hashlib
+import json
+import time
+
+import requests
+
+"""
+当前python脚本2.x,3.x均可
+域名地址为: https://www.ymsms.xyz
+
+统一编码格式：UTF-8
+
+header中需要带入X-Token(登录态)，注意维护好自己的token不可透露给其他人
+
+  {"Content-Type":"application/json","X-Token":"xxxx"}
+
+注意事项
+所有api调用时均需加休眠1S以上，如果疯狂请求将做封号处理，如果接入过程中遇到问题请及时反馈，我们收到后第一时间处理
+
+获取验证码建议最多获取100次，没获取到就可能真的没有了
+"""
+
+
+class GetCodeApiScript:
+    def __init__(self, username, password, channelId, code):
+        self.code = code
+        self.channelId = channelId
+        self.password = password
+        self.username = username
+        self.token = ""
+        self.headers = {
+            'content-type': 'application/json',
+        }
+
+    # 登录
+    def login(self):
+        md5hash = hashlib.md5(self.password.encode())
+        md5 = md5hash.hexdigest()
+        payload = json.dumps({
+            "username": self.username,
+            "password": md5
+        })
+        url = "https://www.ymsms.xyz/api/account/login"
+        response = requests.request("POST", url, headers=self.headers, data=payload)
+        print(response.text)
+        resp = response.json()
+        if resp["status"] != 200:
+            raise Exception(response.text)
+        self.headers["x-token"] = resp["data"]["token"]
+
+    # 获取手机号
+    def get_phone(self):
+        payload = json.dumps({
+            "projectName": "",
+            "operator": "0",
+            "phone_num": "",
+            "scope": "",
+            "scope_black": "",
+            "code": self.code,
+            "projectId": None,
+            "address": "",
+            "channelId": self.channelId
+        })
+        url = "https://www.ymsms.xyz/api/phone/getPhone"
+        response = requests.request("POST", url, headers=self.headers, data=payload)
+        print(response.text)
+        resp = response.json()
+        if resp["status"] != 200:
+            raise Exception(response.text)
+        return resp["data"]
+
+    # 获取验证码
+    def get_code(self, phone_data):
+        payload = json.dumps({
+            "code": self.code,
+            "projectId": phone_data.get("projectId"),
+            "phoneNum": phone_data.get("phone"),
+            "channelId": self.channelId,
+            "phoneId": phone_data.get("phoneId")
+        })
+        url = "https://www.ymsms.xyz/api/code/getCode"
+        response = requests.request("POST", url, headers=self.headers, data=payload)
+        print(response.text)
+        resp = response.json()
+        # 如果状态没有返回200，禁止再获取
+        if resp["status"] != 200:
+            raise Exception(response.text)
+        return resp["data"]["code"]
+
+    # 拉黑手机号
+    def collect(self, phone):
+        url = "https://www.ymsms.xyz/api/phoneCollect/add"
+        payload = json.dumps({
+            "channelId": self.channelId,
+            "code": self.code,
+            "phoneNo": phone,
+            "type": 0
+        })
+        response = requests.request("POST", url, headers=self.headers, data=payload)
+        print(response.text)
+
+
+if __name__ == '__main__':
+    # 渠道id，你选择渠道的时候的接口会返回
+    channelId = "1172497457804742660"
+    # 对接码，你选择渠道的时候的接口会返回
+    code = "20095-MhgUfSWm"
+    # 账号
+    username = ""
+    # 密码
+    password = ""
+    script = GetCodeApiScript(username=username, password=password, channelId=channelId, code=code)
+    script.login()
+    phone_data = script.get_phone()
+    for i in range(60):
+        time.sleep(5)
+        code = script.get_code(phone_data)
+        if code != "":
+            print("获取验证码成功：{}".format(code))
+            break
+
     </pre>
 
     <template v-slot:footer>
