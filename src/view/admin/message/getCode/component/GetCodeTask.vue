@@ -277,6 +277,7 @@ export default {
       if (this.countDownTime < Math.round(this.refreshTime/1000) || this.endFlag || this.percentage < 0) {
         clearInterval(this.timer)
         clearInterval(this.timerLine)
+        this.getCodeFlag = false
         this.getCodeStatus = "获取验证码任务结束"
         return
       }
@@ -302,7 +303,7 @@ export default {
 
           // 获取短信成功就更新用户余额
           elSuccess("获取验证码成功")
-          this.getCodeStatus = "验证码获取成功！！！"
+          this.getCodeStatus = "验证码获取成功"
           this.$emit("handleGetWallet")
 
           bpSend.request({
