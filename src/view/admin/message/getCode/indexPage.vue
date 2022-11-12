@@ -66,7 +66,7 @@
 
         <el-form-item label="当前渠道：">
           <el-tag type="primary" size="medium" effect="dark">{{getPhoneForm.projectName}}</el-tag>
-          <el-button type="success" size="mini" @click="()=>{this.dialogTableVisible=true}">快捷切换渠道</el-button>（如果渠道有变更请重新搜索项目）
+          <el-button type="success" size="mini" @click="()=>{ projectListData.length !==0 ? this.dialogTableVisible=true:this.error()}">快捷切换渠道</el-button>（如果渠道有变更请重新搜索项目）
 
         </el-form-item>
 
@@ -220,7 +220,6 @@ import {elError, elSuccess} from "@/util/message"
 import {getLastOne} from "@/api/system/notice";
 import {getTask, getTaskRole} from "@/api/message/smsTask";
 import {bpSend} from "@/api/bp";
-
 
 export default {
   name: "getCode",
@@ -415,6 +414,9 @@ export default {
       elSuccess(msg)
       this.editDialog = false
       this.handleGetWallet()
+    },
+    error(){
+      elError("请先选择项目");
     },
     handleSupplier() {
       this.editDialog = true

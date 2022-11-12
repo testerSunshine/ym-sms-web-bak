@@ -170,6 +170,7 @@ export default {
       this.form.code = null
       this.endFlag = false
       this.countDownTime = 300
+      this.percentage = 100
       this.form.projectName = this.getPhoneForm.projectName
       this.form.projectId = this.getPhoneForm.projectId
       this.form.projectCode = this.getPhoneForm.code
@@ -255,11 +256,9 @@ export default {
         this.getCodeFlag = false
         return
       }
-      // this.countDownTime = 300
       this.getCodeStatus = "获取验证码中..."
       // 定时获取验证码
       elSuccess("开始获取验证码")
-      // this.form.code = "等待获取"
       this.form.codeContent = ""
       this.form.lastMsgTime = ""
       this.timer = setInterval(this.handleGetCode, this.refreshTime);
@@ -298,6 +297,7 @@ export default {
           this.form.code = resp.data.code
           this.form.codeContent = resp.data.modle
           this.form.lastMsgTime = timeFormat("yyyy-MM-dd HH:mm:ss")
+          this.percentage = 100
           clearInterval(this.timer)
           clearInterval(this.timerLine)
 
@@ -337,6 +337,7 @@ export default {
                 this.timerLine = null
 
                 this.countDownTime = 300
+                this.percentage = 100
                 this.getCodeStatus = "已停止获取验证码"
                 // this.form.phone = null
                 // this.form.projectName = null
@@ -371,6 +372,7 @@ export default {
                 this.timer = null
                 this.timerLine = null
                 this.countDownTime = 300
+                this.percentage = 100
                 this.getCodeStatus = "已停止获取验证码"
                 this.form.phone = null
                 this.form.phoneId = null
