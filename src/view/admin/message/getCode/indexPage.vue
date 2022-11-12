@@ -66,7 +66,7 @@
 
         <el-form-item label="当前渠道：">
           <el-tag type="primary" size="medium" effect="dark">{{getPhoneForm.projectName}}</el-tag>
-          <el-button type="success" size="mini" @click="()=>{this.dialogTableVisible=true}">快捷切换渠道</el-button>
+          <el-button type="success" size="mini" @click="()=>{this.dialogTableVisible=true}">快捷切换渠道</el-button>（如果渠道有变更请重新搜索项目）
 
         </el-form-item>
 
