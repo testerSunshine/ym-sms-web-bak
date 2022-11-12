@@ -66,6 +66,8 @@
 
         <el-form-item label="当前渠道：">
           <el-tag type="primary" size="medium" effect="dark">{{getPhoneForm.projectName}}</el-tag>
+          <el-button type="success" size="mini" @click="()=>{this.dialogTableVisible=true}">快捷切换渠道</el-button>
+
         </el-form-item>
 
         <el-form-item label="运营商：">
@@ -192,7 +194,6 @@
         <el-table-column property="code" label="项目id" width="100"></el-table-column>
         <el-table-column property="projectName" label="项目名称" width="100"></el-table-column>
         <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
-<!--        <el-table-column property="canUseMum" label="可用" width="50"></el-table-column>-->
         <el-table-column property="content" label="详情" width="100"></el-table-column>
         <el-table-column
             fixed="right"
@@ -241,17 +242,8 @@ export default {
         address: '',
         channelId: '',
       },
-      // getCodeForm: {
-      //   phone: '等待获取',
-      //   lastMsgTime: '',
-      //   code: '等待获取',
-      //   codeContent: '',
-      // },
       projectSearchOptions: [],
       wallet: "0.00",
-      // timer: null,
-      // count: 300,
-      // getCodeStatus:"",
       editDialog: false,
       remoteSearchQuery: '',
 
