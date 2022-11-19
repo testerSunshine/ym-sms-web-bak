@@ -188,8 +188,8 @@
     </el-dialog>
 
 
-
     <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible" width="40%" center>
+      <el-button type="success" size="small" @click="()=>{this.dialogApplyVisible=true}" v-if="this.applyNewProjectForm.supplier === '2'">没有合适渠道？点击申请</el-button>
       <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
         <el-table-column property="code" label="项目id" width="100"></el-table-column>
         <el-table-column property="projectName" label="项目名称" width="100"></el-table-column>
@@ -206,6 +206,44 @@
       </el-table>
     </el-dialog>
 
+    <el-dialog title="项目申请单" :visible.sync="dialogApplyVisible" center>
+      <el-form ref="form" :model="applyNewProjectForm" label-width="80px">
+        <el-form-item label="项目名称">
+          <el-input v-model="applyNewProjectForm.projectName" disabled=true></el-input>
+        </el-form-item>
+        <el-form-item label="预期价格">
+          <el-input-number v-model="applyNewProjectForm.price" :precision="2" :step="0.01" :max="50"></el-input-number>
+        </el-form-item>
+        <el-form-item label="预期数量">
+          <el-input v-model.number="applyNewProjectForm.count"></el-input>
+        </el-form-item>
+        <el-form-item label="卡类型">
+          <el-select v-model="applyNewProjectForm.cardOperator" placeholder="请选择">
+            <el-option label="不限" value="0"></el-option>
+            <el-option label="实卡" value="4"></el-option>
+            <el-option label="虚卡" value="5"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否首次">
+          <el-select v-model="applyNewProjectForm.first" placeholder="请选择">
+            <el-option label="不限" value="0"></el-option>
+            <el-option label="首次" value="1"></el-option>
+            <el-option label="非首次" value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="联系方式">
+          <el-input v-model="applyNewProjectForm.contact"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="applyNewProjectForm.remark"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="applyNewProject">立即申请</el-button>
+          <el-button @click="()=>{this.dialogApplyVisible=false}">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
     <recharge-dialog v-model="editDialog" type="recharge" @success="success"/>
   </div>
 </template>
@@ -220,6 +258,7 @@ import {elError, elSuccess} from "@/util/message"
 import {getLastOne} from "@/api/system/notice";
 import {getTask, getTaskRole} from "@/api/message/smsTask";
 import {bpSend} from "@/api/bp";
+import {applyProject} from "@/api/apply";
 
 export default {
   name: "getCode",
@@ -241,13 +280,14 @@ export default {
         address: '',
         channelId: '',
       },
-      projectSearchOptions: [],
+      // projectSearchOptions: [],
       wallet: "0.00",
       editDialog: false,
-      remoteSearchQuery: '',
+      // remoteSearchQuery: '',
 
       dialogTableVisible:false,
       dialogProjectVisible:false,
+      dialogApplyVisible:false,
       projectListData:[],
       projectList:[],
       channelIdList:[],
@@ -279,7 +319,20 @@ export default {
         refreshTime: 5000
       },
 
-      taskDataList:[null, null, null, null]
+      taskDataList:[null, null, null, null],
+
+      applyNewProjectForm:{
+        projectName:"",
+        projectId:"",
+        cardOperator:"",
+        count:"",
+        price:"",
+        first:null,
+        isApi:0,
+        contact:"",
+        remark:"",
+        supplier:"",
+      }
 
     }
   },
@@ -303,6 +356,7 @@ export default {
 
     })
 
+    //初始化任务内容
     getTask.request({}).then(
         resp => {
           // console.log(resp.data)
@@ -338,6 +392,7 @@ export default {
         }
     )
 
+    //获取用户任务池子上限
     getTaskRole.request({}).then(
         resp => {
           this.taskRole = resp.data;
@@ -352,6 +407,7 @@ export default {
   },
 
   methods: {
+    //搜索项目
     loadProjectList(){
       bpSend.request({
         "action_code":"000002",
@@ -375,6 +431,7 @@ export default {
 
     },
 
+    //查看渠道
     handleGetProjectEnterSearch(row) {
       bpSend.request({
         "action_code":"000002",
@@ -382,6 +439,9 @@ export default {
       })
       this.projectInputLoading = true
       this.projectSearchLoading = true
+      this.applyNewProjectForm.projectName = row.name;
+      this.applyNewProjectForm.projectId = row.id;
+      this.applyNewProjectForm.supplier = row.supplier
       search
           .request({"keyword": row.id, "channelIdList":row.channelIdList})
           .then(resp => {
@@ -394,12 +454,6 @@ export default {
               this.loading=true
           )
     },
-    // projectNameChange() {
-    //   this.$refs.projectNameSelect.query = ""
-    // },
-    // getProjectRemoteData(query) {
-    //   this.remoteSearchQuery = query
-    // },
 
     handleChange(val) {
       console.log(val);
@@ -452,6 +506,20 @@ export default {
 
 
     },
+
+    //申请新渠道
+    applyNewProject(){
+      this.dialogApplyVisible=false
+      applyProject.request(this.applyNewProjectForm).then(
+          resp => {
+            if(resp.msg === "操作成功"){
+              elSuccess("申请成功，请耐心等待处理");
+            }else{
+              elError("申请失败");
+            }
+          }
+      )
+    }
 
   },
   watch: {}
