@@ -514,11 +514,11 @@ export default {
 
     //申请新渠道
     applyNewProject(){
-      this.dialogApplyVisible=false
       applyProject.request(this.applyNewProjectForm).then(
           resp => {
             if(resp.msg === "操作成功"){
               elSuccess("申请成功，请耐心等待处理");
+              this.dialogApplyVisible=false
             }else{
               elError("申请失败");
             }
