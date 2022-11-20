@@ -210,7 +210,7 @@
     </el-dialog>
 
     <el-dialog title="项目申请单" :visible.sync="dialogApplyVisible" center>
-      <el-form ref="form" :model="applyNewProjectForm" label-width="80px">
+      <el-form ref="form" :model="applyNewProjectForm" label-width="80px" size="mini">
         <el-form-item label="项目名称">
           <el-input v-model="applyNewProjectForm.projectName" disabled=true></el-input>
         </el-form-item>
@@ -218,7 +218,8 @@
           <el-input-number v-model="applyNewProjectForm.price" :precision="2" :step="0.01" :max="50"></el-input-number>
         </el-form-item>
         <el-form-item label="预期数量">
-          <el-input v-model.number="applyNewProjectForm.count"></el-input>
+<!--          <el-input v-model.number="applyNewProjectForm.count"></el-input>-->
+          <el-input-number v-model="applyNewProjectForm.count" @change="handleChange" :min="1" :max="10000" label=""></el-input-number>
         </el-form-item>
         <el-form-item label="卡类型">
           <el-select v-model="applyNewProjectForm.cardOperator" placeholder="请选择">
@@ -329,7 +330,7 @@ export default {
         projectId:"",
         cardOperator:"",
         count:"",
-        price:"",
+        price:1.00,
         first:null,
         isApi:0,
         contact:"",
