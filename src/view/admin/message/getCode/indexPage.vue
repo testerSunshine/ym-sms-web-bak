@@ -234,9 +234,9 @@
             <el-option label="非首次" value="2"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="联系方式">
-          <el-input v-model="applyNewProjectForm.contact"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="联系方式">-->
+<!--          <el-input v-model="applyNewProjectForm.contact"></el-input>-->
+<!--        </el-form-item>-->
         <el-form-item label="备注">
           <el-input v-model="applyNewProjectForm.remark"></el-input>
         </el-form-item>
