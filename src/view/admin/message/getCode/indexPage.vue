@@ -191,13 +191,16 @@
     </el-dialog>
 
 
-    <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible" width="40%" center>
+    <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible" width="50%" center>
       <el-button type="success" size="small" @click="()=>{this.dialogApplyVisible=true}" v-if="this.applyNewProjectForm.supplier === '2'">没有合适渠道？点击申请</el-button>
+      <p style="color: red">部分项目没有最近来码时间，请不必担心</p>
       <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
         <el-table-column property="code" label="项目id" width="100"></el-table-column>
         <el-table-column property="projectName" label="项目名称" width="100"></el-table-column>
         <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
         <el-table-column property="content" label="详情" width="100"></el-table-column>
+        <el-table-column property="lastSuccessTime" label="最近来码时间" width="120"></el-table-column>
+
         <el-table-column
             fixed="right"
             label="操作"
