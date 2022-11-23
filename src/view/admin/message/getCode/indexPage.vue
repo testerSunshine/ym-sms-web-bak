@@ -195,9 +195,25 @@
       <el-button type="success" size="small" @click="()=>{this.dialogApplyVisible=true}" v-if="this.applyNewProjectForm.supplier === '2'">没有合适渠道？点击申请</el-button>
       <p style="color: red">部分项目没有最近来码时间，请不必担心</p>
       <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
+
+        <el-table-column width="50">
+          <template slot-scope="scope">
+          <v-icon style="width: 50px; height: 50px" icon="svg-top" v-if="scope.row.type === 1" />
+          </template>
+        </el-table-column>
+
         <el-table-column property="code" label="项目id" width="100"></el-table-column>
         <el-table-column property="projectName" label="项目名称" width="100"></el-table-column>
         <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
+
+        <el-table-column label="标签" width="120">
+          <template slot-scope="scope">
+          <v-icon style="width: 50px; height: 50px" icon="svg-new" v-if="scope.row.type === 1" />
+          <v-icon style="width: 50px; height: 50px" icon="svg-first" v-if="scope.row.first === 1"/>
+
+          </template>
+        </el-table-column>
+
         <el-table-column property="content" label="详情" width="100"></el-table-column>
         <el-table-column property="lastSuccessTime" label="最近来码时间" width="120"></el-table-column>
 
