@@ -192,6 +192,7 @@
     </el-dialog>
 
     <el-dialog title="新项目申请单" :visible.sync="dialogApplyProjectVisible" center>
+      <p style="color: red">填写收到的短信内容。例如:"[京东] 您的验证码为XXxxXX."</p>
       <el-form ref="form" :model="applyNewProjectNotChannelForm" label-width="80px" size="mini">
         <el-form-item label="短信模版">
           <el-input v-model="applyNewProjectNotChannelForm.content"></el-input>
