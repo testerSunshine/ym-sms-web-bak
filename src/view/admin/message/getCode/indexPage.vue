@@ -176,6 +176,7 @@
     </el-card>
 
     <el-dialog title="项目列表" :visible.sync="dialogProjectVisible" width="40%" center>
+      <el-button type="success" size="small" @click="()=>{this.dialogApplyProjectVisible=true}">没有该项目？点击申请</el-button>
       <el-table v-loading="loading" :data="projectList" stripe style="width: 100%">
 <!--        <el-table-column property="id" label="id" width="100"></el-table-column>-->
         <el-table-column property="name" label="项目名称" width="250"></el-table-column>
@@ -188,6 +189,18 @@
           </template>
         </el-table-column>
       </el-table>
+    </el-dialog>
+
+    <el-dialog title="新项目申请单" :visible.sync="dialogApplyProjectVisible" center>
+      <el-form ref="form" :model="applyNewProjectNotChannelForm" label-width="80px" size="mini">
+        <el-form-item label="短信模版">
+          <el-input v-model="applyNewProjectNotChannelForm.content"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="applyNewProjectNotChannel">立即申请</el-button>
+          <el-button @click="()=>{this.dialogApplyProjectVisible=false}">取消</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
 
 
@@ -228,7 +241,7 @@
       </el-table>
     </el-dialog>
 
-    <el-dialog title="项目申请单" :visible.sync="dialogApplyVisible" center>
+    <el-dialog title="新渠道申请单" :visible.sync="dialogApplyVisible" center>
       <p style='color: red;'>说明：该申请会直接通知卡商，如果卡商愿意对接，就会有站内信通知你成功的渠道信息，但渠道都是公开的，有消息请及时使用</p>
       <el-form ref="form" :model="applyNewProjectForm" label-width="80px" size="mini">
         <el-form-item label="项目名称">
@@ -283,6 +296,7 @@ import {getLastOne} from "@/api/system/notice";
 import {getTask, getTaskRole} from "@/api/message/smsTask";
 import {bpSend} from "@/api/bp";
 import {applyProject} from "@/api/apply";
+import {applyProjectNotChannel} from "../../../../api/apply";
 
 export default {
   name: "getCode",
@@ -312,6 +326,7 @@ export default {
       dialogTableVisible:false,
       dialogProjectVisible:false,
       dialogApplyVisible:false,
+      dialogApplyProjectVisible:false,
       projectListData:[],
       projectList:[],
       channelIdList:[],
@@ -356,6 +371,9 @@ export default {
         contact:"",
         remark:"",
         supplier:"",
+      },
+      applyNewProjectNotChannelForm:{
+        content:"",
       }
 
     }
@@ -538,6 +556,19 @@ export default {
             if(resp.msg === "操作成功"){
               elSuccess("申请成功，请耐心等待处理");
               this.dialogApplyVisible=false
+            }else{
+              elError("申请失败");
+            }
+          }
+      )
+    },
+
+    applyNewProjectNotChannel(){
+      applyProjectNotChannel.request(this.applyNewProjectNotChannelForm).then(
+          resp => {
+            if(resp.msg === "操作成功"){
+              elSuccess("申请成功，请耐心等待处理");
+              this.dialogApplyProjectVisible=false
             }else{
               elError("申请失败");
             }
