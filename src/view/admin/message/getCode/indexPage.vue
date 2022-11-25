@@ -169,9 +169,6 @@
         <el-collapse-item title="有其他问题？" name="9">
           <div>点击右上角问题反馈，会有人回复</div>
         </el-collapse-item>
-        <el-collapse-item title="防失联地址，请保存书签" name="10">
-          <div>https://www.yima123.xyz/</div>
-        </el-collapse-item>
       </el-collapse>
     </el-card>
 
