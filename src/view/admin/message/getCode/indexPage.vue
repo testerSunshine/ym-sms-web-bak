@@ -174,6 +174,7 @@
 
     <el-dialog title="项目列表" :visible.sync="dialogProjectVisible" width="40%" center>
       <el-button type="success" size="small" @click="()=>{this.dialogApplyProjectVisible=true}">没有该项目？点击申请</el-button>
+      <p style="color: red">如果项目不存在，可能是服务抖动，不要急着立马申请，多搜索几次看看</p>
       <el-table v-loading="loading" :data="projectList" stripe style="width: 100%">
 <!--        <el-table-column property="id" label="id" width="100"></el-table-column>-->
         <el-table-column property="name" label="项目名称" width="250"></el-table-column>
