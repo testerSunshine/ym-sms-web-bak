@@ -244,6 +244,7 @@
 
     <el-dialog title="新渠道申请单" :visible.sync="dialogApplyVisible" center>
       <p style='color: red;'>说明：该申请会直接通知卡商，如果卡商愿意对接，就会有站内信通知你成功的渠道信息，但渠道都是公开的，有消息请及时使用</p>
+      <p style='color: red;'>为了避免被滥用，申请逻辑调整为钱包需要有当前项目（每条短信的金额*数量）*20%作为申请资格</p>
       <el-form ref="form" :model="applyNewProjectForm" label-width="80px" size="mini">
         <el-form-item label="项目名称">
           <el-input v-model="applyNewProjectForm.projectName" disabled=true></el-input>
