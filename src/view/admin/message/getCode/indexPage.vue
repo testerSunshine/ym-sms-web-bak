@@ -195,7 +195,7 @@
           <el-input v-model="applyNewProjectNotChannelForm.content"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="applyNewProjectNotChannel">立即申请</el-button>
+          <el-button type="primary" @click="applyNewProjectNotChannel" :loading="applyProjectButtonWait">立即申请</el-button>
           <el-button @click="()=>{this.dialogApplyProjectVisible=false}">取消</el-button>
         </el-form-item>
       </el-form>
@@ -274,7 +274,7 @@
           <el-input v-model="applyNewProjectForm.remark"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="applyNewProject">立即申请</el-button>
+          <el-button type="primary" @click="applyNewProject" :loading="applyNewProjectButtonWait">立即申请</el-button>
           <el-button @click="()=>{this.dialogApplyVisible=false}">取消</el-button>
         </el-form-item>
       </el-form>
@@ -373,7 +373,11 @@ export default {
       },
       applyNewProjectNotChannelForm:{
         content:"",
-      }
+      },
+
+      applyProjectButtonWait:false,
+      applyNewProjectButtonWait: false,
+
 
     }
   },
@@ -465,9 +469,12 @@ export default {
               this.projectList = resp.data.list
             }
           }).finally(
-          () => this.projectInputLoading = false,
-          this.projectSearchLoading = false,
-          this.loading=true
+          () => {
+            this.projectInputLoading = false
+            this.projectSearchLoading = false
+            this.loading=false
+          }
+
       )
 
     },
@@ -550,6 +557,7 @@ export default {
 
     //申请新渠道
     applyNewProject(){
+      this.applyNewProjectButtonWait = true
       applyProject.request(this.applyNewProjectForm).then(
           resp => {
             if(resp.msg === "操作成功"){
@@ -559,10 +567,11 @@ export default {
               elError("申请失败");
             }
           }
-      )
+      ).finally(()=>{this.applyNewProjectButtonWait = false})
     },
 
     applyNewProjectNotChannel(){
+      this.applyProjectButtonWait = true
       applyProjectNotChannel.request(this.applyNewProjectNotChannelForm).then(
           resp => {
             if(resp.msg === "操作成功"){
@@ -572,7 +581,7 @@ export default {
               elError("申请失败");
             }
           }
-      )
+      ).finally(()=>{this.applyProjectButtonWait = false})
     }
 
   },
