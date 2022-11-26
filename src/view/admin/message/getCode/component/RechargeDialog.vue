@@ -3,9 +3,14 @@
     <abstract-form :model="form" :rules="rules">
       <el-form-item label="卡密" prop="cardId">
         <el-input v-model="form.cardId" style="width: 70%"/>
-        <el-link type="primary" href="https://www.ccys66.com/links/98965896" target="_blank" :underline="false" @click.native="sendBp">没有卡密？点击购买(如不能访问，请关闭翻墙)</el-link>
+<!--        <el-link type="primary" href="https://www.ccys66.com/links/98965896" target="_blank" :underline="false" @click.native="sendBp">没有卡密？点击购买(如不能访问，请关闭翻墙)</el-link>-->
         <br>
-        <span>说明：从卡密商店购买卡密，获取一串英文+数字序列，然后在这里填入序列，充值对应卡密金币数</span>
+        <p>没有卡密？点击下面商城购买，如果打不开请关闭vpn/翻墙</p>
+        <el-button type="success" round><el-link style="color: white;" href="https://www.ccys66.com/links/98965896" target="_blank" :underline="false" @click.native="sendBp">卡密商城1</el-link></el-button>
+<!--        <el-button type="success" round><el-link style="color: white;" href="https://www.ccys66.com/links/98965896" target="_blank" :underline="false" @click.native="sendBp">卡密商城2</el-link></el-button>-->
+
+
+        <p style="color: red">说明：从卡密商店购买卡密，获取一串英文+数字序列，然后在这里填入序列，充值对应卡密金币数</p>
       </el-form-item>
     </abstract-form>
 
