@@ -4,7 +4,7 @@
 
       任务状态：<el-tag type="success" size="mini" effect="dark" v-if="this.taskStatus">可用</el-tag>
       <el-tag type="danger" size="mini" effect="dark" v-if="!this.taskStatus">禁用</el-tag>
-      <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()" v-if="this.taskStatus">获取手机号</el-button>
+      <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()" v-if="this.taskStatus" :loading="getPhoneLoading">获取手机号</el-button>
 
       <br>
       <el-form-item label="项目信息:">
@@ -93,6 +93,7 @@ export default {
         phoneId:""
       },
       percentage: 100,
+      getPhoneLoading: false
     }
 
   },
@@ -176,6 +177,7 @@ export default {
       this.form.projectCode = this.getPhoneForm.code
       this.form.channelId = this.getPhoneForm.channelId
 
+      this.getPhoneLoading = true
       getPhone.request(this.getPhoneForm).then(resp => {
         if (resp.data.mobile === "") {
           elError("没找到符合条件的号码，请检查搜索条件再试")
@@ -197,7 +199,7 @@ export default {
           "action_name":"获取手机号：" + this.form.phone
         })
 
-      })
+      }).finally(()=>{this.getPhoneLoading = false})
 
 
     },
@@ -314,7 +316,6 @@ export default {
         }
       }).finally(
           () => this.countDownTime = this.countDownTime - 5)
-
     },
 
     stopAuto(){

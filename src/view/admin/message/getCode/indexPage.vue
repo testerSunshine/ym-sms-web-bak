@@ -174,6 +174,7 @@
 
     <el-dialog title="项目列表" :visible.sync="dialogProjectVisible" width="40%" center>
       <el-button type="success" size="small" @click="()=>{this.dialogApplyProjectVisible=true}">没有该项目？点击申请</el-button>
+      <p style="color: red">如果项目不存在，可能是服务抖动，不要急着立马申请，多搜索几次看看</p>
       <el-table v-loading="loading" :data="projectList" stripe style="width: 100%">
 <!--        <el-table-column property="id" label="id" width="100"></el-table-column>-->
         <el-table-column property="name" label="项目名称" width="250"></el-table-column>
@@ -195,7 +196,7 @@
           <el-input v-model="applyNewProjectNotChannelForm.content"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="applyNewProjectNotChannel">立即申请</el-button>
+          <el-button type="primary" @click="applyNewProjectNotChannel" :loading="applyProjectButtonWait">立即申请</el-button>
           <el-button @click="()=>{this.dialogApplyProjectVisible=false}">取消</el-button>
         </el-form-item>
       </el-form>
@@ -274,7 +275,7 @@
           <el-input v-model="applyNewProjectForm.remark"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="applyNewProject">立即申请</el-button>
+          <el-button type="primary" @click="applyNewProject" :loading="applyNewProjectButtonWait">立即申请</el-button>
           <el-button @click="()=>{this.dialogApplyVisible=false}">取消</el-button>
         </el-form-item>
       </el-form>
@@ -373,7 +374,11 @@ export default {
       },
       applyNewProjectNotChannelForm:{
         content:"",
-      }
+      },
+
+      applyProjectButtonWait:false,
+      applyNewProjectButtonWait: false,
+
 
     }
   },
@@ -465,9 +470,12 @@ export default {
               this.projectList = resp.data.list
             }
           }).finally(
-          () => this.projectInputLoading = false,
-          this.projectSearchLoading = false,
-          this.loading=true
+          () => {
+            this.projectInputLoading = false
+            this.projectSearchLoading = false
+            this.loading=false
+          }
+
       )
 
     },
@@ -550,6 +558,7 @@ export default {
 
     //申请新渠道
     applyNewProject(){
+      this.applyNewProjectButtonWait = true
       applyProject.request(this.applyNewProjectForm).then(
           resp => {
             if(resp.msg === "操作成功"){
@@ -559,10 +568,11 @@ export default {
               elError("申请失败");
             }
           }
-      )
+      ).finally(()=>{this.applyNewProjectButtonWait = false})
     },
 
     applyNewProjectNotChannel(){
+      this.applyProjectButtonWait = true
       applyProjectNotChannel.request(this.applyNewProjectNotChannelForm).then(
           resp => {
             if(resp.msg === "操作成功"){
@@ -572,7 +582,7 @@ export default {
               elError("申请失败");
             }
           }
-      )
+      ).finally(()=>{this.applyProjectButtonWait = false})
     }
 
   },
