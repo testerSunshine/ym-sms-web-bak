@@ -67,7 +67,8 @@
         <el-form-item label="当前渠道：">
           <el-tag type="primary" size="medium" effect="dark">{{getPhoneForm.projectName}}</el-tag>
           <el-button type="success" size="mini" @click="()=>{ projectListData.length !==0 ? this.dialogTableVisible=true:this.error()}">快捷切换渠道</el-button>（如果渠道有变更请重新搜索项目）
-
+          <br>
+          <el-button type="success" size="mini" v-clipboard:copy="JSON.stringify(this.getPhoneForm)" v-clipboard:success="copy">一键复制api请求所需参数</el-button>
         </el-form-item>
 
         <el-form-item label="运营商：">
@@ -103,7 +104,6 @@
 
       </el-form>
     </el-card>
-
 
     <el-card class="get-code-pool" style="margin-top: 10px" shadow="never">
       <el-tag type="danger" size="medium" effect="dark" v-if="taskRole.hasNext">当前可用多开任务池数量【{{this.taskRole.userCanTaskNum}}】个，开启下一个还差充值【{{this.taskRole.nextTaskMoney}}】金币</el-tag>
@@ -201,7 +201,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-
 
     <el-dialog title="可选渠道列表" :visible.sync="dialogTableVisible" width="50%" center>
       <el-button type="success" size="small" @click="()=>{this.dialogApplyVisible=true}" v-if="this.applyNewProjectForm.supplier === '2'">没有合适渠道？点击申请</el-button>
@@ -583,7 +582,11 @@ export default {
             }
           }
       ).finally(()=>{this.applyProjectButtonWait = false})
-    }
+    },
+
+    copy() {
+      elSuccess("复制成功")
+    },
 
   },
   watch: {}
