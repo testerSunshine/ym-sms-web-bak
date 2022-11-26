@@ -285,18 +285,18 @@ export default {
       getPhoneData: [
         {params: "operator", isMust: "true", default: '0', desc: "0=全部，5=虚拟，4=非虚拟"},
         {params: "channelId", isMust: "true", default: '空', desc: "渠道id，你选择渠道的时候的接口会返回"},
-        {params: "code", isMust: "true", default: '空', desc: "对接码，你选择渠道的时候的接口会返回"},
-        {params: "supplierId", isMust: "false", default: '空', desc: "供应商id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
+        // {params: "code", isMust: "true", default: '空', desc: "对接码，你选择渠道的时候的接口会返回"},
+        // {params: "supplierId", isMust: "false", default: '空', desc: "供应商id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
         {params: "phone_num", isMust: "false", default: '空', desc: "是否指定手机号码"},
-        {params: "projectId", isMust: "false", default: '空', desc: "项目id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
+        // {params: "projectId", isMust: "false", default: '空', desc: "项目id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
         {params: "scope", isMust: "false", default: '空', desc: "指定号段，多个号段排除已逗号隔开"},
         {params: "scope_black", isMust: "false", default: '空', desc: "排除号段，多个号段排除已逗号隔开"},
       ],
       getCodeData: [
-        {params: "projectId", isMust: "false", default: '空', desc: "项目id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
+        // {params: "projectId", isMust: "false", default: '空', desc: "项目id，你选择渠道的时候如果有返回则必须填上，否则可以为空"},
         {params: "phoneId", isMust: "false", default: '空', desc: "手机id，获取手机号的是如果有返回则必须填上，否则可以为空"},
         {params: "channelId", isMust: "true", default: '空', desc: "渠道id，你选择渠道的时候的接口会返回"},
-        {params: "code", isMust: "true", default: '空', desc: "对接码，你选择渠道的时候的接口会返回"},
+        // {params: "code", isMust: "true", default: '空', desc: "对接码，你选择渠道的时候的接口会返回"},
         {params: "phone_num", isMust: "true", default: '空', desc: "是否指定手机号码"},
       ],
       phoneCollectData: [
