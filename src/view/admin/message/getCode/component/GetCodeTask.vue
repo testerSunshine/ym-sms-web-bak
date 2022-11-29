@@ -270,7 +270,8 @@ export default {
 
     countTimerLine(){
       if(this.percentage !== 0){
-        this.percentage = Math.round(this.percentage-1.67);
+        let timeGap = 100/(300000/this.refreshTime)
+        this.percentage = Math.round((this.percentage-timeGap)*100)/100;
       }
     },
 
