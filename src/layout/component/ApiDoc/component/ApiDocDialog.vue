@@ -169,7 +169,7 @@ class GetCodeApiScript:
             "username": self.username,
             "password": md5
         })
-        url = "https://api.ymsms.xyz/api/account/login"
+        url = "https://www.ymsms.xyz/api/account/login"
         response = requests.request("POST", url, headers=self.headers, data=payload)
         print(response.text)
         resp = response.json()
@@ -203,7 +203,7 @@ class GetCodeApiScript:
         payload = json.dumps({
             "code": self.code,
             "projectId": phone_data.get("projectId"),
-            "phoneNum": phone_data.get("phone"),
+            "phoneNum": phone_data.get("mobile"),
             "channelId": self.channelId,
             "phoneId": phone_data.get("phoneId")
         })
@@ -247,7 +247,6 @@ if __name__ == '__main__':
         if code != "":
             print("获取验证码成功：{}".format(code))
             break
-
     </pre>
 
     <template v-slot:footer>
