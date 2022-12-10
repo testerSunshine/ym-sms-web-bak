@@ -224,6 +224,7 @@
           <template slot-scope="scope">
           <v-icon style="width: 50px; height: 50px" icon="svg-new" v-if="scope.row.type === 1" />
           <v-icon style="width: 50px; height: 50px" icon="svg-first" v-if="scope.row.first === 1"/>
+          <v-icon style="width: 30px; height: 30px" icon="svg-good" v-if="scope.row.channelRatio > 70" />
 
           </template>
         </el-table-column>
