@@ -8,8 +8,10 @@
         <br>
         <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="https://www.ysfaka.com/links/95FA5D22" target="_blank" :underline="false" @click.native="sendBp">卡密商城1</el-link></el-button>
         <br>
-        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="https://www.ccys66.com/links/98965896" target="_blank" :underline="false" @click.native="sendBp">卡密商城2</el-link></el-button>
+        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="http://faka.ymsms.xyz/links/5A39C355" target="_blank" :underline="false" @click.native="sendBp">卡密商城2</el-link></el-button>
         <br>
+<!--        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="https://www.ccys66.com/links/98965896" target="_blank" :underline="false" @click.native="sendBp">卡密商城2</el-link></el-button>-->
+<!--        <br>-->
 <!--        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="https://www.51jingzan.cn/links/F7D9F4E0" target="_blank" :underline="false" @click.native="sendBp">备用卡密商城2</el-link></el-button>-->
 <!--        <br>-->
         <span style="color: red">说明：从卡密商店购买卡密，获取一串英文+数字序列，然后在这里填入序列，充值对应卡密金币数</span>
