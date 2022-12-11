@@ -6,9 +6,9 @@
         <br>
         <span>没有卡密？点击下面商城购买，如果打不开请关闭vpn/翻墙</span>
         <br>
-        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="https://www.ysfaka.com/links/95FA5D22" target="_blank" :underline="false" @click.native="sendBp">卡密商城1</el-link></el-button>
+        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="http://faka.ymsms.xyz/links/5A39C355" target="_blank" :underline="false" @click.native="sendBp">卡密商城</el-link></el-button>
         <br>
-        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="http://faka.ymsms.xyz/links/5A39C355" target="_blank" :underline="false" @click.native="sendBp">卡密商城2</el-link></el-button>
+        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="https://www.ysfaka.com/links/95FA5D22" target="_blank" :underline="false" @click.native="sendBp">卡密商城备用1</el-link></el-button>
         <br>
 <!--        <el-button type="success" round style="margin-top: 5px"><el-link style="color: white;" href="https://www.ccys66.com/links/98965896" target="_blank" :underline="false" @click.native="sendBp">卡密商城2</el-link></el-button>-->
 <!--        <br>-->
