@@ -61,7 +61,7 @@
                     placeholder="输入短信关键字搜索，不知道啥关键字的，先用自己手机接一条看看"
           ></el-input>
 
-          <el-button :loading="projectSearchLoading" type="primary" @click="loadProjectList">搜索</el-button>
+          <el-button :loading="projectSearchLoading" type="primary" @click="handleGetProjectEnterSearch">搜索</el-button>
         </el-form-item>
 
         <el-form-item label="当前渠道：">
@@ -210,28 +210,9 @@
       <p style="color: red">部分项目没有最近来码时间，请不必担心</p>
       <el-table v-loading="loading" :data="projectListData" stripe style="width: 100%">
 
-        <el-table-column width="50">
-          <template slot-scope="scope">
-          <v-icon style="width: 50px; height: 50px" icon="svg-top" v-if="scope.row.type === 1" />
-          </template>
-        </el-table-column>
-
         <el-table-column property="code" label="项目id" width="100"></el-table-column>
-        <el-table-column property="projectName" label="项目名称" width="100"></el-table-column>
+        <el-table-column property="projectName" label="项目名称" width="150"></el-table-column>
         <el-table-column property="userMoney" label="价格" width="70"></el-table-column>
-
-        <el-table-column label="标签" width="120">
-          <template slot-scope="scope">
-          <v-icon style="width: 50px; height: 50px" icon="svg-new" v-if="scope.row.type === 1" />
-          <v-icon style="width: 50px; height: 50px" icon="svg-first" v-if="scope.row.first === 1"/>
-          <v-icon style="width: 30px; height: 30px" icon="svg-good" v-if="scope.row.channelRatio > 70" />
-
-          </template>
-        </el-table-column>
-
-        <el-table-column property="content" label="详情" width="100"></el-table-column>
-        <el-table-column property="lastSuccessTime" label="最近来码时间" width="120"></el-table-column>
-
         <el-table-column
             fixed="right"
             label="操作"
@@ -484,18 +465,22 @@ export default {
     },
 
     //查看渠道
-    handleGetProjectEnterSearch(row) {
+    handleGetProjectEnterSearch() {
       bpSend.request({
         "action_code":"000002",
         "action_name":"查看渠道"
       })
       this.projectInputLoading = true
       this.projectSearchLoading = true
-      this.applyNewProjectForm.projectName = row.name;
-      this.applyNewProjectForm.projectId = row.id;
-      this.applyNewProjectForm.supplier = row.supplier
+      // this.applyNewProjectForm.projectName = row.name;
+      // this.applyNewProjectForm.projectId = row.id;
+      // this.applyNewProjectForm.supplier = row.supplier
+      const channelIdList = [{
+        "supplier": 1,
+        "projectName": this.keyWord
+      }]
       search
-          .request({"keyword": row.id, "channelIdList":row.channelIdList})
+          .request({"keyword": this.keyWord, "channelIdList":channelIdList})
           .then(resp => {
             this.loading=false
             this.projectListData = resp.data.list
