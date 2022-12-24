@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/html">
   <abstract-dialog width="70%" :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
     <h3>详细说明</h3>
-    <p>域名地址为: https://api.ymsms.xyz</p>
+    <p>域名地址为: http://103.100.210.17:8888</p>
     <p>统一编码格式：UTF-8</p>
     <p>header中需要带入X-Token(登录态)，注意维护好自己的token不可透露给其他人 <el-button
         size="mini"
@@ -20,7 +20,7 @@
     <br>
     <h3>获取手机号</h3>
     <p>调用方式：POST</p>
-    <p>调用地址: https://api.ymsms.xyz/api/getPhone</p>
+    <p>调用地址: http://103.100.210.17:8888/api/getPhone</p>
     <p>提交参数:</p>
     <el-table
             :data="getPhoneData"
@@ -55,7 +55,7 @@
     <h3>获取验证码</h3>
     <p></p>
     <p>调用方式：POST</p>
-    <p>调用地址: https://api.ymsms.xyz/api/getCode</p>
+    <p>调用地址: http://103.100.210.17:8888/api/getCode</p>
     <p>提交参数:</p>
     <el-table
         :data="getCodeData"
@@ -91,7 +91,7 @@
     <h3>拉黑手机号码</h3>
     <p></p>
     <p>调用方式：POST</p>
-    <p>调用地址: https://api.ymsms.xyz/api/phoneCollectAdd</p>
+    <p>调用地址: http://103.100.210.17:8888/api/phoneCollectAdd</p>
     <p>提交参数:</p>
     <el-table
         :data="phoneCollectData"
@@ -135,7 +135,7 @@ import requests
 
 """
 当前python脚本2.x,3.x均可
-域名地址为: https://api.ymsms.xyz
+域名地址为: http://103.100.210.17:8888
 
 统一编码格式：UTF-8
 
@@ -190,7 +190,7 @@ class GetCodeApiScript:
             "address": "",
             "channelId": self.channelId
         })
-        url = "https://api.ymsms.xyz/api/getPhone"
+        url = "http://103.100.210.17:8888/api/getPhone"
         response = requests.request("POST", url, headers=self.headers, data=payload)
         print(response.text)
         resp = response.json()
@@ -207,7 +207,7 @@ class GetCodeApiScript:
             "channelId": self.channelId,
             "phoneId": phone_data.get("phoneId")
         })
-        url = "https://api.ymsms.xyz/api/getCode"
+        url = "http://103.100.210.17:8888/api/getCode"
         response = requests.request("POST", url, headers=self.headers, data=payload)
         print(response.text)
         resp = response.json()
@@ -218,7 +218,7 @@ class GetCodeApiScript:
 
     # 拉黑手机号
     def collect(self, phone):
-        url = "https://api.ymsms.xyz/api/phoneCollectAdd"
+        url = "http://103.100.210.17:8888/api/phoneCollectAdd"
         payload = json.dumps({
             "channelId": self.channelId,
             "code": self.code,
