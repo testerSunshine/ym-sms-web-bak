@@ -48,7 +48,7 @@
       <!--                <v-icon v-for="i in otherWays" :key="i" :icon="`svg-${i}`" @click="() => thirdPartyLogin(i)"/>-->
       <!--            </p>-->
 
-      <el-button type="text" @click="register">注册账户</el-button>
+<!--      <el-button type="text" @click="register">注册账户</el-button>-->
     </div>
   </el-form>
 </template>

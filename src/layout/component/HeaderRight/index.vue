@@ -13,7 +13,7 @@ export default {
     render(h, context) {
         const custom = [
             <ApiDoc class="header-item"/>,
-            <el-link class="header-item" type="warning" href="https://ptcc.in/ymsms" target="_blank">加入土豆群</el-link>,
+            // <el-link class="header-item" type="warning" href="https://ptcc.in/ymsms" target="_blank">加入土豆群</el-link>,
             <QuestionReport class="header-item"></QuestionReport>,
             <NotifyBell class="header-item"/>,
             // <div
