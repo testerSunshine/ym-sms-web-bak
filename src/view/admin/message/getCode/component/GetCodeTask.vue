@@ -56,11 +56,11 @@
       <el-table-column
           label="操作">
         <template slot-scope="scope">
-          <el-button
-              type="warning"
-              size="mini"
-              @click="stopGetCode(scope.row)">停止任务
-          </el-button>
+<!--          <el-button-->
+<!--              type="warning"-->
+<!--              size="mini"-->
+<!--              @click="stopGetCode(scope.row)">停止任务-->
+<!--          </el-button>-->
           <el-button
               type="danger"
               size="mini"
@@ -170,6 +170,7 @@ export default {
           s.countDown = null
         }
       })
+      this.smsTaskData = []
     },
     handleCopyAllPhone() {
       let smsData = this.smsTaskData
@@ -180,7 +181,7 @@ export default {
       for (const v of smsData) {
         phoneList.push(v.phone)
       }
-      let message = phoneList.join(",");
+      let message = phoneList.join("\n");
       this.$copyText(message).then(function (e) {
         elSuccess('复制成功')
       }, function (e) {
