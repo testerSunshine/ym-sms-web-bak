@@ -1,57 +1,82 @@
 <template>
-  <el-card class="get-code-task" style="margin: 5px; border-color: #4AB7BD" shadow="never">
-    <el-form ref="form" :model="form" label-width="80px" size="mini">
+  <div>
 
-      任务状态：<el-tag type="success" size="mini" effect="dark" v-if="this.taskStatus">可用</el-tag>
-      <el-tag type="danger" size="mini" effect="dark" v-if="!this.taskStatus">禁用</el-tag>
-      <el-button style="margin: 10px" type="primary" size="mini" @click="submitGetPhoneForm()" v-if="this.taskStatus" :loading="getPhoneLoading">获取手机号</el-button>
-
-      <br>
-      <el-form-item label="项目信息:">
-        <el-tag type="success" size="mini" effect="dark" >{{ this.form.projectName }}</el-tag>
-      </el-form-item>
-      <el-form-item label="手机号:">
-        <el-tag type="primary"  size="mini" effect="dark" >{{form.phone}}</el-tag>
-        <el-button style="margin-left: 10px" size="mini"
-                   v-clipboard:copy="this.form.phone"
-                   v-clipboard:success="copy" v-if="this.taskStatus">复制手机号</el-button>
-        <el-button style="margin-left: 10px" type="danger" size="mini" @click="banPhone()" v-if="this.taskStatus">拉黑该号码</el-button>
-      </el-form-item>
-
-      <el-form-item label="最近来码:">
-        <el-input v-model="form.lastMsgTime" :disabled=true>time</el-input>
-      </el-form-item>
-
-      <el-button style="margin-left: 10px; margin-right: 10px" type="primary" size="mini" @click="startGetCode()" v-if="this.taskStatus" :disabled=this.getCodeFlag>获取验证码</el-button>
-      <el-button style="margin-right: 10px"
-                 size="mini"
-                 v-clipboard:copy="this.form.code"
-                 v-clipboard:success="copy" v-if="this.taskStatus">复制验证码</el-button>
-      <el-button style="margin-right: 10px" type="danger" size="mini" @click="stopGetCode()" v-if="this.taskStatus">清空该任务</el-button>
-      <br>
-      <el-tag  style="margin: 10px" type="primary" size="medium"  >{{this.getCodeStatus}}</el-tag>
-      <el-tag  style="margin: 10px; -ms-text-align-last: center" type="primary" size="medium"  >超时倒计时：</el-tag>
-      <!--      <el-tag  style="margin: 10px" type="primary" size="medium"  >倒计时：{{this.countDownTime}}s</el-tag>-->
-      <el-progress style="width:40%; display:inline-block;" :percentage=percentage :color="customColorMethod"></el-progress>
-      <el-form-item label="验证码:">
-        <el-input v-model="form.code" :disabled=!this.taskStatus>code</el-input>
-      </el-form-item>
-
-      <el-form-item label="短信内容:">
-        <el-input type="textarea" :disabled=!this.taskStatus :rows="2" v-model="form.codeContent" placeholder="如果验证码提取有错，请自取短信内容里的验证码"></el-input>
-      </el-form-item>
-
-    </el-form>
-
-
-  </el-card>
+    <el-button @click="handleGetPhone" type="primary" size="mini" :loading="getPhoneLoading">获取号码</el-button>
+    <el-button @click="handleCopyAllPhone" type="primary" size="mini">复制所有号码</el-button>
+    <el-button @click="handleClearAllTask" type="danger" size="mini">清空所有任务</el-button>
+    <el-table
+        :data="smsTaskData"
+        style="width: 100%">
+      <el-table-column
+          type="index"
+          label="序号"
+          width="50">
+      </el-table-column>
+      <el-table-column
+          prop="channelId"
+          label="channelId"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="projectCode"
+          label="对接码"
+          width="120">
+      </el-table-column>
+      <el-table-column
+          prop="phone"
+          label="手机号"
+          width="150">
+        <template slot-scope="scope">
+          <span >{{ scope.row.phone }}</span>
+          <i style="margin-left: 5px; color: #606266"
+             v-clipboard:copy="scope.row.phone"
+             v-clipboard:success="copy" class="el-icon-copy-document"></i>
+        </template>
+      </el-table-column>
+      <el-table-column
+          prop="code"
+          label="验证码"
+          width="120">
+        <template slot-scope="scope">
+          <span>{{ scope.row.code }}</span>
+          <i v-if="scope.row.code !== ''" style="margin-left: 5px; color: #606266"
+             v-clipboard:copy="scope.row.code"
+             v-clipboard:success="copy" class="el-icon-copy-document"></i>
+        </template>
+      </el-table-column>
+      <el-table-column
+          prop="codeContent"
+          label="短信内容">
+      </el-table-column>
+      <el-table-column
+          prop="taskStatus"
+          label="状态"
+          width="80">
+      </el-table-column>
+      <el-table-column
+          label="操作">
+        <template slot-scope="scope">
+          <el-button
+              type="warning"
+              size="mini"
+              @click="stopGetCode(scope.row)">停止任务
+          </el-button>
+          <el-button
+              type="danger"
+              size="mini"
+              @click="banPhone(scope.row)">拉黑
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
 import {addPhone, getPhone} from "@/api/message/getPhone";
 import {getCode} from "@/api/message/getCode";
 import {elError, elSuccess} from "@/util/message"
-import {updateTask} from "@/api/message/smsTask";
+import {stopAllTask, updateTask} from "@/api/message/smsTask";
 import {timeFormat} from "@/util"
 import {bpSend} from "@/api/bp";
 
@@ -77,20 +102,22 @@ export default {
       timerLine: null,
       endFlag: false,
       countDownTime: 300,
-      taskId:"",
-      refreshTime:5000,
-      getCodeStatus:"等待获取验证码",
-      getCodeFlag:false,
-      form:{
-        projectId:"",
-        projectName:"",
-        phone:"等待获取",
-        lastMsgTime:"",
-        projectCode:"",
-        code:"",
-        codeContent:"",
-        channelId:"",
-        phoneId:""
+      taskId: "",
+      refreshTime: 5000,
+      getCodeStatus: "等待获取验证码",
+      getCodeFlag: false,
+      // 表格获取
+      smsTaskData: [],
+      form: {
+        projectId: "",
+        projectName: "",
+        phone: "等待获取",
+        lastMsgTime: "",
+        projectCode: "",
+        code: "",
+        codeContent: "",
+        channelId: "",
+        phoneId: ""
       },
       percentage: 100,
       getPhoneLoading: false
@@ -98,19 +125,13 @@ export default {
 
   },
 
-  // mounted() {
-  //   if(this.form.phoneNo != null && this.form.projectId != null && this.taskData.status === 1){
-  //     this.startGetCode();
-  //   }
-  // },
-
-  watch:{
-    taskData:{
-      handler(n,o){
+  watch: {
+    taskData: {
+      handler(n, o) {
         this.form.phone = n.phoneNo
         this.countDownTime = n.leftSeconds
-        this.percentage = Math.round(n.leftSeconds/3)
-        this.form.projectName = n.projectName + "(金币："+n.userMoney+")"+ "（可用：" + n.projectContent + "）" + "projectId:"  + n.projectCode
+        this.percentage = Math.round(n.leftSeconds / 3)
+        this.form.projectName = n.projectName + "(金币：" + n.userMoney + ")" + "（可用：" + n.projectContent + "）" + "projectId:" + n.projectCode
 
         this.form.projectId = n.projectId
         this.form.projectCode = n.projectCode
@@ -121,19 +142,11 @@ export default {
         this.getPhoneForm.projectId = n.projectId
 
         this.refreshTime = n.refreshTime
-
-        // console.log("ssdsada")
-        // console.log(this.form.projectName)
-
       }
     }
   },
 
   deactivated() {
-    // bpSend.request({
-    //   "action_code":"100000",
-    //   "action_name":"任务组件被刷新"
-    // })
     clearInterval(this.timer)
     this.timer = null
     clearInterval(this.timerLine)
@@ -141,41 +154,55 @@ export default {
   },
 
 
-  methods:{
-    customColorMethod(percentage) {
-      if (percentage < 30) {
-        return '#909399';
-      } else if (percentage < 70) {
-        return '#e6a23c';
-      } else {
-        return '#67c23a';
+  methods: {
+    handleGetPhone() {
+      this.submitGetPhoneForm()
+    },
+    handleClearAllTask() {
+      let smsData = this.smsTaskData
+      if (smsData.length === 0) {
+        return
       }
+      stopAllTask.request({}).then(() => {
+        for (const s of smsData) {
+          if (s.taskStatus === "获取中")
+            s.taskStatus = "已停止"
+          s.countDown = null
+        }
+      })
+    },
+    handleCopyAllPhone() {
+      let smsData = this.smsTaskData
+      if (smsData.length === 0) {
+        return
+      }
+      let phoneList = [];
+      for (const v of smsData) {
+        phoneList.push(v.phone)
+      }
+      let message = phoneList.join(",");
+      this.$copyText(message).then(function (e) {
+        elSuccess('复制成功')
+      }, function (e) {
+        elError('复制失败')
+      })
     },
     copy() {
       bpSend.request({
-        "action_code":"100020",
-        "action_name":"使用复制按钮"
+        "action_code": "100020",
+        "action_name": "使用复制按钮"
       })
       elSuccess("复制成功")
     },
-
     submitGetPhoneForm() {
       if (this.getPhoneForm.code === '' || this.getPhoneForm.code == null) {
         elError("请先选择项目，如果没有项目请先对接项目之后再尝试")
-        return
-      }
-      if(this.form.phone != null && this.form.phone.startsWith("1") && !this.form.code){
-        elError("该任务已被占用，请先清空任务，或者使用其他任务池")
         return
       }
       this.form.code = null
       this.endFlag = false
       this.countDownTime = 300
       this.percentage = 100
-      this.form.projectName = this.getPhoneForm.projectName
-      this.form.projectId = this.getPhoneForm.projectId
-      this.form.projectCode = this.getPhoneForm.code
-      this.form.channelId = this.getPhoneForm.channelId
 
       this.getPhoneLoading = true
       getPhone.request(this.getPhoneForm).then(resp => {
@@ -183,171 +210,138 @@ export default {
           elError("没找到符合条件的号码，请检查搜索条件再试")
           return
         }
-        this.form.phone = resp.data.mobile
-        this.form.lastMsgTime = resp.data.lastMsgTime
-        this.form.phoneId = resp.data.phoneId
-        this.taskId = resp.data.smsTask.id
-        if(resp.data.refreshTime != null || resp.data.refreshTime !== ""){
-          this.refreshTime = resp.data.refreshTime
+        let phoneFrom = {
+          projectId: this.getPhoneForm.projectId,
+          phone: resp.data.mobile,
+          lastMsgTime: resp.data.lastMsgTime,
+          projectCode: this.getPhoneForm.code,
+          code: "",
+          codeContent: "",
+          channelId: this.getPhoneForm.channelId,
+          phoneId: resp.data.phoneId,
+          taskStatus: "获取中",
+          taskId: resp.data.smsTask.id,
+          refreshTime: resp.data.refreshTime
         }
-        clearInterval(this.timer)
-        clearInterval(this.timerLine)
-        elSuccess("获取手机号成功，请先去【"+ this.form.projectName.split("（")[0] +"】发送验证码，再点击获取验证码")
+        if (resp.data.refreshTime != null || resp.data.refreshTime !== "") {
+          phoneFrom.refreshTime = resp.data.refreshTime
+        }
+        this.smsTaskData.unshift(phoneFrom)
+        // 超过20个任务，就删掉最后一个
+        if (this.smsTaskData.length > 20) {
+          this.smsTaskData.length = 20
+        }
+        elSuccess("获取手机号成功")
+        this.startGetCode(phoneFrom)
 
-        bpSend.request({
-          "action_code":"100001",
-          "action_name":"获取手机号：" + this.form.phone
-        })
-
-      }).finally(()=>{this.getPhoneLoading = false})
-
-
+      }).finally(() => {
+        this.getPhoneLoading = false
+      })
     },
 
-    banPhone(){
+    banPhone(rowData) {
       bpSend.request({
-        "action_code":"100100",
-        "action_name":"拉黑手机号：" + this.form.phone
+        "action_code": "100100",
+        "action_name": "拉黑手机号：" + rowData.phone
       })
 
-      if(this.form.projectCode === ""){
-        elError("请先获取渠道和正确的手机号再试")
-        return
-      }
-      if(this.form.phone === "等待获取"){
+      if (rowData.projectCode === "") {
         elError("请先获取渠道和正确的手机号再试")
         return
       }
       addPhone.request({
-        "channelId":this.form.channelId,
-        "code":this.form.projectCode,
-        "phoneNo":this.form.phone,
-        "type":0
+        "channelId": rowData.channelId,
+        "code": rowData.projectCode,
+        "phoneNo": rowData.phone,
+        "type": 0
       }).then(
           resp => {
-            if(resp.data === true){
+            if (resp.data === true) {
               elSuccess("拉黑成功")
-            }else{
+            } else {
               elError("拉黑失败，可能之前已经拉黑过了")
             }
+            rowData.taskStatus = "拉黑"
+            rowData.countDown = null
           }
+
       )
     },
 
-    startGetCode() {
+    startGetCode(rowData) {
       this.getCodeFlag = true
-      bpSend.request({
-        "action_code":"100003",
-        "action_name":"开始获取验证码"
-      })
-
-      clearInterval(this.timer)
-      clearInterval(this.timerLine)
+      clearInterval(rowData.countDown)
       if (this.getPhoneForm.code === 0) {
         elError("请选择渠道再获取验证码")
-        this.getCodeStatus = "验证码获取错误，请更改手机号或者渠道再重试"
-        clearInterval(this.timer)
-        clearInterval(this.timerLine)
-        this.getCodeFlag = false
-        return
-      }
-      if (this.form.phone === "等待获取") {
-        elError("请先获取手机号再试")
-        clearInterval(this.timer)
-        clearInterval(this.timerLine)
+        clearInterval(rowData.countDown)
+        rowData.taskStatus = "验证码获取错误，请更改手机号或者渠道再重试"
         this.getCodeFlag = false
         return
       }
       this.getCodeStatus = "获取验证码中..."
       // 定时获取验证码
       elSuccess("开始获取验证码")
-      this.form.codeContent = ""
-      this.form.lastMsgTime = ""
-      this.timer = setInterval(this.handleGetCode, this.refreshTime);
-      this.timerLine = setInterval(this.countTimerLine, this.refreshTime)
-
+      rowData.countDown = setInterval(this.handleGetCode, this.refreshTime, rowData);
     },
 
-    countTimerLine(){
-      if(this.percentage !== 0){
-        let timeGap = 100/(300000/this.refreshTime)
-        this.percentage = Math.round((this.percentage-timeGap)*100)/100;
-      }
-    },
-
-    handleGetCode() {
-      if (this.countDownTime < Math.round(this.refreshTime/1000) || this.endFlag || this.percentage < 0) {
-        clearInterval(this.timer)
-        clearInterval(this.timerLine)
+    handleGetCode(rowData) {
+      if (this.countDownTime < Math.round(rowData.refreshTime / 1000)) {
+        clearInterval(rowData.countDown)
         this.getCodeFlag = false
-        this.getCodeStatus = "获取验证码任务结束"
+        rowData.taskStatus = "获取超时"
         return
       }
       getCode.request({
-        "code":this.form.projectCode,
-        "projectId": this.form.projectId,
-        "phoneNum": this.form.phone,
-        "channelId" : this.form.channelId,
-        "phoneId": this.form.phoneId
+        "code": rowData.projectCode,
+        "projectId": rowData.projectId,
+        "phoneNum": rowData.phone,
+        "channelId": rowData.channelId,
+        "phoneId": rowData.phoneId
       }).then(resp => {
         if (resp === undefined) {
-          this.getCodeFlag = false
-          this.stopAuto()
+          this.stopAuto(rowData)
           return
         }
-        if (resp.data.message === "ok") {
-          this.getCodeFlag = false
-          this.form.code = resp.data.code
-          this.form.codeContent = resp.data.modle
-          this.form.lastMsgTime = timeFormat("yyyy-MM-dd HH:mm:ss")
-          this.percentage = 100
-          clearInterval(this.timer)
-          clearInterval(this.timerLine)
-
+        if (resp.data.message === "ok" && resp.data.code !== "") {
+          rowData.code = resp.data.code
+          rowData.codeContent = resp.data.modle
+          rowData.lastMsgTime = timeFormat("yyyy-MM-dd HH:mm:ss")
+          rowData.taskStatus = "获取成功"
+          clearInterval(rowData.countDown)
           // 获取短信成功就更新用户余额
           elSuccess("获取验证码成功")
           this.getCodeStatus = "验证码获取成功"
           this.$emit("handleGetWallet")
-
           bpSend.request({
-            "action_code":"100200",
-            "action_name":"获取验证码成功"
+            "action_code": "100200",
+            "action_name": "获取验证码成功"
           })
-
         }
       }).finally(
           () => this.countDownTime = this.countDownTime - 5)
     },
 
-    stopAuto(){
+    stopAuto(rowData) {
       bpSend.request({
-        "action_code":"100004",
-        "action_name":"系统停止获取验证码"
+        "action_code": "100004",
+        "action_name": "系统停止获取验证码"
       })
-      if(this.taskId == null || this.taskId ===""){
+      if (rowData.taskId == null || rowData.taskId === "") {
         elError("任务不存在")
-      }else{
+      } else {
         this.endFlag = true
-        updateTask.request({"id":this.taskId, "status":2}).then(
-            resp =>{
+        updateTask.request({"id": rowData.taskId, "status": 2}).then(
+            resp => {
               // console.log(resp)
-              if(resp.data){
-                clearInterval(this.timer)
-                clearInterval(this.timerLine)
-
-                this.timer = null
-                this.timerLine = null
-
-                this.countDownTime = 300
-                this.percentage = 100
-                this.getCodeStatus = "已停止获取验证码"
-                // this.form.phone = null
-                // this.form.projectName = null
-                // this.form.projectCode = null
-                // this.form.lastMsgTime = null
+              if (resp.data) {
+                clearInterval(rowData.countDown)
+                rowData.countDown = null
+                if (rowData.taskStatus !== "获取成功") {
+                  rowData.taskStatus = "已停止"
+                }
 
                 elSuccess("已停止获取验证码")
-              }else{
+              } else {
                 elError("停止失败")
               }
 
@@ -356,38 +350,19 @@ export default {
       }
     },
 
-    stopGetCode() {
-      bpSend.request({
-        "action_code":"100005",
-        "action_name":"用户清空任务"
-      })
-      if(this.taskId == null || this.taskId ===""){
+    stopGetCode(rowData) {
+      if (rowData.taskId == null || rowData.taskId === "") {
         elError("任务不存在")
-      }else{
+      } else {
         this.endFlag = true
-        updateTask.request({"id":this.taskId, "status":2}).then(
-            resp =>{
+        updateTask.request({"id": rowData.taskId, "status": 2}).then(
+            resp => {
               // console.log(resp)
-              if(resp.data){
-                clearInterval(this.timer)
-                clearInterval(this.timerLine)
-                this.timer = null
-                this.timerLine = null
-                this.countDownTime = 300
-                this.percentage = 100
-                this.getCodeStatus = "已停止获取验证码"
-                this.form.phone = null
-                this.form.phoneId = null
-                this.form.projectName = null
-                this.form.projectCode = null
-                this.form.lastMsgTime = null
-                this.form.code = null
-                this.form.codeContent = null
-                this.form.channelId = null
-
-                this.getCodeFlag = false
+              if (resp.data) {
+                clearInterval(rowData.countDown)
+                rowData.taskStatus = "手动停止"
                 elSuccess("已停止获取验证码")
-              }else{
+              } else {
                 elError("停止失败")
               }
 
@@ -403,7 +378,7 @@ export default {
 </script>
 
 <style ang="scss">
-  .get-code-task .el-card__body {
-    padding: 10px;
-  }
+.get-code-task .el-card__body {
+  padding: 10px;
+}
 </style>
