@@ -222,7 +222,8 @@ export default {
           phoneId: resp.data.phoneId,
           taskStatus: "获取中",
           taskId: resp.data.smsTask.id,
-          refreshTime: resp.data.refreshTime
+          refreshTime: resp.data.refreshTime,
+          countDownTime: 300
         }
         if (resp.data.refreshTime != null || resp.data.refreshTime !== "") {
           phoneFrom.refreshTime = resp.data.refreshTime
@@ -286,7 +287,7 @@ export default {
     },
 
     handleGetCode(rowData) {
-      if (this.countDownTime < Math.round(rowData.refreshTime / 1000)) {
+      if (rowData.countDownTime < Math.round(rowData.refreshTime / 1000)) {
         clearInterval(rowData.countDown)
         this.getCodeFlag = false
         rowData.taskStatus = "获取超时"
@@ -319,7 +320,7 @@ export default {
           })
         }
       }).finally(
-          () => this.countDownTime = this.countDownTime - 5)
+          () => rowData.countDownTime = rowData.countDownTime - 5)
     },
 
     stopAuto(rowData) {

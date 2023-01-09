@@ -295,6 +295,7 @@ export default {
                 taskId: resp.data[i].id,
                 refreshTime: 5000,
                 leftSeconds: resp.data[i].leftSeconds,
+                countDownTime: resp.data[i].leftSeconds,
               }
               if(resp.data[i].refreshTime !=null || resp.data[i].refreshTime !==""){
                 taskData.refreshTime = resp.data[i].refreshTime
